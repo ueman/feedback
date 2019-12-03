@@ -3,6 +3,7 @@ library feeback;
 import 'dart:typed_data';
 
 import 'package:feeback/src/controls_column.dart';
+import 'package:feeback/src/feedback_adapter.dart';
 import 'package:feeback/src/feedback_controller.dart';
 import 'package:feeback/src/paint_on_background.dart';
 import 'package:feeback/src/painter.dart';
@@ -16,15 +17,17 @@ class FeedbackWidget extends StatefulWidget {
   const FeedbackWidget({
     Key key,
     @required this.child,
-    @required this.onFeedback,
+    this.onFeedback,
+    this.feedbackAdapter,
     @required this.controller,
   })  : assert(child != null),
-        assert(onFeedback != null),
+        assert(onFeedback != null || feedbackAdapter != null),
         assert(controller != null),
         super(key: key);
 
   final OnFeedbackCallback onFeedback;
   final FeedbackController controller;
+  final FeedbackAdapter feedbackAdapter;
 
   final Widget child;
 
@@ -128,18 +131,24 @@ class _FeedbackWidgetState extends State<FeedbackWidget> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                const Text('Hier kannst du dein Feedback da lassen'),
+                const Text('What\'s wrong?'),
                 TextField(
                   maxLines: 2,
                   minLines: 2,
                   controller: textEditingController,
                 ),
                 FlatButton(
-                  child: const Text('Feedback abgeben'),
+                  child: const Text('Submit'),
                   onPressed: () async {
                     final screenshot =
                         await screenshotController.capture(pixelRatio: 3);
-                    widget.onFeedback(textEditingController.text, screenshot);
+                    final feedbackText = textEditingController.text;
+                    if (widget.feedbackAdapter != null) {
+                      widget.feedbackAdapter
+                          .onFeedback(feedbackText, screenshot);
+                    } else {
+                      widget.onFeedback(feedbackText, screenshot);
+                    }
                   },
                 )
               ],

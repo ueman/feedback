@@ -34,15 +34,15 @@ class FeedbackWidget extends StatefulWidget {
 
 class _FeedbackWidgetState extends State<FeedbackWidget> {
   PainterController controller;
-  bool isNavigatingActive = true;
   ScreenshotController screenshotController = ScreenshotController();
-  bool isFeedbackViewActive = false;
   TextEditingController textEditingController = TextEditingController();
+
+  bool isNavigatingActive = true;
+  bool isFeedbackViewActive = false;
 
   PainterController create() {
     final PainterController controller = PainterController();
     controller.thickness = 5.0;
-    controller.backgroundColor = Colors.transparent;
     controller.drawColor = Colors.red;
     return controller;
   }

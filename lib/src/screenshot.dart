@@ -1,6 +1,3 @@
-//Kopiert und angepasst von
-//https://github.com/SachinGanesh/screenshot
-
 import 'dart:typed_data';
 
 import 'dart:ui' as ui;

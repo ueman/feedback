@@ -1,5 +1,3 @@
-// Kopiert und angepasst von
-// https://github.com/EPNW/painter/blob/master/lib/painter.dart
 import 'package:flutter/widgets.dart' hide Image;
 
 class Painter extends StatefulWidget {
@@ -15,25 +13,21 @@ class Painter extends StatefulWidget {
 class _PainterState extends State<Painter> {
   @override
   Widget build(BuildContext context) {
-    Widget child =  CustomPaint(
-      willChange: true,
-      painter:  _PainterPainter(
-        widget.painterController._pathHistory,
-        repaint: widget.painterController,
-      ),
-    );
-
-    child =  GestureDetector(
-      child: child,
-      onPanStart: _onPanStart,
-      onPanUpdate: _onPanUpdate,
-      onPanEnd: _onPanEnd,
-    );
-
-    return  Container(
-      child: child,
+    return Container(
       width: double.infinity,
       height: double.infinity,
+      child: GestureDetector(
+        onPanStart: _onPanStart,
+        onPanUpdate: _onPanUpdate,
+        onPanEnd: _onPanEnd,
+        child: CustomPaint(
+          willChange: true,
+          painter: _PainterPainter(
+            widget.painterController._pathHistory,
+            repaint: widget.painterController,
+          ),
+        ),
+      ),
     );
   }
 
@@ -58,7 +52,10 @@ class _PainterState extends State<Painter> {
 }
 
 class _PainterPainter extends CustomPainter {
-  _PainterPainter(this._path, {Listenable repaint}) : super(repaint: repaint);
+  _PainterPainter(
+    this._path, {
+    Listenable repaint,
+  }) : super(repaint: repaint);
 
   final _PathHistory _path;
 
@@ -75,20 +72,13 @@ class _PainterPainter extends CustomPainter {
 
 class _PathHistory {
   _PathHistory() {
-    _paths =  <MapEntry<Path, Paint>>[];
+    _paths = <MapEntry<Path, Paint>>[];
     _inDrag = false;
-    _backgroundPaint =  Paint();
   }
 
   List<MapEntry<Path, Paint>> _paths;
   Paint currentPaint;
-  Paint _backgroundPaint;
   bool _inDrag;
-
-
-  set backgroundColor(Color backgroundColor) {
-    _backgroundPaint.color = backgroundColor;
-  }
 
   void undo() {
     if (!_inDrag && _paths.isNotEmpty) {
@@ -125,15 +115,6 @@ class _PathHistory {
   }
 
   void draw(Canvas canvas, Size size) {
-    canvas.drawRect(
-       Rect.fromLTWH(
-        0,
-        0,
-        size.width,
-        size.height,
-      ),
-      _backgroundPaint,
-    );
     for (final MapEntry<Path, Paint> path in _paths) {
       canvas.drawPath(path.key, path.value);
     }
@@ -142,11 +123,10 @@ class _PathHistory {
 
 class PainterController extends ChangeNotifier {
   PainterController() {
-    _pathHistory =  _PathHistory();
+    _pathHistory = _PathHistory();
   }
 
-  Color _drawColor =  const Color.fromARGB(255, 0, 0, 0);
-  Color _backgroundColor = const Color.fromARGB(255, 255, 255, 255);
+  Color _drawColor = const Color.fromARGB(255, 0, 0, 0);
 
   double _thickness = 1;
   _PathHistory _pathHistory;
@@ -157,25 +137,18 @@ class PainterController extends ChangeNotifier {
     _updatePaint();
   }
 
-  Color get backgroundColor => _backgroundColor;
-  set backgroundColor(Color color) {
-    _backgroundColor = color;
-    _updatePaint();
-  }
-
   double get thickness => _thickness;
-  set thickness(double t) {
-    _thickness = t;
+  set thickness(double thickness) {
+    _thickness = thickness;
     _updatePaint();
   }
 
   void _updatePaint() {
-    final Paint paint =  Paint();
-    paint.color = drawColor;
-    paint.style = PaintingStyle.stroke;
-    paint.strokeWidth = thickness;
+    final Paint paint = Paint()
+      ..color = drawColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = thickness;
     _pathHistory.currentPaint = paint;
-    _pathHistory.backgroundColor = backgroundColor;
     notifyListeners();
   }
 

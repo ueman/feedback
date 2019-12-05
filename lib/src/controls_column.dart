@@ -8,14 +8,14 @@ typedef IsDrawActiveChangedCallback = void Function(bool);
 typedef OnColorChangedCallback = void Function(Color);
 
 class ControlsColumn extends StatefulWidget {
-  const ControlsColumn({
-    Key key,
-    @required this.onColorChanged,
-    @required this.onUndo,
-    @required this.onModeChanged,
-    @required this.onCloseFeedback,
-    @required this.onClearDrawing
-  })  : assert(onColorChanged != null),
+  const ControlsColumn(
+      {Key key,
+      @required this.onColorChanged,
+      @required this.onUndo,
+      @required this.onModeChanged,
+      @required this.onCloseFeedback,
+      @required this.onClearDrawing})
+      : assert(onColorChanged != null),
         assert(onUndo != null),
         assert(onModeChanged != null),
         assert(onCloseFeedback != null),
@@ -57,9 +57,7 @@ class _ControlsColumnState extends State<ControlsColumn> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           IconButton(
-            icon: Icon(Icons.close),
-            onPressed: widget.onCloseFeedback
-          ),
+              icon: Icon(Icons.close), onPressed: widget.onCloseFeedback),
           _ColumnDivider(),
           IconButton(
             icon: Icon(Icons.map),

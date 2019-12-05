@@ -1,34 +1,28 @@
 library feeback;
 
-import 'dart:typed_data';
-
 import 'package:feeback/src/controls_column.dart';
+import 'package:feeback/src/feedback.dart';
 import 'package:feeback/src/feedback_adapter.dart';
-import 'package:feeback/src/feedback_controller.dart';
 import 'package:feeback/src/paint_on_background.dart';
 import 'package:feeback/src/painter.dart';
+import 'package:feeback/src/scale_and_clip.dart';
 import 'package:feeback/src/screenshot.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
-typedef OnFeedbackCallback = void Function(String, Uint8List);
 
 class FeedbackWidget extends StatefulWidget {
   const FeedbackWidget({
     Key key,
     @required this.child,
-    this.onFeedback,
-    this.feedbackAdapter,
-    @required this.controller,
+    @required this.feedbackAdapter,
+    @required this.isFeedbackVisible,
   })  : assert(child != null),
-        assert(onFeedback != null || feedbackAdapter != null),
-        assert(controller != null),
+        assert(feedbackAdapter != null),
+        assert(isFeedbackVisible != null),
         super(key: key);
 
-  final OnFeedbackCallback onFeedback;
-  final FeedbackController controller;
+  final bool isFeedbackVisible;
   final FeedbackAdapter feedbackAdapter;
-
   final Widget child;
 
   @override
@@ -36,12 +30,11 @@ class FeedbackWidget extends StatefulWidget {
 }
 
 class _FeedbackWidgetState extends State<FeedbackWidget> {
-  PainterController controller;
+  PainterController painterController;
   ScreenshotController screenshotController = ScreenshotController();
   TextEditingController textEditingController = TextEditingController();
 
   bool isNavigatingActive = true;
-  bool isFeedbackViewActive = false;
 
   PainterController create() {
     final PainterController controller = PainterController();
@@ -53,25 +46,12 @@ class _FeedbackWidgetState extends State<FeedbackWidget> {
   @override
   void initState() {
     super.initState();
-    controller = create();
-    widget.controller.addListener(onUpdateOfController);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    widget.controller.removeListener(onUpdateOfController);
-  }
-
-  void onUpdateOfController() {
-    setState(() {
-      isFeedbackViewActive = widget.controller.isFeedbackViewActive;
-    });
+    painterController = create();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!isFeedbackViewActive) {
+    if (!widget.isFeedbackVisible) {
       return widget.child;
     }
 
@@ -87,9 +67,9 @@ class _FeedbackWidgetState extends State<FeedbackWidget> {
                 alignment: Alignment.topCenter,
                 child: Screenshot(
                   controller: screenshotController,
-                  child: _ScaleAndClip(
+                  child: ScaleAndClip(
                     child: PaintOnBackground(
-                      controller: controller,
+                      controller: painterController,
                       isPaintingActive: !isNavigatingActive,
                       child: widget.child,
                     ),
@@ -100,13 +80,13 @@ class _FeedbackWidgetState extends State<FeedbackWidget> {
                 alignment: const Alignment(.95, -0.9),
                 child: ControlsColumn(
                   onColorChanged: (color) {
-                    controller.drawColor = color;
+                    painterController.drawColor = color;
                   },
                   onUndo: () {
-                    controller.undo();
+                    painterController.undo();
                   },
                   onClearDrawing: () {
-                    controller.clear();
+                    painterController.clear();
                   },
                   onModeChanged: (isDrawingActive) {
                     setState(() {
@@ -114,9 +94,7 @@ class _FeedbackWidgetState extends State<FeedbackWidget> {
                     });
                   },
                   onCloseFeedback: () {
-                    setState(() {
-                      isFeedbackViewActive = false;
-                    });
+                    BetterFeedback.of(context).hide();
                   },
                 ),
               ),
@@ -143,43 +121,13 @@ class _FeedbackWidgetState extends State<FeedbackWidget> {
                     final screenshot =
                         await screenshotController.capture(pixelRatio: 3);
                     final feedbackText = textEditingController.text;
-                    if (widget.feedbackAdapter != null) {
-                      widget.feedbackAdapter
-                          .onFeedback(feedbackText, screenshot);
-                    } else {
-                      widget.onFeedback(feedbackText, screenshot);
-                    }
+                    widget.feedbackAdapter.onFeedback(feedbackText, screenshot);
                   },
                 )
               ],
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _ScaleAndClip extends StatelessWidget {
-  const _ScaleAndClip({
-    Key key,
-    this.child,
-  }) : super(key: key);
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Transform.scale(
-      alignment: const Alignment(-0.3, -1),
-      scale: 0.7,
-      child: ClipRRect(
-        borderRadius: const BorderRadius.all(
-          Radius.circular(
-            20,
-          ),
-        ),
-        child: child,
       ),
     );
   }

@@ -55,6 +55,9 @@ class _FeedbackWidgetState extends State<FeedbackWidget> {
       return widget.child;
     }
 
+    // TODO(ueman): look for a better solution
+    // it would be really nice if we would not need a
+    // MaterialApp nor a Scaffold here
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(

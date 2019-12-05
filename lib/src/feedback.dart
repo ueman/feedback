@@ -3,6 +3,7 @@ import 'package:feeback/src/feedback_controller.dart';
 import 'package:feeback/src/feedback_widget.dart';
 import 'package:flutter/widgets.dart';
 
+/// This widget should be at the top of your widget tree.
 class BetterFeedback extends StatefulWidget {
   const BetterFeedback({
     Key key,
@@ -13,10 +14,18 @@ class BetterFeedback extends StatefulWidget {
             'Either onFeedback or feedbackAdapter must be non null'),
         super(key: key);
 
+  /// Gets called when the user submits his feedback
   final OnFeedbackCallback onFeedback;
+
+  /// Gets called when the user submits his feedback
   final FeedbackAdapter feedbackAdapter;
+
+  /// The application to wrap
   final Widget child;
 
+  /// Call `BetterFeedback.of(context)` to get an instance of
+  /// [FeedbackData] on which you can call `.show()` or `.hide()`
+  /// to enable or disable the feedback view.
   static FeedbackData of(BuildContext context) =>
       context.inheritFromWidgetOfExactType(FeedbackData) as FeedbackData;
 
@@ -71,6 +80,9 @@ class FeedbackData extends InheritedWidget {
     return oldWidget.controller != controller;
   }
 
+  /// Shows the feedback view
   void show() => controller.show();
+
+  /// Hides the feedback view
   void hide() => controller.hide();
 }

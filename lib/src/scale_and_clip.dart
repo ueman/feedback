@@ -10,6 +10,7 @@ class ScaleAndClip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Transform.scale(
       alignment: const Alignment(-0.3, -1),
       scale: 0.7,
@@ -19,7 +20,11 @@ class ScaleAndClip extends StatelessWidget {
             20,
           ),
         ),
-        child: child,
+        child: SizedBox(
+          width: size.width,
+          height: size.height,
+          child: child,
+        ),
       ),
     );
   }

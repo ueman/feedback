@@ -68,11 +68,15 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
     super.didUpdateWidget(oldWidget);
     if (oldWidget.isFeedbackVisible != widget.isFeedbackVisible &&
         oldWidget.isFeedbackVisible == false) {
+      // Feedback is now visible,
+      // start animation to show it.
       _controller.forward();
     }
 
     if (oldWidget.isFeedbackVisible != widget.isFeedbackVisible &&
         oldWidget.isFeedbackVisible == true) {
+      // Feedback is no longer visible,
+      // reverse animation to hide it.
       _controller.reverse();
     }
   }
@@ -85,6 +89,9 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
         ' so that the app doesn\'t loose its state while switching '
         'between normal use and feedback view.');
 
+    // Possible optimization:
+    // If feedback is invisible just build widget.child
+    // without the whole feedback foo.
     //if (!widget.isFeedbackVisible) {
     //  return widget.child;
     //}
@@ -106,81 +113,94 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
       builder: (context, child) {
         return Scaffold(
           backgroundColor: Colors.grey,
-          body: SafeArea(
-            child: Stack(
-              alignment: Alignment.center,
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: Screenshot(
-                    controller: screenshotController,
-                    child: ScaleAndClip(
-                      scale: scaleAnimation.value,
-                      alignmentProgress: animation.value,
-                      child: PaintOnBackground(
-                        controller: painterController,
-                        isPaintingActive: !isNavigatingActive,
-                        child: widget.child,
-                      ),
+          body: Stack(
+            alignment: Alignment.center,
+            children: <Widget>[
+              Align(
+                alignment: Alignment.topCenter,
+                child: Screenshot(
+                  controller: screenshotController,
+                  child: ScaleAndClip(
+                    scale: scaleAnimation.value,
+                    alignmentProgress: animation.value,
+                    child: PaintOnBackground(
+                      controller: painterController,
+                      isPaintingActive: !isNavigatingActive,
+                      child: widget.child,
                     ),
                   ),
                 ),
-                Align(
-                  alignment: Alignment(controlsHorizontalAlignment.value, -0.9),
-                  child: ControlsColumn(
-                    onColorChanged: (color) {
-                      painterController.drawColor = color;
-                    },
-                    onUndo: () {
-                      painterController.undo();
-                    },
-                    onClearDrawing: () {
-                      painterController.clear();
-                    },
-                    onModeChanged: (isDrawingActive) {
-                      setState(() {
-                        isNavigatingActive = isDrawingActive;
-                      });
-                    },
-                    onCloseFeedback: () {
-                      BetterFeedback.of(context).hide();
-                    },
+              ),
+              Align(
+                alignment: Alignment(
+                  controlsHorizontalAlignment.value,
+                  -0.7,
+                ),
+                child: ControlsColumn(
+                  onColorChanged: (color) {
+                    painterController.drawColor = color;
+                  },
+                  onUndo: () {
+                    painterController.undo();
+                  },
+                  onClearDrawing: () {
+                    painterController.clear();
+                  },
+                  onModeChanged: (isDrawingActive) {
+                    setState(() {
+                      isNavigatingActive = isDrawingActive;
+                    });
+                  },
+                  onCloseFeedback: () {
+                    BetterFeedback.of(context).hide();
+                  },
+                ),
+              ),
+            ],
+          ),
+          bottomSheet: !widget.isFeedbackVisible
+              ? null
+              : Container(
+                  padding: const EdgeInsets.all(30),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      const Text('What\'s wrong?'),
+                      TextField(
+                        maxLines: 2,
+                        minLines: 2,
+                        controller: textEditingController,
+                      ),
+                      Builder(
+                        builder: (innerContext) {
+                          // Through using a Builder we can supply an
+                          // appropriate BuildContext to the callback function.
+                          return FlatButton(
+                            child: const Text('Submit'),
+                            onPressed: () async {
+                              // Take high res screenshot
+                              final screenshot = await screenshotController
+                                  .capture(pixelRatio: 3);
+
+                              // Get feedback text
+                              final feedbackText = textEditingController.text;
+
+                              // Give it to the developer
+                              // to do something with it.
+                              widget.feedback(
+                                innerContext,
+                                feedbackText,
+                                screenshot,
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
-          bottomSheet: Container(
-            padding: const EdgeInsets.all(30),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                const Text('What\'s wrong?'),
-                TextField(
-                  maxLines: 2,
-                  minLines: 2,
-                  controller: textEditingController,
-                ),
-                // Through using a Builder we can supply an approprioat
-                // BuildContext to the callback function.
-                Builder(
-                  builder: (innerContext) {
-                    return FlatButton(
-                      child: const Text('Submit'),
-                      onPressed: () async {
-                        final screenshot =
-                            await screenshotController.capture(pixelRatio: 3);
-                        final feedbackText = textEditingController.text;
-                        widget.feedback(innerContext, feedbackText, screenshot);
-                      },
-                    );
-                  },
-                )
-              ],
-            ),
-          ),
         );
       },
     );

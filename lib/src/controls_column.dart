@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 
-/// Gibt an, ob grade das Malen aktiviert ist.
-/// Ist es nicht aktiv, sollte navigiert werden können.
+/// The parameter describes wether drawing is active (true)
+/// or inactive (false).
 typedef IsDrawActiveChangedCallback = void Function(bool);
 
-/// Gibt an mit welcher Farbe aktuell gemalt werden soll
 typedef OnColorChangedCallback = void Function(Color);
 
 class ControlsColumn extends StatefulWidget {
-  const ControlsColumn(
-      {Key key,
-      @required this.onColorChanged,
-      @required this.onUndo,
-      @required this.onModeChanged,
-      @required this.onCloseFeedback,
-      @required this.onClearDrawing})
-      : assert(onColorChanged != null),
+  const ControlsColumn({
+    Key key,
+    @required this.onColorChanged,
+    @required this.onUndo,
+    @required this.onModeChanged,
+    @required this.onCloseFeedback,
+    @required this.onClearDrawing,
+  })  : assert(onColorChanged != null),
         assert(onUndo != null),
         assert(onModeChanged != null),
         assert(onCloseFeedback != null),
@@ -41,14 +40,15 @@ const _colors = [
 
 class _ControlsColumnState extends State<ControlsColumn> {
   Color activeColor = Colors.red;
-
   bool isNavigatingActive = true;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+        borderRadius: BorderRadius.all(
+          Radius.circular(20),
+        ),
       ),
       clipBehavior: Clip.antiAlias,
       child: Column(
@@ -57,7 +57,9 @@ class _ControlsColumnState extends State<ControlsColumn> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           IconButton(
-              icon: Icon(Icons.close), onPressed: widget.onCloseFeedback),
+            icon: Icon(Icons.close),
+            onPressed: widget.onCloseFeedback,
+          ),
           _ColumnDivider(),
           IconButton(
             icon: Icon(Icons.map),
@@ -102,7 +104,7 @@ class _ControlsColumnState extends State<ControlsColumn> {
                       widget.onColorChanged(col);
                     },
               isActive: activeColor == color,
-            )
+            ),
         ],
       ),
     );

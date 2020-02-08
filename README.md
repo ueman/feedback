@@ -1,14 +1,31 @@
 # feeback
 
-A new Flutter package for getting better feedback
+A simple Flutter package for getting better feedback
 
 ## Getting Started
 
-This project is a starting point for a Dart
-[package](https://flutter.dev/developing-packages/),
-a library module containing code that can be shared easily across
-multiple Flutter or Dart projects.
+Just wrap your app in a `BetterFeedback` widget and supply
+an `onFeedback` function. The function gets called when 
+the user submits his feedback. To show the feedback view just
+call `BetterFeedback.of(context).show();`
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+```dart
+import 'package:feeback/feeback.dart';
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(
+    BetterFeedback(
+      child: MyApp(),
+      onFeedback: alertFeedbackFunction,
+    ),
+  );
+}
+```
+
+## Sample
+![Example](img/example.png "Example")
+
+## Known Issues
+- Any state is lost when switching between normal use and feedback view.
+    - If anyone happens to know how to fix it, I would really appreciate it.

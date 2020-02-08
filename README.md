@@ -16,7 +16,9 @@ import 'package:flutter/material.dart';
 void main() {
   runApp(
     BetterFeedback(
-      child: MyApp(),
+      child: MyApp(
+        key: GlobalKey(),
+      ),
       onFeedback: alertFeedbackFunction,
     ),
   );
@@ -25,7 +27,3 @@ void main() {
 
 ## Sample
 ![Example](img/example.png "Example")
-
-## Known Issues
-- Any state is lost when switching between normal use and feedback view.
-    - If anyone happens to know how to fix it, I would really appreciate it.

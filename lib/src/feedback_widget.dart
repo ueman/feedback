@@ -29,12 +29,15 @@ class FeedbackWidget extends StatefulWidget {
   _FeedbackWidgetState createState() => _FeedbackWidgetState();
 }
 
-class _FeedbackWidgetState extends State<FeedbackWidget> {
+class _FeedbackWidgetState extends State<FeedbackWidget>
+    with SingleTickerProviderStateMixin {
   PainterController painterController;
   ScreenshotController screenshotController = ScreenshotController();
   TextEditingController textEditingController = TextEditingController();
 
   bool isNavigatingActive = true;
+
+  AnimationController _controller;
 
   PainterController create() {
     final PainterController controller = PainterController();
@@ -47,93 +50,139 @@ class _FeedbackWidgetState extends State<FeedbackWidget> {
   void initState() {
     super.initState();
     painterController = create();
+
+    _controller = AnimationController(
+      vsync: this, // the SingleTickerProviderStateMixin
+      duration: const Duration(milliseconds: 300),
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
+  @override
+  void didUpdateWidget(FeedbackWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.isFeedbackVisible != widget.isFeedbackVisible &&
+        oldWidget.isFeedbackVisible == false) {
+      _controller.forward();
+    }
+
+    if (oldWidget.isFeedbackVisible != widget.isFeedbackVisible &&
+        oldWidget.isFeedbackVisible == true) {
+      _controller.reverse();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!widget.isFeedbackVisible) {
-      return widget.child;
-    }
+    assert(
+        widget.child.key is GlobalKey,
+        'The child needs a GlobalKey,'
+        ' so that the app doesn\'t loose its state while switching '
+        'between normal use and feedback view.');
 
-    //return Builder();
-    // TODO(ueman): look for a better solution
-    // it would be really nice if we would not need a
-    // MaterialApp nor a Scaffold here
-    return Scaffold(
-      backgroundColor: Colors.grey,
-      body: SafeArea(
-        child: Stack(
-          alignment: Alignment.center,
-          children: <Widget>[
-            Align(
-              alignment: Alignment.topCenter,
-              child: Screenshot(
-                controller: screenshotController,
-                child: ScaleAndClip(
-                  child: PaintOnBackground(
-                    controller: painterController,
-                    isPaintingActive: !isNavigatingActive,
-                    child: widget.child,
+    //if (!widget.isFeedbackVisible) {
+    //  return widget.child;
+    //}
+
+    final scaleAnimation = Tween<double>(begin: 1, end: 0.7)
+        .chain(CurveTween(curve: Curves.easeInSine))
+        .animate(_controller);
+
+    final animation = Tween<double>(begin: 0, end: 1)
+        .chain(CurveTween(curve: Curves.easeInSine))
+        .animate(_controller);
+
+    final controlsHorizontalAlignment = Tween<double>(begin: 1.3, end: .95)
+        .chain(CurveTween(curve: Curves.easeInSine))
+        .animate(_controller);
+
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        return Scaffold(
+          backgroundColor: Colors.grey,
+          body: SafeArea(
+            child: Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Screenshot(
+                    controller: screenshotController,
+                    child: ScaleAndClip(
+                      scale: scaleAnimation.value,
+                      alignmentProgress: animation.value,
+                      child: PaintOnBackground(
+                        controller: painterController,
+                        isPaintingActive: !isNavigatingActive,
+                        child: widget.child,
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                Align(
+                  alignment: Alignment(controlsHorizontalAlignment.value, -0.9),
+                  child: ControlsColumn(
+                    onColorChanged: (color) {
+                      painterController.drawColor = color;
+                    },
+                    onUndo: () {
+                      painterController.undo();
+                    },
+                    onClearDrawing: () {
+                      painterController.clear();
+                    },
+                    onModeChanged: (isDrawingActive) {
+                      setState(() {
+                        isNavigatingActive = isDrawingActive;
+                      });
+                    },
+                    onCloseFeedback: () {
+                      BetterFeedback.of(context).hide();
+                    },
+                  ),
+                ),
+              ],
             ),
-            Align(
-              alignment: const Alignment(.95, -0.9),
-              child: ControlsColumn(
-                onColorChanged: (color) {
-                  painterController.drawColor = color;
-                },
-                onUndo: () {
-                  painterController.undo();
-                },
-                onClearDrawing: () {
-                  painterController.clear();
-                },
-                onModeChanged: (isDrawingActive) {
-                  setState(() {
-                    isNavigatingActive = isDrawingActive;
-                  });
-                },
-                onCloseFeedback: () {
-                  BetterFeedback.of(context).hide();
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-      bottomSheet: Container(
-        padding: const EdgeInsets.all(30),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            const Text('What\'s wrong?'),
-            TextField(
-              maxLines: 2,
-              minLines: 2,
-              controller: textEditingController,
-            ),
-            // Through using a Builder we can supply an approprioat
-            // BuildContext to the callback function.
-            Builder(
-              builder: (innerContext) {
-                return FlatButton(
-                  child: const Text('Submit'),
-                  onPressed: () async {
-                    final screenshot =
-                        await screenshotController.capture(pixelRatio: 3);
-                    final feedbackText = textEditingController.text;
-                    widget.feedback(innerContext, feedbackText, screenshot);
+          ),
+          bottomSheet: Container(
+            padding: const EdgeInsets.all(30),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                const Text('What\'s wrong?'),
+                TextField(
+                  maxLines: 2,
+                  minLines: 2,
+                  controller: textEditingController,
+                ),
+                // Through using a Builder we can supply an approprioat
+                // BuildContext to the callback function.
+                Builder(
+                  builder: (innerContext) {
+                    return FlatButton(
+                      child: const Text('Submit'),
+                      onPressed: () async {
+                        final screenshot =
+                            await screenshotController.capture(pixelRatio: 3);
+                        final feedbackText = textEditingController.text;
+                        widget.feedback(innerContext, feedbackText, screenshot);
+                      },
+                    );
                   },
-                );
-              },
-            )
-          ],
-        ),
-      ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

@@ -66,9 +66,11 @@ class _BetterFeedbackState extends State<BetterFeedback> {
 }
 
 class FeedbackData extends InheritedWidget {
-  const FeedbackData(
-      {Key key, @required Widget child, @required this.controller})
-      : assert(child != null),
+  const FeedbackData({
+    Key key,
+    @required Widget child,
+    @required this.controller,
+  })  : assert(child != null),
         assert(controller != null),
         super(key: key, child: child);
 

@@ -4,27 +4,29 @@ class ScaleAndClip extends StatelessWidget {
   const ScaleAndClip({
     Key key,
     this.child,
+    this.scale,
+    this.alignmentProgress,
   }) : super(key: key);
 
   final Widget child;
+  final double scale;
+  final double alignmentProgress;
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Transform.scale(
-      alignment: const Alignment(-0.3, -1),
-      scale: 0.7,
+      alignment: Alignment(
+        -0.3 * alignmentProgress,
+        -1 * alignmentProgress,
+      ),
+      scale: scale,
       child: ClipRRect(
-        borderRadius: const BorderRadius.all(
+        borderRadius: BorderRadius.all(
           Radius.circular(
-            20,
+            20 * alignmentProgress,
           ),
         ),
-        child: SizedBox(
-          width: size.width,
-          height: size.height,
-          child: child,
-        ),
+        child: child,
       ),
     );
   }

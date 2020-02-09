@@ -47,15 +47,14 @@ class _BetterFeedbackState extends State<BetterFeedback> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: FeedbackData(
         controller: controller,
-        child: Builder(builder: (context) {
-          return FeedbackWidget(
-            child: widget.child,
-            isFeedbackVisible: controller.isVisible,
-            feedback: widget.onFeedback,
-          );
-        }),
+        child: FeedbackWidget(
+          child: widget.child,
+          isFeedbackVisible: controller.isVisible,
+          feedback: widget.onFeedback,
+        ),
       ),
     );
   }

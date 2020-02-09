@@ -96,7 +96,7 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
     //  return widget.child;
     //}
 
-    final scaleAnimation = Tween<double>(begin: 1, end: 0.7)
+    final scaleAnimation = Tween<double>(begin: 1, end: 0.65)
         .chain(CurveTween(curve: Curves.easeInSine))
         .animate(_controller);
 
@@ -104,7 +104,7 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
         .chain(CurveTween(curve: Curves.easeInSine))
         .animate(_controller);
 
-    final controlsHorizontalAlignment = Tween<double>(begin: 1.3, end: .95)
+    final controlsHorizontalAlignment = Tween<double>(begin: 1.4, end: .95)
         .chain(CurveTween(curve: Curves.easeInSine))
         .animate(_controller);
 

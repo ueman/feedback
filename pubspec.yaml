@@ -6,7 +6,8 @@ homepage: https://uekoetter.dev
 repository: https://github.com/ueman/feedback
 
 environment:
-  sdk: ">=2.2.2 <3.0.0"
+  sdk: '>=2.2.2 <3.0.0'
+  flutter: '>=1.12.13 <2.0.0'
 
 dependencies:
   flutter:
@@ -16,4 +17,4 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-flutter: v1.12.13+hotfix.7
+flutter:

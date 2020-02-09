@@ -1,6 +1,6 @@
 name: feedback
 description: A Flutter package for getting better feedback
-version: 0.0.1-alpha
+version: 0.0.1-alpha.1
 author: Jonas Uekötter
 homepage: https://uekoetter.dev
 repository: https://github.com/ueman/feedback

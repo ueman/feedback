@@ -125,7 +125,8 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
                     alignmentProgress: animation.value,
                     child: PaintOnBackground(
                       controller: painterController,
-                      isPaintingActive: !isNavigatingActive,
+                      isPaintingActive:
+                          (!isNavigatingActive && widget.isFeedbackVisible),
                       child: widget.child,
                     ),
                   ),

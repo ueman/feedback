@@ -10,7 +10,7 @@ the user submits his feedback. To show the feedback view just
 call `BetterFeedback.of(context).show();`
 
 ```dart
-import 'package:feeback/feeback.dart';
+import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 
 void main() {

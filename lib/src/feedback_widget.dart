@@ -1,12 +1,12 @@
 library feeback;
 
-import 'package:feeback/src/controls_column.dart';
-import 'package:feeback/src/feedback.dart';
-import 'package:feeback/src/feedback_functions.dart';
-import 'package:feeback/src/paint_on_background.dart';
-import 'package:feeback/src/painter.dart';
-import 'package:feeback/src/scale_and_clip.dart';
-import 'package:feeback/src/screenshot.dart';
+import 'package:feedback/src/controls_column.dart';
+import 'package:feedback/src/feedback.dart';
+import 'package:feedback/src/feedback_functions.dart';
+import 'package:feedback/src/paint_on_background.dart';
+import 'package:feedback/src/painter.dart';
+import 'package:feedback/src/scale_and_clip.dart';
+import 'package:feedback/src/screenshot.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 

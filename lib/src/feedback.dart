@@ -1,6 +1,6 @@
-import 'package:feeback/src/feedback_controller.dart';
-import 'package:feeback/src/feedback_functions.dart';
-import 'package:feeback/src/feedback_widget.dart';
+import 'package:feedback/src/feedback_controller.dart';
+import 'package:feedback/src/feedback_functions.dart';
+import 'package:feedback/src/feedback_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 

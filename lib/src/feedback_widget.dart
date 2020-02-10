@@ -112,6 +112,7 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
       animation: _controller,
       builder: (context, child) {
         return Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: Colors.grey,
           body: Stack(
             alignment: Alignment.center,

@@ -111,23 +111,22 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
-        return Scaffold(
-          resizeToAvoidBottomInset: false,
-          backgroundColor: Colors.grey,
-          body: Stack(
+        return Container(
+          color: Colors.grey,
+          child: Stack(
             alignment: Alignment.center,
             children: <Widget>[
               Align(
                 alignment: Alignment.topCenter,
-                child: Screenshot(
-                  controller: screenshotController,
-                  child: ScaleAndClip(
-                    scale: scaleAnimation.value,
-                    alignmentProgress: animation.value,
+                child: ScaleAndClip(
+                  scale: scaleAnimation.value,
+                  alignmentProgress: animation.value,
+                  child: Screenshot(
+                    controller: screenshotController,
                     child: PaintOnBackground(
                       controller: painterController,
                       isPaintingActive:
-                          (!isNavigatingActive && widget.isFeedbackVisible),
+                          !isNavigatingActive && widget.isFeedbackVisible,
                       child: widget.child,
                     ),
                   ),
@@ -158,53 +157,69 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
                   },
                 ),
               ),
-            ],
-          ),
-          bottomSheet: !widget.isFeedbackVisible
-              ? null
-              : Container(
-                  padding: const EdgeInsets.all(30),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      const Text('What\'s wrong?'),
-                      TextField(
-                        maxLines: 2,
-                        minLines: 2,
-                        controller: textEditingController,
-                      ),
-                      Builder(
-                        builder: (innerContext) {
-                          // Through using a Builder we can supply an
-                          // appropriate BuildContext to the callback function.
-                          return FlatButton(
-                            child: const Text('Submit'),
-                            onPressed: () async {
-                              // Take high res screenshot
-                              final screenshot = await screenshotController
-                                  .capture(pixelRatio: 3);
-
-                              // Get feedback text
-                              final feedbackText = textEditingController.text;
-
-                              // Give it to the developer
-                              // to do something with it.
-                              widget.feedback(
-                                innerContext,
-                                feedbackText,
-                                screenshot,
+              if (widget.isFeedbackVisible)
+                Positioned(
+                  left: 0,
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                  right: 0,
+                  child: Material(
+                    child: Container(
+                      padding: const EdgeInsets.all(30),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          const Text('What\'s wrong?'),
+                          TextField(
+                            maxLines: 2,
+                            minLines: 2,
+                            controller: textEditingController,
+                          ),
+                          Builder(
+                            builder: (innerContext) {
+                              // Through using a Builder we can supply an
+                              // appropriate BuildContext to the callback
+                              // function.
+                              return FlatButton(
+                                child: const Text('Submit'),
+                                onPressed: () {
+                                  sendFeedback(innerContext);
+                                },
                               );
                             },
-                          );
-                        },
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
+            ],
+          ),
         );
       },
     );
+  }
+
+  Future<void> sendFeedback(BuildContext context) async {
+    FocusScope.of(context).requestFocus(FocusNode());
+
+    // Wait for the keyboard to be closed, and then proceed
+    // to take a screenshot
+    await Future.delayed(const Duration(milliseconds: 200), () async {
+      // Take high resolution screenshot
+      final screenshot = await screenshotController.capture(pixelRatio: 3);
+
+      // Get feedback text
+      final feedbackText = textEditingController.text;
+
+      // Give it to the developer
+      // to do something with it.
+      widget.feedback(
+        context,
+        feedbackText,
+        screenshot,
+      );
+    });
   }
 }

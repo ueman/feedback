@@ -62,7 +62,7 @@ class _ControlsColumnState extends State<ControlsColumn> {
           ),
           _ColumnDivider(),
           IconButton(
-            icon: Icon(Icons.map),
+            icon: Icon(Icons.navigation),
             onPressed: isNavigatingActive
                 ? null
                 : () {
@@ -128,7 +128,7 @@ class _ColorSelectionIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(isActive ? Icons.check_circle : Icons.check_circle_outline),
+      icon: Icon(isActive ? Icons.lens : Icons.panorama_fish_eye),
       color: color,
       onPressed: onPressed == null
           ? null

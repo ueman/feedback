@@ -27,3 +27,13 @@ void main() {
 
 ## Sample
 ![Example](img/example.png "Example")
+
+## Additional notes
+You can combine this with [device_info](https://pub.dev/packages/device_info) to 
+get additional information about the users environment to better debug his issues. 
+
+## FAQ
+- Why does the content of my Scaffold change (gets repositioned upwards) while I'm
+    writing my feedback?
+    - Probably because Scaffold.[resizeToAvoidBottomInset](https://api.flutter.dev/flutter/material/Scaffold/resizeToAvoidBottomInset.html) 
+      is set to true. You could set it to false while the user provides feedback.

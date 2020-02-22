@@ -14,11 +14,17 @@ class ControlsColumn extends StatefulWidget {
     @required this.onModeChanged,
     @required this.onCloseFeedback,
     @required this.onClearDrawing,
+    @required this.colors,
   })  : assert(onColorChanged != null),
         assert(onUndo != null),
         assert(onModeChanged != null),
         assert(onCloseFeedback != null),
         assert(onClearDrawing != null),
+        assert(
+          // ignore: prefer_is_empty
+          colors != null && colors.length > 0,
+          'There must be at least one color to draw',
+        ),
         super(key: key);
 
   final OnColorChangedCallback onColorChanged;
@@ -26,21 +32,21 @@ class ControlsColumn extends StatefulWidget {
   final IsDrawActiveChangedCallback onModeChanged;
   final VoidCallback onCloseFeedback;
   final VoidCallback onClearDrawing;
+  final List<Color> colors;
 
   @override
   _ControlsColumnState createState() => _ControlsColumnState();
 }
 
-const _colors = [
-  Colors.red,
-  Colors.green,
-  Colors.blue,
-  Colors.yellow,
-];
-
 class _ControlsColumnState extends State<ControlsColumn> {
-  Color activeColor = Colors.red;
+  Color activeColor;
   bool isNavigatingActive = true;
+
+  @override
+  void initState() {
+    super.initState();
+    activeColor = widget.colors[0];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +98,7 @@ class _ControlsColumnState extends State<ControlsColumn> {
             icon: Icon(Icons.delete),
             onPressed: isNavigatingActive ? null : widget.onClearDrawing,
           ),
-          for (final color in _colors)
+          for (final color in widget.colors)
             _ColorSelectionIconButton(
               color: color,
               onPressed: isNavigatingActive

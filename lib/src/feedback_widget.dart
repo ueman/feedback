@@ -1,12 +1,13 @@
 library feeback;
 
+import 'package:feedback/src/better_feedback.dart';
 import 'package:feedback/src/controls_column.dart';
-import 'package:feedback/src/feedback.dart';
 import 'package:feedback/src/feedback_functions.dart';
 import 'package:feedback/src/paint_on_background.dart';
 import 'package:feedback/src/painter.dart';
 import 'package:feedback/src/scale_and_clip.dart';
 import 'package:feedback/src/screenshot.dart';
+import 'package:feedback/src/translation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -16,14 +17,28 @@ class FeedbackWidget extends StatefulWidget {
     @required this.child,
     @required this.feedback,
     @required this.isFeedbackVisible,
+    @required this.translation,
+    this.backgroundColor,
+    this.drawColors,
   })  : assert(child != null),
         assert(feedback != null),
         assert(isFeedbackVisible != null),
+        assert(translation != null),
+        // if the user chooses to supply custom drawing colors,
+        // make sure there is at least on color to draw with
+        assert(
+          // ignore: prefer_is_empty
+          drawColors == null || (drawColors != null && drawColors.length > 0),
+          'There must be at least one color to draw',
+        ),
         super(key: key);
 
   final bool isFeedbackVisible;
   final OnFeedbackCallback feedback;
   final Widget child;
+  final Color backgroundColor;
+  final List<Color> drawColors;
+  final FeedbackTranslation translation;
 
   @override
   _FeedbackWidgetState createState() => _FeedbackWidgetState();
@@ -36,23 +51,32 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
   TextEditingController textEditingController = TextEditingController();
 
   bool isNavigatingActive = true;
-
   AnimationController _controller;
+  List<Color> drawColors;
 
   PainterController create() {
     final PainterController controller = PainterController();
     controller.thickness = 5.0;
-    controller.drawColor = Colors.red;
+    controller.drawColor = drawColors[0];
     return controller;
   }
 
   @override
   void initState() {
     super.initState();
+
+    drawColors = widget.drawColors ??
+        [
+          Colors.red,
+          Colors.green,
+          Colors.blue,
+          Colors.yellow,
+        ];
+
     painterController = create();
 
     _controller = AnimationController(
-      vsync: this, // the SingleTickerProviderStateMixin
+      vsync: this,
       duration: const Duration(milliseconds: 300),
     );
   }
@@ -84,10 +108,11 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
   @override
   Widget build(BuildContext context) {
     assert(
-        widget.child.key is GlobalKey,
-        'The child needs a GlobalKey,'
-        ' so that the app doesn\'t loose its state while switching '
-        'between normal use and feedback view.');
+      widget.child.key is GlobalKey,
+      'The child needs a GlobalKey,'
+      ' so that the app doesn\'t loose its state while switching '
+      'between normal use and feedback view.',
+    );
 
     // Possible optimization:
     // If feedback is invisible just build widget.child
@@ -112,7 +137,7 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
       animation: _controller,
       builder: (context, child) {
         return Container(
-          color: Colors.grey,
+          color: widget.backgroundColor ?? Colors.grey,
           child: Stack(
             alignment: Alignment.center,
             children: <Widget>[
@@ -138,21 +163,27 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
                   -0.7,
                 ),
                 child: ControlsColumn(
+                  colors: drawColors,
                   onColorChanged: (color) {
                     painterController.drawColor = color;
+                    _hideKeyboard(context);
                   },
                   onUndo: () {
                     painterController.undo();
+                    _hideKeyboard(context);
                   },
                   onClearDrawing: () {
                     painterController.clear();
+                    _hideKeyboard(context);
                   },
                   onModeChanged: (isDrawingActive) {
                     setState(() {
                       isNavigatingActive = isDrawingActive;
+                      _hideKeyboard(context);
                     });
                   },
                   onCloseFeedback: () {
+                    _hideKeyboard(context);
                     BetterFeedback.of(context).hide();
                   },
                 ),
@@ -160,6 +191,8 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
               if (widget.isFeedbackVisible)
                 Positioned(
                   left: 0,
+                  // Make sure the input field is always visible,
+                  // especially if the keyboard is shown
                   bottom: MediaQuery.of(context).viewInsets.bottom,
                   right: 0,
                   child: Material(
@@ -170,7 +203,10 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
-                          const Text('What\'s wrong?'),
+                          Text(
+                            widget.translation.feedbackDescriptionText,
+                            maxLines: 2,
+                          ),
                           TextField(
                             maxLines: 2,
                             minLines: 2,
@@ -182,7 +218,9 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
                               // appropriate BuildContext to the callback
                               // function.
                               return FlatButton(
-                                child: const Text('Submit'),
+                                child: Text(
+                                  widget.translation.submitButtonText,
+                                ),
                                 onPressed: () {
                                   sendFeedback(innerContext);
                                 },
@@ -202,7 +240,7 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
   }
 
   Future<void> sendFeedback(BuildContext context) async {
-    FocusScope.of(context).requestFocus(FocusNode());
+    _hideKeyboard(context);
 
     // Wait for the keyboard to be closed, and then proceed
     // to take a screenshot
@@ -221,5 +259,9 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
         screenshot,
       );
     });
+  }
+
+  void _hideKeyboard(BuildContext context) {
+    FocusScope.of(context).requestFocus(FocusNode());
   }
 }

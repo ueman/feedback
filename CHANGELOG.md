@@ -1,3 +1,15 @@
+## [0.2.0] - 22. February 2020
+
+This is the first non-beta version.
+
+### Added
+- Colors are now more customizable
+
+### Changed
+- Usage of the ControlsColumn hides the keyboard,
+  which should result in better usability
+
+
 ## [0.1.0-beta] - 15. February 2020
 ### Fixed
 - Screenshots are taken correctly without any transparent border

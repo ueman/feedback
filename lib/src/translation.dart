@@ -1,16 +1,20 @@
-abstract class Translation {
+abstract class FeedbackTranslation {
   String submitButtonText;
-  String helpText;
-  String feedbackPlaceholderText;
+  String feedbackDescriptionText;
 }
 
-class EnTranslation extends Translation {
+class EnTranslation extends FeedbackTranslation {
   @override
   String get submitButtonText => 'Submit';
 
   @override
-  String get helpText => 'TODO';
+  String get feedbackDescriptionText => 'What\'s wrong?';
+}
+
+class DeTranslation extends FeedbackTranslation {
+  @override
+  String get submitButtonText => 'Abschicken';
 
   @override
-  String get feedbackPlaceholderText => 'What\'s wrong?';
+  String get feedbackDescriptionText => 'Was können wir besser machen?';
 }

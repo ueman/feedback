@@ -1,6 +1,7 @@
 import 'package:feedback/src/feedback_controller.dart';
 import 'package:feedback/src/feedback_functions.dart';
 import 'package:feedback/src/feedback_widget.dart';
+import 'package:feedback/src/translation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -10,14 +11,26 @@ class BetterFeedback extends StatefulWidget {
     Key key,
     this.child,
     @required this.onFeedback,
+    this.backgroundColor,
+    this.drawColors,
+    this.translation,
   })  : assert(onFeedback != null),
         super(key: key);
 
-  /// Gets called when the user submits his feedback
+  /// Gets called when the user submits his feedback.
   final OnFeedbackCallback onFeedback;
 
-  /// The application to wrap
+  /// The application to wrap, typically a [MaterialApp].
   final Widget child;
+
+  /// The background of the feedback view.
+  final Color backgroundColor;
+
+  /// Colors which can be used to draw on [child].
+  final List<Color> drawColors;
+
+  /// Optional translation for the feedback view
+  final FeedbackTranslation translation;
 
   /// Call `BetterFeedback.of(context)` to get an instance of
   /// [FeedbackData] on which you can call `.show()` or `.hide()`
@@ -51,10 +64,12 @@ class _BetterFeedbackState extends State<BetterFeedback> {
       home: FeedbackData(
         controller: controller,
         child: FeedbackWidget(
-          child: widget.child,
-          isFeedbackVisible: controller.isVisible,
-          feedback: widget.onFeedback,
-        ),
+            child: widget.child,
+            isFeedbackVisible: controller.isVisible,
+            feedback: widget.onFeedback,
+            backgroundColor: widget.backgroundColor,
+            drawColors: widget.drawColors,
+            translation: widget.translation ?? EnTranslation()),
       ),
     );
   }
@@ -85,4 +100,6 @@ class FeedbackData extends InheritedWidget {
 
   /// Hides the feedback view
   void hide() => controller.hide();
+
+  bool get isVisible => controller.isVisible;
 }

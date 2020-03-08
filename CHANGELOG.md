@@ -1,3 +1,9 @@
+## [0.2.1] - 08. March 2020
+
+### Changed
+- Text instead of Icons for drawing and navigating
+- round stroke caps for drawn paths
+
 ## [0.2.0] - 22. February 2020
 
 This is the first non-beta version.

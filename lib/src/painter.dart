@@ -147,7 +147,8 @@ class PainterController extends ChangeNotifier {
     final Paint paint = Paint()
       ..color = drawColor
       ..style = PaintingStyle.stroke
-      ..strokeWidth = thickness;
+      ..strokeWidth = thickness
+      ..strokeCap = StrokeCap.round;
     _pathHistory.currentPaint = paint;
     notifyListeners();
   }

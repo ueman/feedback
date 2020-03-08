@@ -163,6 +163,7 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
                   -0.7,
                 ),
                 child: ControlsColumn(
+                  translation: widget.translation,
                   colors: drawColors,
                   onColorChanged: (color) {
                     painterController.drawColor = color;

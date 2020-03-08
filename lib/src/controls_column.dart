@@ -1,3 +1,5 @@
+import 'package:feedback/feedback.dart';
+import 'package:feedback/src/icon_button.dart';
 import 'package:flutter/material.dart';
 
 /// The parameter describes wether drawing is active (true)
@@ -15,11 +17,13 @@ class ControlsColumn extends StatefulWidget {
     @required this.onCloseFeedback,
     @required this.onClearDrawing,
     @required this.colors,
+    @required this.translation,
   })  : assert(onColorChanged != null),
         assert(onUndo != null),
         assert(onModeChanged != null),
         assert(onCloseFeedback != null),
         assert(onClearDrawing != null),
+        assert(translation != null),
         assert(
           // ignore: prefer_is_empty
           colors != null && colors.length > 0,
@@ -33,6 +37,7 @@ class ControlsColumn extends StatefulWidget {
   final VoidCallback onCloseFeedback;
   final VoidCallback onClearDrawing;
   final List<Color> colors;
+  final FeedbackTranslation translation;
 
   @override
   _ControlsColumnState createState() => _ControlsColumnState();
@@ -53,7 +58,7 @@ class _ControlsColumnState extends State<ControlsColumn> {
     return Card(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
-          Radius.circular(20),
+          Radius.circular(24),
         ),
       ),
       clipBehavior: Clip.antiAlias,
@@ -62,39 +67,47 @@ class _ControlsColumnState extends State<ControlsColumn> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          IconButton(
+          FeedbackIconButton(
+            minButtonSize: 48,
             icon: Icon(Icons.close),
             onPressed: widget.onCloseFeedback,
           ),
           _ColumnDivider(),
-          IconButton(
-            icon: Icon(Icons.navigation),
-            onPressed: isNavigatingActive
-                ? null
-                : () {
-                    setState(() {
-                      isNavigatingActive = true;
-                    });
-                    widget.onModeChanged(isNavigatingActive);
-                  },
+          RotatedBox(
+            quarterTurns: 1,
+            child: MaterialButton(
+              child: Text(widget.translation.navigate),
+              onPressed: isNavigatingActive
+                  ? null
+                  : () {
+                      setState(() {
+                        isNavigatingActive = true;
+                      });
+                      widget.onModeChanged(isNavigatingActive);
+                    },
+            ),
           ),
           _ColumnDivider(),
-          IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: isNavigatingActive
-                ? () {
-                    setState(() {
-                      isNavigatingActive = false;
-                    });
-                    widget.onModeChanged(isNavigatingActive);
-                  }
-                : null,
+          RotatedBox(
+            quarterTurns: 1,
+            child: MaterialButton(
+              minWidth: 20,
+              child: Text(widget.translation.draw),
+              onPressed: isNavigatingActive
+                  ? () {
+                      setState(() {
+                        isNavigatingActive = false;
+                      });
+                      widget.onModeChanged(isNavigatingActive);
+                    }
+                  : null,
+            ),
           ),
-          IconButton(
+          FeedbackIconButton(
             icon: Icon(Icons.undo),
             onPressed: isNavigatingActive ? null : widget.onUndo,
           ),
-          IconButton(
+          FeedbackIconButton(
             icon: Icon(Icons.delete),
             onPressed: isNavigatingActive ? null : widget.onClearDrawing,
           ),
@@ -133,14 +146,10 @@ class _ColorSelectionIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
+    return FeedbackIconButton(
       icon: Icon(isActive ? Icons.lens : Icons.panorama_fish_eye),
       color: color,
-      onPressed: onPressed == null
-          ? null
-          : () {
-              onPressed(color);
-            },
+      onPressed: onPressed == null ? null : () => onPressed(color),
     );
   }
 }

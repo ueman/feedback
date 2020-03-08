@@ -26,7 +26,7 @@ void main() {
 }
 ```
 
-## Sample (as of 0.1.0-beta)
+## Sample
 ![Example](img/example_0.1.0-beta.gif "Example")
 
 ## Additional notes
@@ -38,4 +38,9 @@ get additional information about the users environment to better debug his issue
     writing my feedback?
     - Probably because Scaffold.[resizeToAvoidBottomInset](https://api.flutter.dev/flutter/material/Scaffold/resizeToAvoidBottomInset.html) 
       is set to true. You could set it to false while the user provides feedback.
-      
+
+## Known Issues
+- Some draggable things like ReorderableListView look strange while dragging.
+
+
+Let me know if you are using this in your app, I would love to see it.

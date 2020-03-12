@@ -11,6 +11,7 @@ the user submits his feedback. To show the feedback view just
 call `BetterFeedback.of(context).show();`
 
 ```dart
+import 'dart:typed_data';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +21,13 @@ void main() {
       child: MyApp(
         key: GlobalKey(),
       ),
-      onFeedback: alertFeedbackFunction,
+      onFeedback: (
+        BuildContext context,
+        String feedbackText, // the feedback from the user
+        Uint8List feedbackScreenshot, // raw png image data
+      ) {
+        // TODO: upload to server or let the user share his feedback 
+      },
     ),
   );
 }

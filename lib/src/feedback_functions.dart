@@ -2,12 +2,18 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
+/// Function which gets called when the user submits his feedback.
+/// [context] is a [BuildContext] with a [MaterialApp] ancestor.
+/// [feedback] is the user generated feedback text.
+/// [feedbackScreenshot] is a raw png-image.
 typedef OnFeedbackCallback = void Function(
   BuildContext context,
-  String,
-  Uint8List,
+  String feedback,
+  Uint8List feedbackScreenshot,
 );
 
+/// Prints the given feedback to the console.
+/// This is useful for debugging purposes.
 void consoleFeedbackFunction(
   BuildContext context,
   String feedbackText,
@@ -18,8 +24,8 @@ void consoleFeedbackFunction(
   print('Size of image: ${feedbackScreenshot.length}');
 }
 
-/// Shows an AlertDialog with the given feedback.
-/// Does not work yet.
+/// Shows an [AlertDialog] with the given feedback.
+/// This is useful for debugging purposes.
 void alertFeedbackFunction(
   BuildContext context,
   String feedbackText,

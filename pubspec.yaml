@@ -4,6 +4,7 @@ version: 0.2.1
 author: Jonas Uekötter
 homepage: https://uekoetter.dev
 repository: https://github.com/ueman/feedback
+issue_tracker: https://github.com/ueman/feedback/issues
 
 environment:
   sdk: '>=2.2.2 <3.0.0'

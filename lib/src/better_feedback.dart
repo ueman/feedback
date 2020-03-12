@@ -29,7 +29,7 @@ class BetterFeedback extends StatefulWidget {
   /// Colors which can be used to draw on [child].
   final List<Color> drawColors;
 
-  /// Optional translation for the feedback view
+  /// Optional translation for the feedback view, defaults to english.
   final FeedbackTranslation translation;
 
   /// Call `BetterFeedback.of(context)` to get an instance of
@@ -64,12 +64,13 @@ class _BetterFeedbackState extends State<BetterFeedback> {
       home: FeedbackData(
         controller: controller,
         child: FeedbackWidget(
-            child: widget.child,
-            isFeedbackVisible: controller.isVisible,
-            feedback: widget.onFeedback,
-            backgroundColor: widget.backgroundColor,
-            drawColors: widget.drawColors,
-            translation: widget.translation ?? EnTranslation()),
+          child: widget.child,
+          isFeedbackVisible: controller.isVisible,
+          feedback: widget.onFeedback,
+          backgroundColor: widget.backgroundColor,
+          drawColors: widget.drawColors,
+          translation: widget.translation ?? EnTranslation(),
+        ),
       ),
     );
   }

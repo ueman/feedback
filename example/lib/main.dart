@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 
@@ -7,7 +9,13 @@ void main() {
       child: MyApp(
         key: GlobalKey(debugLabel: 'app_key'),
       ),
-      onFeedback: alertFeedbackFunction,
+      onFeedback: (
+        BuildContext context,
+        String feedbackText,
+        Uint8List feedbackScreenshot,
+      ) {
+        // upload to server, share whatever
+      },
     ),
   );
 }

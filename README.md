@@ -46,8 +46,9 @@ get additional information about the users environment to better debug his issue
     - Probably because Scaffold.[resizeToAvoidBottomInset](https://api.flutter.dev/flutter/material/Scaffold/resizeToAvoidBottomInset.html) 
       is set to true. You could set it to false while the user provides feedback.
 
-## Known Issues
+## Known Issues and limitations
 - Some draggable things like ReorderableListView look strange while dragging.
+- Platform views are invisible in screenshots (like [webview](https://pub.dev/packages/webview_flutter) or [Google Maps](https://pub.dev/packages/google_maps_flutter))
 
 
 Let me know if you are using this in your app, I would love to see it.

@@ -1,3 +1,7 @@
+## [0.2.1+1] - 06. April 2020
+
+- better readme
+
 ## [0.2.1] - 08. March 2020
 
 ### Changed

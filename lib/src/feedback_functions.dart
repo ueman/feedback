@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 /// Function which gets called when the user submits his feedback.
 /// [context] is a [BuildContext] with a [MaterialApp] ancestor.
 /// [feedback] is the user generated feedback text.
-/// [feedbackScreenshot] is a raw png-image.
+/// [feedbackScreenshot] is a raw png encoded image.
 typedef OnFeedbackCallback = void Function(
   BuildContext context,
   String feedback,

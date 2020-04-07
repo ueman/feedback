@@ -9,7 +9,6 @@ import 'package:feedback/src/scale_and_clip.dart';
 import 'package:feedback/src/screenshot.dart';
 import 'package:feedback/src/translation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class FeedbackWidget extends StatefulWidget {
   const FeedbackWidget({
@@ -163,10 +162,16 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
                   -0.7,
                 ),
                 child: ControlsColumn(
+                  mode: isNavigatingActive
+                      ? ControlMode.navigate
+                      : ControlMode.draw,
+                  activeColor: painterController.drawColor,
                   translation: widget.translation,
                   colors: drawColors,
                   onColorChanged: (color) {
-                    painterController.drawColor = color;
+                    setState(() {
+                      painterController.drawColor = color;
+                    });
                     _hideKeyboard(context);
                   },
                   onUndo: () {
@@ -177,9 +182,9 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
                     painterController.clear();
                     _hideKeyboard(context);
                   },
-                  onModeChanged: (isDrawingActive) {
+                  onControlModeChanged: (mode) {
                     setState(() {
-                      isNavigatingActive = isDrawingActive;
+                      isNavigatingActive = mode == ControlMode.navigate;
                       _hideKeyboard(context);
                     });
                   },

@@ -2,59 +2,51 @@ import 'package:feedback/feedback.dart';
 import 'package:feedback/src/icon_button.dart';
 import 'package:flutter/material.dart';
 
-/// The parameter describes wether drawing is active (true)
-/// or inactive (false).
-typedef IsDrawActiveChangedCallback = void Function(bool);
+enum ControlMode {
+  draw,
+  navigate,
+}
 
-typedef OnColorChangedCallback = void Function(Color);
-
-class ControlsColumn extends StatefulWidget {
-  const ControlsColumn({
+/// This is the Widget on the right side of the app when the feedback view
+/// is active.
+class ControlsColumn extends StatelessWidget {
+  ControlsColumn({
     Key key,
+    @required this.mode,
+    @required this.activeColor,
     @required this.onColorChanged,
     @required this.onUndo,
-    @required this.onModeChanged,
+    @required this.onControlModeChanged,
     @required this.onCloseFeedback,
     @required this.onClearDrawing,
     @required this.colors,
     @required this.translation,
   })  : assert(onColorChanged != null),
         assert(onUndo != null),
-        assert(onModeChanged != null),
+        assert(onControlModeChanged != null),
         assert(onCloseFeedback != null),
         assert(onClearDrawing != null),
         assert(translation != null),
         assert(
-          // ignore: prefer_is_empty
-          colors != null && colors.length > 0,
-          'There must be at least one color to draw',
+          colors.isNotEmpty,
+          'There must be at least one color to draw in colors',
         ),
+        assert(colors.contains(activeColor), 'colors must contain activeColor'),
         super(key: key);
 
-  final OnColorChangedCallback onColorChanged;
+  final ValueChanged<Color> onColorChanged;
   final VoidCallback onUndo;
-  final IsDrawActiveChangedCallback onModeChanged;
+  final ValueChanged<ControlMode> onControlModeChanged;
   final VoidCallback onCloseFeedback;
   final VoidCallback onClearDrawing;
   final List<Color> colors;
+  final Color activeColor;
   final FeedbackTranslation translation;
-
-  @override
-  _ControlsColumnState createState() => _ControlsColumnState();
-}
-
-class _ControlsColumnState extends State<ControlsColumn> {
-  Color activeColor;
-  bool isNavigatingActive = true;
-
-  @override
-  void initState() {
-    super.initState();
-    activeColor = widget.colors[0];
-  }
+  final ControlMode mode;
 
   @override
   Widget build(BuildContext context) {
+    final isNavigatingActive = ControlMode.navigate == mode;
     return Card(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
@@ -68,22 +60,21 @@ class _ControlsColumnState extends State<ControlsColumn> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           FeedbackIconButton(
+            key: const Key('close_controls_column'),
             minButtonSize: 48,
             icon: Icon(Icons.close),
-            onPressed: widget.onCloseFeedback,
+            onPressed: onCloseFeedback,
           ),
           _ColumnDivider(),
           RotatedBox(
             quarterTurns: 1,
             child: MaterialButton(
-              child: Text(widget.translation.navigate),
+              key: const Key('navigate_button'),
+              child: Text(translation.navigate),
               onPressed: isNavigatingActive
                   ? null
                   : () {
-                      setState(() {
-                        isNavigatingActive = true;
-                      });
-                      widget.onModeChanged(isNavigatingActive);
+                      onControlModeChanged(ControlMode.navigate);
                     },
             ),
           ),
@@ -91,36 +82,34 @@ class _ControlsColumnState extends State<ControlsColumn> {
           RotatedBox(
             quarterTurns: 1,
             child: MaterialButton(
+              key: const Key('draw_button'),
               minWidth: 20,
-              child: Text(widget.translation.draw),
+              child: Text(translation.draw),
               onPressed: isNavigatingActive
                   ? () {
-                      setState(() {
-                        isNavigatingActive = false;
-                      });
-                      widget.onModeChanged(isNavigatingActive);
+                      onControlModeChanged(ControlMode.draw);
                     }
                   : null,
             ),
           ),
           FeedbackIconButton(
+            key: const Key('undo_button'),
             icon: Icon(Icons.undo),
-            onPressed: isNavigatingActive ? null : widget.onUndo,
+            onPressed: isNavigatingActive ? null : onUndo,
           ),
           FeedbackIconButton(
+            key: const Key('clear_button'),
             icon: Icon(Icons.delete),
-            onPressed: isNavigatingActive ? null : widget.onClearDrawing,
+            onPressed: isNavigatingActive ? null : onClearDrawing,
           ),
-          for (final color in widget.colors)
+          for (final color in colors)
             _ColorSelectionIconButton(
+              key: ValueKey<Color>(color),
               color: color,
               onPressed: isNavigatingActive
                   ? null
                   : (col) {
-                      setState(() {
-                        activeColor = col;
-                      });
-                      widget.onColorChanged(col);
+                      onColorChanged(col);
                     },
               isActive: activeColor == color,
             ),
@@ -129,8 +118,6 @@ class _ControlsColumnState extends State<ControlsColumn> {
     );
   }
 }
-
-typedef OnColorPressed = Function(Color);
 
 class _ColorSelectionIconButton extends StatelessWidget {
   const _ColorSelectionIconButton({
@@ -141,7 +128,7 @@ class _ColorSelectionIconButton extends StatelessWidget {
   }) : super(key: key);
 
   final Color color;
-  final OnColorPressed onPressed;
+  final ValueChanged<Color> onPressed;
   final bool isActive;
 
   @override

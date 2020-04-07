@@ -1,0 +1,55 @@
+name: flutter
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+    tags:
+      - "*.*"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: master
+      - run: flutter format .
+      - name: "Check that there are no changes after formatting"
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo Working directory not clean after formatting. Please apply the
+            echo following changes:
+            git diff
+            false
+          fi
+      - run: flutter analyze
+      - run: flutter test --coverage
+      - uses: codecov/codecov-action@v1.0.6
+
+  build:
+    needs: check
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macOS-latest, ubuntu-latest, windows-latest]
+        flutter_channel: [beta, stable]
+        include:
+          - os: macOS-latest
+            flutter_build: ios --no-codesign
+          - os: ubuntu-latest
+            flutter_build: apk
+          - os: windows-latest
+            flutter_build: apk
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: ${{ matrix.flutter_channel }}
+      - working-directory: example
+        run: flutter build ${{ matrix.flutter_build }} --debug

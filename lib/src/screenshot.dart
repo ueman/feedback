@@ -19,12 +19,16 @@ class ScreenshotController {
   }) {
     //Delay is required. See Issue https://github.com/flutter/flutter/issues/22308
     return Future.delayed(delay, () async {
-      final RenderRepaintBoundary boundary =
-          _containerKey.currentContext.findRenderObject();
-      final ui.Image image = await boundary.toImage(pixelRatio: pixelRatio);
-      final ByteData byteData =
-          await image.toByteData(format: ui.ImageByteFormat.png);
-      return byteData.buffer.asUint8List();
+      final renderObject = _containerKey.currentContext.findRenderObject();
+      if (renderObject is RenderRepaintBoundary) {
+        final ui.Image image =
+            await renderObject.toImage(pixelRatio: pixelRatio);
+        final ByteData byteData =
+            await image.toByteData(format: ui.ImageByteFormat.png);
+        return byteData.buffer.asUint8List();
+      } else {
+        throw Exception('_containerKey is not a RepaintBoundary');
+      }
     });
   }
 }

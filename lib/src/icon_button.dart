@@ -4,8 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class FeedbackIconButton extends StatelessWidget {
-  final double minButtonSize;
-
   const FeedbackIconButton({
     Key key,
     this.iconSize = 24.0,
@@ -30,6 +28,8 @@ class FeedbackIconButton extends StatelessWidget {
         assert(autofocus != null),
         assert(icon != null),
         super(key: key);
+
+  final double minButtonSize;
 
   /// The size of the icon inside the button.
   ///

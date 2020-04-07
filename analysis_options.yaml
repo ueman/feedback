@@ -1,43 +1,14 @@
-# Kopiert von https://raw.githubusercontent.com/flutter/flutter/master/analysis_options.yaml
-#
-#
-# Specify analysis options.
-#
-# Until there are meta linter rules, each desired lint must be explicitly enabled.
-# See: https://github.com/dart-lang/linter/issues/288
-#
-# For a list of lints, see: http://dart-lang.github.io/linter/lints/
-# See the configuration guide for more
-# https://github.com/dart-lang/sdk/tree/master/pkg/analyzer#configuring-the-analyzer
-#
-# There are other similar analysis options files in the flutter repos,
-# which should be kept in sync with this file:
-#
-#   - analysis_options.yaml (this file)
-#   - packages/flutter/lib/analysis_options_user.yaml
-#   - https://github.com/flutter/plugins/blob/master/analysis_options.yaml
-#   - https://github.com/flutter/engine/blob/master/analysis_options.yaml
-#
-# This file contains the analysis options used by Flutter tools, such as IntelliJ,
-# Android Studio, and the `flutter analyze` command.
-
 analyzer:
   strong-mode:
+    implicit-casts: false
     implicit-dynamic: false
   errors:
     missing_required_param: error
     missing_return: error
-    # allow having TODOs in the code
     todo: ignore
-    # Ignore analyzer hints for updating pubspecs when using Future or
-    # Stream and not importing dart:async
-    # Please see https://github.com/flutter/flutter/pull/24528 for details.
     sdk_version_async_exported_from_core: ignore
   exclude:
-    - lib/home/preview/hero_route.dart
-    - lib/liveticker/live_ticker_event.g.dart # autogenerierte Datei
-    - lib/ads/ad.g.dart # autogenerierte Datei
-    - lib/youtube/youtube_parser.dart # autogenerierte Datei
+    - lib/src/icon_button.dart
 
 linter:
   rules:

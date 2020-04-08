@@ -21,7 +21,8 @@ void main() {
       await tester.pumpWidget(widget);
 
       // feedback is closed
-      var userInputFields = find.byKey(const Key('feedback_user_input_fields'));
+      final userInputFields =
+          find.byKey(const Key('feedback_user_input_fields'));
 
       expect(userInputFields, findsNothing);
 

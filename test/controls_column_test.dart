@@ -60,6 +60,21 @@ void main() {
       expect(mode, ControlMode.draw);
     });
 
+    testWidgets(' change drawing to navigating', (tester) async {
+      var mode = ControlMode.draw;
+
+      await tester.pumpWidget(create(
+          mode: mode,
+          onControlModeChanged: (newMode) {
+            mode = newMode;
+          }));
+
+      final navigateButton = find.byKey(const Key('navigate_button'));
+      await tester.tap(navigateButton);
+
+      expect(mode, ControlMode.navigate);
+    });
+
     testWidgets(' drawing is inactive while navigating', (tester) async {
       var drawingCallbackWasCalled = false;
       final colors = [Colors.red, Colors.green, Colors.blue, Colors.yellow];
@@ -89,6 +104,24 @@ void main() {
       }
 
       expect(drawingCallbackWasCalled, false);
+    });
+
+    testWidgets(' change color', (tester) async {
+      Color color;
+      final colors = [Colors.red, Colors.green, Colors.blue, Colors.yellow];
+
+      await tester.pumpWidget(create(
+          mode: ControlMode.draw,
+          colors: colors,
+          activeColor: colors[0],
+          onColorChanged: (newColor) {
+            color = newColor;
+          }));
+
+      final greenColorButton = find.byKey(ValueKey<Color>(colors[1]));
+      await tester.tap(greenColorButton);
+
+      expect(color, colors[1]);
     });
   });
 }

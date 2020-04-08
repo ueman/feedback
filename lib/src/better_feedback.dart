@@ -9,12 +9,13 @@ import 'package:flutter/widgets.dart';
 class BetterFeedback extends StatefulWidget {
   const BetterFeedback({
     Key key,
-    this.child,
+    @required this.child,
     @required this.onFeedback,
     this.backgroundColor,
     this.drawColors,
     this.translation,
-  })  : assert(onFeedback != null),
+  })  : assert(child != null),
+        assert(onFeedback != null),
         super(key: key);
 
   /// Gets called when the user submits his feedback.

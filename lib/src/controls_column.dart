@@ -1,5 +1,5 @@
-import 'package:feedback/feedback.dart';
 import 'package:feedback/src/icon_button.dart';
+import 'package:feedback/src/translation.dart';
 import 'package:flutter/material.dart';
 
 enum ControlMode {

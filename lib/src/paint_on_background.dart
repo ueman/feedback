@@ -1,5 +1,4 @@
 import 'package:feedback/src/painter.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PaintOnBackground extends StatelessWidget {

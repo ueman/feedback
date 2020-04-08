@@ -3,7 +3,6 @@ import 'package:feedback/src/feedback_functions.dart';
 import 'package:feedback/src/feedback_widget.dart';
 import 'package:feedback/src/translation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 /// This widget should be at the top of your widget tree.
 class BetterFeedback extends StatefulWidget {

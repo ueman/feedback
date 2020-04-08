@@ -104,13 +104,6 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
 
   @override
   Widget build(BuildContext context) {
-    assert(
-      widget.child.key is GlobalKey,
-      'The child needs a GlobalKey,'
-      ' so that the app doesn\'t loose its state while switching '
-      'between normal use and feedback view.',
-    );
-
     // Possible optimization:
     // If feedback is invisible just build widget.child
     // without the whole feedback foo.

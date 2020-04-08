@@ -6,9 +6,7 @@ import 'package:flutter/material.dart';
 void main() {
   runApp(
     BetterFeedback(
-      child: MyApp(
-        key: GlobalKey(debugLabel: 'app_key'),
-      ),
+      child: const MyApp(),
       onFeedback: (
         BuildContext context,
         String feedbackText,

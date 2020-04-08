@@ -45,9 +45,7 @@ import 'package:flutter/material.dart';
 void main() {
   runApp(
     BetterFeedback(
-      child: MyApp(
-        key: GlobalKey(),
-      ),
+      child: const MyApp(),
       onFeedback: (
         BuildContext context,
         String feedbackText, // the feedback from the user
@@ -82,7 +80,7 @@ void main() {
       // You can pass any subclass of [FeedbackTranslation] to change the 
       // the text.
       translation: DeTranslation(),
-      child: MyApp(key: GlobalKey()),
+      child: MyApp(),
       onFeedback: alertFeedbackFunction,
     ),
   );

@@ -1,3 +1,7 @@
+[![pub package](https://img.shields.io/pub/v/feedback.svg)](https://pub.dev/packages/feedback)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/ueman/feedback/flutter/master)
+[![code coverage](https://codecov.io/gh/ueman/feedback/branch/master/graph/badge.svg)](https://codecov.io/gh/ueman/feedback)
+
 # Feedback
 
 A Flutter package for getting better feedback. It allows the user to give interactive feedback directly in the app.

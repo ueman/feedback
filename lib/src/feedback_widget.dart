@@ -216,6 +216,7 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
                               // appropriate BuildContext to the callback
                               // function.
                               return FlatButton(
+                                key: const Key('submit_feedback_button'),
                                 child: Text(
                                   widget.translation.submitButtonText,
                                 ),

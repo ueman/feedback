@@ -1,5 +1,3 @@
-library feeback;
-
 import 'package:feedback/src/better_feedback.dart';
 import 'package:feedback/src/controls_column.dart';
 import 'package:feedback/src/feedback_functions.dart';

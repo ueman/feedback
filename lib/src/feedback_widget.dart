@@ -187,6 +187,7 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
               ),
               if (widget.isFeedbackVisible)
                 Positioned(
+                  key: const Key('feedback_user_input_fields'),
                   left: 0,
                   // Make sure the input field is always visible,
                   // especially if the keyboard is shown

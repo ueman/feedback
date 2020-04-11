@@ -1,5 +1,6 @@
 # Feedback
 
+[![Pub](https://img.shields.io/pub/v/feedback.svg)](https://pub.dartlang.org/packages/feedback)
 ![GitHub Workflow Status](https://github.com/ueman/feedback/workflows/flutter/badge.svg?branch=master)
 [![code coverage](https://codecov.io/gh/ueman/feedback/branch/master/graph/badge.svg)](https://codecov.io/gh/ueman/feedback)
 

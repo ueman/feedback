@@ -1,8 +1,8 @@
 import 'package:feedback/src/painter.dart';
 import 'package:flutter/material.dart';
 
-class PaintOnBackground extends StatelessWidget {
-  const PaintOnBackground({
+class PaintOnChild extends StatelessWidget {
+  const PaintOnChild({
     Key key,
     @required this.child,
     @required this.isPaintingActive,

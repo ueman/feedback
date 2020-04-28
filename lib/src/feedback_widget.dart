@@ -8,17 +8,21 @@ import 'package:feedback/src/screenshot.dart';
 import 'package:feedback/src/translation.dart';
 import 'package:flutter/material.dart';
 
+typedef FeedbackButtonPress = void Function(BuildContext context);
+
+
+
 class FeedbackWidget extends StatefulWidget {
   const FeedbackWidget({
     Key key,
     @required this.child,
-    @required this.feedback,
+    @required this.onFeedbackSubmitted,
     @required this.isFeedbackVisible,
     @required this.translation,
     this.backgroundColor,
     this.drawColors,
   })  : assert(child != null),
-        assert(feedback != null),
+        assert(onFeedbackSubmitted != null),
         assert(isFeedbackVisible != null),
         assert(translation != null),
         // if the user chooses to supply custom drawing colors,
@@ -31,7 +35,7 @@ class FeedbackWidget extends StatefulWidget {
         super(key: key);
 
   final bool isFeedbackVisible;
-  final OnFeedbackCallback feedback;
+  final OnFeedbackCallback onFeedbackSubmitted;
   final Widget child;
   final Color backgroundColor;
   final List<Color> drawColors;
@@ -138,7 +142,7 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
                   alignmentProgress: animation.value,
                   child: Screenshot(
                     controller: screenshotController,
-                    child: PaintOnBackground(
+                    child: PaintOnChild(
                       controller: painterController,
                       isPaintingActive:
                           !isNavigatingActive && widget.isFeedbackVisible,
@@ -221,7 +225,7 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
                                   widget.translation.submitButtonText,
                                 ),
                                 onPressed: () {
-                                  sendFeedback(innerContext);
+                                  _sendFeedback(innerContext);
                                 },
                               );
                             },
@@ -238,7 +242,7 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
     );
   }
 
-  Future<void> sendFeedback(BuildContext context) async {
+  Future<void> _sendFeedback(BuildContext context) async {
     _hideKeyboard(context);
 
     // Wait for the keyboard to be closed, and then proceed
@@ -252,7 +256,7 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
 
       // Give it to the developer
       // to do something with it.
-      widget.feedback(
+      widget.onFeedbackSubmitted(
         context,
         feedbackText,
         screenshot,

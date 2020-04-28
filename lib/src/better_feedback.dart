@@ -66,7 +66,7 @@ class _BetterFeedbackState extends State<BetterFeedback> {
         child: FeedbackWidget(
           child: widget.child,
           isFeedbackVisible: controller.isVisible,
-          feedback: widget.onFeedback,
+          onFeedbackSubmitted: widget.onFeedback,
           backgroundColor: widget.backgroundColor,
           drawColors: widget.drawColors,
           translation: widget.translation ?? EnTranslation(),

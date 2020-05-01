@@ -1,7 +1,7 @@
 # Feedback
 
 [![Pub](https://img.shields.io/pub/v/feedback.svg)](https://pub.dartlang.org/packages/feedback)
-![GitHub Workflow Status](https://github.com/ueman/feedback/workflows/flutter/badge.svg?branch=master)
+[![GitHub Workflow Status](https://github.com/ueman/feedback/workflows/flutter/badge.svg?branch=master)](https://github.com/ueman/feedback/actions?query=workflow%3Aflutter)
 [![code coverage](https://codecov.io/gh/ueman/feedback/branch/master/graph/badge.svg)](https://codecov.io/gh/ueman/feedback)
 
 A Flutter package for getting better feedback. It allows the user to give interactive feedback directly in the app.
@@ -25,7 +25,7 @@ First, you will need to add `feedback` to your `pubspec.yaml`:
 dependencies:
   flutter:
     sdk: flutter
-  feedback: 0.2.1 # use the latest version found on pub.dev
+  feedback: 0.3.0 # use the latest version found on pub.dev
 ```
 
 Then, run `flutter packages get` in your terminal.

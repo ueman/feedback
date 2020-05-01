@@ -40,10 +40,11 @@ class FeedbackWidget extends StatefulWidget {
   final FeedbackTranslation translation;
 
   @override
-  _FeedbackWidgetState createState() => _FeedbackWidgetState();
+  FeedbackWidgetState createState() => FeedbackWidgetState();
 }
 
-class _FeedbackWidgetState extends State<FeedbackWidget>
+@visibleForTesting
+class FeedbackWidgetState extends State<FeedbackWidget>
     with SingleTickerProviderStateMixin {
   PainterController painterController;
   ScreenshotController screenshotController = ScreenshotController();
@@ -223,7 +224,12 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
                                   widget.translation.submitButtonText,
                                 ),
                                 onPressed: () {
-                                  _sendFeedback(innerContext);
+                                  sendFeedback(
+                                    innerContext,
+                                    widget.onFeedbackSubmitted,
+                                    screenshotController,
+                                    textEditingController,
+                                  );
                                 },
                               );
                             },
@@ -240,21 +246,34 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
     );
   }
 
-  Future<void> _sendFeedback(BuildContext context) async {
-    _hideKeyboard(context);
+  @visibleForTesting
+  static Future<void> sendFeedback(
+    BuildContext context,
+    OnFeedbackCallback onFeedbackSubmitted,
+    ScreenshotController controller,
+    TextEditingController textEditingController, {
+    Duration delay = const Duration(milliseconds: 200),
+    bool showKeyboard = true,
+  }) async {
+    if (!showKeyboard) {
+      _hideKeyboard(context);
+    }
 
     // Wait for the keyboard to be closed, and then proceed
     // to take a screenshot
-    await Future.delayed(const Duration(milliseconds: 200), () async {
+    await Future.delayed(delay, () async {
       // Take high resolution screenshot
-      final screenshot = await screenshotController.capture(pixelRatio: 3);
+      final screenshot = await controller.capture(
+        pixelRatio: 3,
+        delay: const Duration(milliseconds: 0),
+      );
 
       // Get feedback text
       final feedbackText = textEditingController.text;
 
       // Give it to the developer
       // to do something with it.
-      widget.onFeedbackSubmitted(
+      onFeedbackSubmitted(
         context,
         feedbackText,
         screenshot,
@@ -262,7 +281,7 @@ class _FeedbackWidgetState extends State<FeedbackWidget>
     });
   }
 
-  void _hideKeyboard(BuildContext context) {
+  static void _hideKeyboard(BuildContext context) {
     FocusScope.of(context).requestFocus(FocusNode());
   }
 }

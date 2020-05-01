@@ -10,6 +10,7 @@ on:
 
 jobs:
   check:
+    # the golden images were generated on MacOS, therefore the tests must run on MacOS
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2

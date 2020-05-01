@@ -1,6 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:feedback/feedback.dart';
+import 'package:feedback/src/feedback_widget.dart';
+import 'package:feedback/src/screenshot.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -103,4 +105,40 @@ void main() {
       expect(feedbackCallbackWasCalled, true);
     }, skip: true);
   });
+
+  test(' feedback sendFeedback', () async {
+    var callbackWasCalled = false;
+    final textController = TextEditingController()..text = 'Hello World!';
+    final screenshotController = MockScreenshotController();
+    void onFeedback(
+      BuildContext context,
+      String feedback,
+      Uint8List feedbackScreenshot,
+    ) {
+      expect(context, null);
+      expect(feedback, 'Hello World!');
+      expect(feedbackScreenshot, Uint8List.fromList([1, 1, 1, 1]));
+      callbackWasCalled = true;
+    }
+
+    await FeedbackWidgetState.sendFeedback(
+      null,
+      onFeedback,
+      screenshotController,
+      textController,
+      delay: const Duration(seconds: 0),
+      showKeyboard: true,
+    );
+
+    expect(callbackWasCalled, true);
+  });
+}
+
+class MockScreenshotController implements ScreenshotController {
+  @override
+  Future<Uint8List> capture(
+      {double pixelRatio = 1,
+      Duration delay = const Duration(milliseconds: 20)}) {
+    return Future.value(Uint8List.fromList([1, 1, 1, 1]));
+  }
 }

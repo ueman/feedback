@@ -10,8 +10,6 @@ import 'package:flutter/material.dart';
 
 typedef FeedbackButtonPress = void Function(BuildContext context);
 
-
-
 class FeedbackWidget extends StatefulWidget {
   const FeedbackWidget({
     Key key,

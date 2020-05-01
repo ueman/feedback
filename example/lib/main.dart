@@ -13,6 +13,8 @@ void main() {
         Uint8List feedbackScreenshot,
       ) {
         // upload to server, share whatever
+        // for example purposes just show it to the user
+        alertFeedbackFunction(context, feedbackText, feedbackScreenshot);
       },
     ),
   );

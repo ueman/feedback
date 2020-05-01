@@ -253,8 +253,9 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     ScreenshotController controller,
     TextEditingController textEditingController, {
     Duration delay = const Duration(milliseconds: 200),
-    bool showKeyboard = true,
+    bool showKeyboard = false,
   }) async {
+    assert(onFeedbackSubmitted != null);
     if (!showKeyboard) {
       _hideKeyboard(context);
     }

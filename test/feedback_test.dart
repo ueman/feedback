@@ -132,6 +132,25 @@ void main() {
 
     expect(callbackWasCalled, true);
   });
+
+  test(' assertions', () {
+    // child must not be null
+    expect(() {
+      BetterFeedback(
+        onFeedback: (BuildContext context, String feedback,
+            Uint8List feedbackScreenshot) {},
+        child: null,
+      );
+    }, throwsAssertionError);
+
+    // onFeedback must not be null
+    expect(() {
+      BetterFeedback(
+        onFeedback: null,
+        child: Container(),
+      );
+    }, throwsAssertionError);
+  });
 }
 
 class MockScreenshotController implements ScreenshotController {

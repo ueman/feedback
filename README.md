@@ -4,14 +4,15 @@
 [![GitHub Workflow Status](https://github.com/ueman/feedback/workflows/flutter/badge.svg?branch=master)](https://github.com/ueman/feedback/actions?query=workflow%3Aflutter)
 [![code coverage](https://codecov.io/gh/ueman/feedback/branch/master/graph/badge.svg)](https://codecov.io/gh/ueman/feedback)
 
-A Flutter package for getting better feedback. It allows the user to give interactive feedback directly in the app.
+A Flutter package for obtaining better feedback. It allows the user to provide interactive feedback directly in the app, by annotating a screenshot of the current page, as well as by adding text.
+
 Get it on [pub.dev/packages/feedback](https://pub.dev/packages/feedback)!
 
 ![Example](img/example_0.1.0-beta.gif "Example")
 
 ## Motivation
 
-Often times it is quite hard to understand the users issues with an app.
+It is often quite hard to understand user issues with an app.
 This package aims to support the developer by making it easier for the user 
 to provide good and helpful feedback. 
 Thus this library tries to be pretty easy to use by the user and 
@@ -32,31 +33,40 @@ Then, run `flutter packages get` in your terminal.
 
 ## Getting Started
 
-Just wrap your app in a `BetterFeedback` widget and supply
-an `onFeedback` function. The function gets called when 
-the user submits his feedback. To show the feedback view just
-call `BetterFeedback.of(context).show();`
+1. Wrap your primary app widget in a `BetterFeedback` widget and supply
+an `onFeedback` function, which will be called when the user submits their feedback. 
 
 ```dart
 import 'dart:typed_data';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(
-    BetterFeedback(
-      child: const MyApp(),
-      onFeedback: (
-        BuildContext context,
-        String feedbackText, // the feedback from the user
-        Uint8List feedbackScreenshot, // raw png encoded image data
-      ) {
-        // TODO: upload to feedback to server or let the user share his feedback 
-      },
-    ),
-  );
-}
+...
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      home: 
+        BetterFeedback(
+        child: const MyHomePage(),
+        onFeedback: (
+          BuildContext context,
+          String feedbackText, // the feedback from the user
+          Uint8List feedbackScreenshot, // raw png encoded image data
+        ) {
+          // TODO: upload to feedback to server or let the user share his feedback 
+       },
+      ),
+    );
+  }
 ```
+
+2. Provide a way to show the feedback panel by calling `BetterFeedback.of(context).show();`
+3. Provide a way to hide the feedback panel by calling  `BetterFeedback.of(context).hide();` 
 
 ### Upload feedback
 

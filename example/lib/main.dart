@@ -4,20 +4,7 @@ import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(
-    BetterFeedback(
-      child: const MyApp(),
-      onFeedback: (
-        BuildContext context,
-        String feedbackText,
-        Uint8List feedbackScreenshot,
-      ) {
-        // upload to server, share whatever
-        // for example purposes just show it to the user
-        alertFeedbackFunction(context, feedbackText, feedbackScreenshot);
-      },
-    ),
-  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -39,7 +26,18 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: BetterFeedback(
+        child: const MyHomePage(title: 'Flutter Demo Home Page'),
+        onFeedback: (
+          BuildContext context,
+          String feedbackText,
+          Uint8List feedbackScreenshot,
+        ) {
+          // upload to server, share whatever
+          // for example purposes just show it to the user
+          alertFeedbackFunction(context, feedbackText, feedbackScreenshot);
+        },
+      ),
     );
   }
 }

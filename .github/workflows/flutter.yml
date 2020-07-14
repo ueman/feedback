@@ -1,12 +1,6 @@
 name: flutter
 
-on:
-  pull_request:
-  push:
-    branches:
-      - master
-    tags:
-      - "*.*"
+on: [push, pull_request]
 
 jobs:
   check:

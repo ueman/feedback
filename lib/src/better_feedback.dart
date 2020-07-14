@@ -2,6 +2,7 @@ import 'package:feedback/src/feedback_controller.dart';
 import 'package:feedback/src/feedback_functions.dart';
 import 'package:feedback/src/feedback_widget.dart';
 import 'package:feedback/src/translation.dart';
+import 'package:feedback/src/utilities/feedback_app.dart';
 import 'package:flutter/material.dart';
 
 /// This widget should be at the top of your widget tree.
@@ -59,9 +60,8 @@ class _BetterFeedbackState extends State<BetterFeedback> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: FeedbackData(
+    return FeedbackApp(
+      child: FeedbackData(
         controller: controller,
         child: FeedbackWidget(
           child: widget.child,

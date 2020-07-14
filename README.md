@@ -4,14 +4,15 @@
 [![GitHub Workflow Status](https://github.com/ueman/feedback/workflows/flutter/badge.svg?branch=master)](https://github.com/ueman/feedback/actions?query=workflow%3Aflutter)
 [![code coverage](https://codecov.io/gh/ueman/feedback/branch/master/graph/badge.svg)](https://codecov.io/gh/ueman/feedback)
 
-A Flutter package for getting better feedback. It allows the user to give interactive feedback directly in the app.
+A Flutter package for obtaining better feedback. It allows the user to provide interactive feedback 
+directly in the app, by annotating a screenshot of the current page, as well as by adding text.
 Get it on [pub.dev/packages/feedback](https://pub.dev/packages/feedback)!
 
 ![Example](img/example_0.1.0-beta.gif "Example")
 
 ## Motivation
 
-Often times it is quite hard to understand the users issues with an app.
+It is often quite hard to understand user issues with an app.
 This package aims to support the developer by making it easier for the user 
 to provide good and helpful feedback. 
 Thus this library tries to be pretty easy to use by the user and 
@@ -57,6 +58,9 @@ void main() {
   );
 }
 ```
+
+Provide a way to show the feedback panel by calling `BetterFeedback.of(context).show();`
+Provide a way to hide the feedback panel by calling  `BetterFeedback.of(context).hide();` 
 
 ### Upload feedback
 

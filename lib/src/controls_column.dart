@@ -62,7 +62,7 @@ class ControlsColumn extends StatelessWidget {
           FeedbackIconButton(
             key: const Key('close_controls_column'),
             minButtonSize: 48,
-            icon: Icon(Icons.close),
+            icon: const Icon(Icons.close),
             onPressed: onCloseFeedback,
           ),
           _ColumnDivider(),
@@ -94,12 +94,12 @@ class ControlsColumn extends StatelessWidget {
           ),
           FeedbackIconButton(
             key: const Key('undo_button'),
-            icon: Icon(Icons.undo),
+            icon: const Icon(Icons.undo),
             onPressed: isNavigatingActive ? null : onUndo,
           ),
           FeedbackIconButton(
             key: const Key('clear_button'),
-            icon: Icon(Icons.delete),
+            icon: const Icon(Icons.delete),
             onPressed: isNavigatingActive ? null : onClearDrawing,
           ),
           for (final color in colors)

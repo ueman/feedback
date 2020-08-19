@@ -32,3 +32,17 @@ class DeTranslation implements FeedbackTranslation {
   @override
   String get navigate => 'Navigieren';
 }
+
+class FrTranslation implements FeedbackTranslation {
+  @override
+  String get submitButtonText => 'Envoyer';
+
+  @override
+  String get feedbackDescriptionText => 'Expliquez-nous votre problème';
+
+  @override
+  String get draw => 'Dessiner';
+
+  @override
+  String get navigate => 'Naviguer';
+}

@@ -1,5 +1,7 @@
 import 'package:feedback/feedback.dart';
 import 'package:feedback/src/controls_column.dart';
+import 'package:feedback/src/feedback_controller.dart';
+import 'package:feedback/src/utilities/feedback_app.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 
@@ -13,20 +15,25 @@ void main() {
     VoidCallback onCloseFeedback,
     VoidCallback onClearDrawing,
     List<Color> colors,
-    FeedbackTranslation translation,
   }) {
-    return MaterialApp(
-      home: ControlsColumn(
-        activeColor: activeColor ?? Colors.red,
-        mode: mode ?? ControlMode.draw,
-        colors:
-            colors ?? [Colors.red, Colors.green, Colors.blue, Colors.yellow],
-        onClearDrawing: onClearDrawing ?? () {},
-        onCloseFeedback: onCloseFeedback ?? () {},
-        onColorChanged: onColorChanged ?? (newColor) {},
-        onControlModeChanged: onControlModeChanged ?? (newMode) {},
-        onUndo: onUndo ?? () {},
-        translation: EnTranslation(),
+    return FeedbackApp(
+      child: FeedbackData(
+        controller: FeedbackController(),
+        child: Builder(
+          builder: (context) {
+            return ControlsColumn(
+              activeColor: activeColor ?? Colors.red,
+              mode: mode ?? ControlMode.draw,
+              colors: colors ??
+                  [Colors.red, Colors.green, Colors.blue, Colors.yellow],
+              onClearDrawing: onClearDrawing ?? () {},
+              onCloseFeedback: onCloseFeedback ?? () {},
+              onColorChanged: onColorChanged ?? (newColor) {},
+              onControlModeChanged: onControlModeChanged ?? (newMode) {},
+              onUndo: onUndo ?? () {},
+            );
+          },
+        ),
       ),
     );
   }
@@ -38,6 +45,8 @@ void main() {
       await tester.pumpWidget(create(onCloseFeedback: () {
         closeButtonCallbackExecuted = true;
       }));
+
+      await tester.pumpAndSettle();
 
       final closeButton = find.byKey(const Key('close_controls_column'));
       await tester.tap(closeButton);

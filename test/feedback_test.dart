@@ -12,45 +12,39 @@ void main() {
   group('BetterFeedback', () {
     testWidgets(' can open feedback', (tester) async {
       final widget = BetterFeedback(
-        child: const MyTestApp(),
-        onFeedback: (
-          BuildContext context,
-          String feedbackText,
-          Uint8List feedbackScreenshot,
-        ) {},
+        child: Builder(
+          builder: (context) {
+            return const MyTestApp();
+          },
+        ),
       );
 
       await tester.pumpWidget(widget);
 
       // feedback is closed
-      final userInputFields =
-          find.byKey(const Key('feedback_user_input_fields'));
+      var userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
 
       expect(userInputFields, findsNothing);
 
       // open feedback
-      final openFeedbackButton = find.byKey(const Key('open_feedback'));
+      final openFeedbackButton = find.text('open feedback');
       await tester.tap(openFeedbackButton);
       await tester.pumpAndSettle();
+
+      userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
 
       expect(userInputFields, findsOneWidget);
     });
 
     testWidgets(' can close feedback', (tester) async {
-      final widget = BetterFeedback(
-        child: const MyTestApp(),
-        onFeedback: (
-          BuildContext context,
-          String feedbackText,
-          Uint8List feedbackScreenshot,
-        ) {},
+      const widget = BetterFeedback(
+        child: MyTestApp(),
       );
 
       await tester.pumpWidget(widget);
 
       // feedback is closed
-      final userInputFields =
-          find.byKey(const Key('feedback_user_input_fields'));
+      final userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
 
       expect(userInputFields, findsNothing);
 
@@ -72,18 +66,8 @@ void main() {
 
     // TODO(ju): figure out a way to test this
     testWidgets(' feedback callback gets called', (tester) async {
-      var feedbackCallbackWasCalled = false;
-
-      final widget = BetterFeedback(
-        child: const MyTestApp(),
-        onFeedback: (
-          BuildContext context,
-          String feedbackText,
-          Uint8List feedbackScreenshot,
-        ) {
-          print('Feedback: $feedbackText');
-          feedbackCallbackWasCalled = true;
-        },
+      const widget = BetterFeedback(
+        child: MyTestApp(),
       );
 
       await tester.pumpWidget(widget);
@@ -101,8 +85,6 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.pumpAndSettle(const Duration(milliseconds: 1000));
-
-      expect(feedbackCallbackWasCalled, true);
     }, skip: true);
   });
 
@@ -111,11 +93,9 @@ void main() {
     final textController = TextEditingController()..text = 'Hello World!';
     final screenshotController = MockScreenshotController();
     void onFeedback(
-      BuildContext context,
       String feedback,
       Uint8List feedbackScreenshot,
     ) {
-      expect(context, null);
       expect(feedback, 'Hello World!');
       expect(feedbackScreenshot, Uint8List.fromList([1, 1, 1, 1]));
       callbackWasCalled = true;
@@ -137,17 +117,7 @@ void main() {
     // child must not be null
     expect(() {
       BetterFeedback(
-        onFeedback: (BuildContext context, String feedback,
-            Uint8List feedbackScreenshot) {},
         child: null,
-      );
-    }, throwsAssertionError);
-
-    // onFeedback must not be null
-    expect(() {
-      BetterFeedback(
-        onFeedback: null,
-        child: Container(),
       );
     }, throwsAssertionError);
   });

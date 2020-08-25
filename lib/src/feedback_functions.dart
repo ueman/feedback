@@ -3,11 +3,9 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 
 /// Function which gets called when the user submits his feedback.
-/// [context] is a [BuildContext] with a [MaterialApp] ancestor.
 /// [feedback] is the user generated feedback text.
 /// [feedbackScreenshot] is a raw png encoded image.
 typedef OnFeedbackCallback = void Function(
-  BuildContext context,
   String feedback,
   Uint8List feedbackScreenshot,
 );
@@ -27,13 +25,13 @@ void consoleFeedbackFunction(
 /// Shows an [AlertDialog] with the given feedback.
 /// This is useful for debugging purposes.
 void alertFeedbackFunction(
-  BuildContext context,
+  BuildContext outerContext,
   String feedbackText,
   Uint8List feedbackScreenshot,
 ) {
   showDialog<void>(
-    context: context,
-    builder: (bc) {
+    context: outerContext,
+    builder: (context) {
       return AlertDialog(
         title: Text(feedbackText),
         content: Image.memory(

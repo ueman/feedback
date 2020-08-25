@@ -1,3 +1,4 @@
+import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 
 class FeedbackController extends ChangeNotifier {
@@ -5,8 +6,12 @@ class FeedbackController extends ChangeNotifier {
 
   bool get isVisible => _isVisible;
 
-  void show() {
+  OnFeedbackCallback onFeedback;
+
+  void show(OnFeedbackCallback onFeedback) {
+    assert(onFeedback != null);
     _isVisible = true;
+    this.onFeedback = onFeedback;
     notifyListeners();
   }
 

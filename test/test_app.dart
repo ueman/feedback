@@ -58,9 +58,9 @@ class _MyTestPageState extends State<MyTestPage> {
             const TextField(),
             FlatButton(
               key: const Key('open_feedback'),
-              child: const Text('Get feedback'),
+              child: const Text('open feedback'),
               onPressed: () {
-                BetterFeedback.of(context).show();
+                BetterFeedback.of(context).show((_, __) {});
               },
             )
           ],

@@ -1,11 +1,12 @@
 import 'package:feedback/src/better_feedback.dart';
 import 'package:feedback/src/controls_column.dart';
 import 'package:feedback/src/feedback_functions.dart';
+import 'package:feedback/src/l18n/translation.dart';
 import 'package:feedback/src/paint_on_background.dart';
 import 'package:feedback/src/painter.dart';
 import 'package:feedback/src/scale_and_clip.dart';
 import 'package:feedback/src/screenshot.dart';
-import 'package:feedback/src/translation.dart';
+import 'package:feedback/src/theme/feedback_theme.dart';
 import 'package:flutter/material.dart';
 
 typedef FeedbackButtonPress = void Function(BuildContext context);
@@ -14,30 +15,20 @@ class FeedbackWidget extends StatefulWidget {
   const FeedbackWidget({
     Key key,
     @required this.child,
-    @required this.onFeedbackSubmitted,
     @required this.isFeedbackVisible,
-    @required this.translation,
-    this.backgroundColor,
-    this.drawColors,
+    @required this.drawColors,
   })  : assert(child != null),
-        assert(onFeedbackSubmitted != null),
         assert(isFeedbackVisible != null),
-        assert(translation != null),
-        // if the user chooses to supply custom drawing colors,
-        // make sure there is at least on color to draw with
         assert(
           // ignore: prefer_is_empty
-          drawColors == null || (drawColors != null && drawColors.length > 0),
+          drawColors != null && drawColors.length > 0,
           'There must be at least one color to draw',
         ),
         super(key: key);
 
   final bool isFeedbackVisible;
-  final OnFeedbackCallback onFeedbackSubmitted;
   final Widget child;
-  final Color backgroundColor;
   final List<Color> drawColors;
-  final FeedbackTranslation translation;
 
   @override
   FeedbackWidgetState createState() => FeedbackWidgetState();
@@ -65,14 +56,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
   void initState() {
     super.initState();
 
-    drawColors = widget.drawColors ??
-        [
-          Colors.red,
-          Colors.green,
-          Colors.blue,
-          Colors.yellow,
-        ];
-
+    drawColors = widget.drawColors;
     painterController = create();
 
     _controller = AnimationController(
@@ -129,8 +113,8 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
-        return Container(
-          color: widget.backgroundColor ?? Colors.grey,
+        return ColoredBox(
+          color: FeedbackTheme.of(context).background,
           child: Stack(
             alignment: Alignment.center,
             children: <Widget>[
@@ -160,7 +144,6 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                       ? ControlMode.navigate
                       : ControlMode.draw,
                   activeColor: painterController.drawColor,
-                  translation: widget.translation,
                   colors: drawColors,
                   onColorChanged: (color) {
                     setState(() {
@@ -190,14 +173,15 @@ class FeedbackWidgetState extends State<FeedbackWidget>
               ),
               if (widget.isFeedbackVisible)
                 Positioned(
-                  key: const Key('feedback_user_input_fields'),
+                  key: const Key('feedback_bottom_sheet'),
                   left: 0,
                   // Make sure the input field is always visible,
                   // especially if the keyboard is shown
                   bottom: MediaQuery.of(context).viewInsets.bottom,
                   right: 0,
-                  child: Material(
-                    child: Container(
+                  child: ColoredBox(
+                    color: FeedbackTheme.of(context).feedbackSheetColor,
+                    child: Padding(
                       padding: const EdgeInsets.all(30),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -205,13 +189,16 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
                           Text(
-                            widget.translation.feedbackDescriptionText,
+                            FeedbackLocalizations.of(context)
+                                .feedbackDescriptionText,
                             maxLines: 2,
                           ),
-                          TextField(
-                            maxLines: 2,
-                            minLines: 2,
-                            controller: textEditingController,
+                          Material(
+                            child: TextField(
+                              maxLines: 2,
+                              minLines: 2,
+                              controller: textEditingController,
+                            ),
                           ),
                           Builder(
                             builder: (innerContext) {
@@ -221,12 +208,13 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                               return FlatButton(
                                 key: const Key('submit_feedback_button'),
                                 child: Text(
-                                  widget.translation.submitButtonText,
+                                  FeedbackLocalizations.of(context)
+                                      .submitButtonText,
                                 ),
                                 onPressed: () {
                                   sendFeedback(
                                     innerContext,
-                                    widget.onFeedbackSubmitted,
+                                    FeedbackData.of(context).onFeedback,
                                     screenshotController,
                                     textEditingController,
                                   );
@@ -262,24 +250,29 @@ class FeedbackWidgetState extends State<FeedbackWidget>
 
     // Wait for the keyboard to be closed, and then proceed
     // to take a screenshot
-    await Future.delayed(delay, () async {
-      // Take high resolution screenshot
-      final screenshot = await controller.capture(
-        pixelRatio: 3,
-        delay: const Duration(milliseconds: 0),
-      );
+    await Future.delayed(
+      delay,
+      () async {
+        // Take high resolution screenshot
+        final screenshot = await controller.capture(
+          pixelRatio: 3,
+          delay: const Duration(milliseconds: 0),
+        );
 
-      // Get feedback text
-      final feedbackText = textEditingController.text;
+        // Get feedback text
+        final feedbackText = textEditingController.text;
 
-      // Give it to the developer
-      // to do something with it.
-      onFeedbackSubmitted(
-        context,
-        feedbackText,
-        screenshot,
-      );
-    });
+        // Close feedback mode
+        FeedbackData.of(context)?.hide();
+
+        // Give it to the developer
+        // to do something with it.
+        onFeedbackSubmitted(
+          feedbackText,
+          screenshot,
+        );
+      },
+    );
   }
 
   static void _hideKeyboard(BuildContext context) {

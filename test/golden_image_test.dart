@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -11,13 +9,8 @@ void main() {
     testWidgets(' closed feedback', (tester) async {
       await setGoldenImageSurfaceSize(tester);
 
-      final widget = BetterFeedback(
-        child: const MyTestApp(),
-        onFeedback: (
-          BuildContext context,
-          String feedbackText,
-          Uint8List feedbackScreenshot,
-        ) {},
+      const widget = BetterFeedback(
+        child: MyTestApp(),
       );
 
       await tester.pumpWidget(widget);
@@ -28,13 +21,8 @@ void main() {
     testWidgets(' open feedback', (tester) async {
       await setGoldenImageSurfaceSize(tester);
 
-      final widget = BetterFeedback(
-        child: const MyTestApp(),
-        onFeedback: (
-          BuildContext context,
-          String feedbackText,
-          Uint8List feedbackScreenshot,
-        ) {},
+      const widget = BetterFeedback(
+        child: MyTestApp(),
       );
 
       await tester.pumpWidget(widget);

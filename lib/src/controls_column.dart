@@ -1,5 +1,5 @@
 import 'package:feedback/src/icon_button.dart';
-import 'package:feedback/src/translation.dart';
+import 'package:feedback/src/l18n/translation.dart';
 import 'package:flutter/material.dart';
 
 enum ControlMode {
@@ -20,13 +20,11 @@ class ControlsColumn extends StatelessWidget {
     @required this.onCloseFeedback,
     @required this.onClearDrawing,
     @required this.colors,
-    @required this.translation,
   })  : assert(onColorChanged != null),
         assert(onUndo != null),
         assert(onControlModeChanged != null),
         assert(onCloseFeedback != null),
         assert(onClearDrawing != null),
-        assert(translation != null),
         assert(
           colors.isNotEmpty,
           'There must be at least one color to draw in colors',
@@ -41,7 +39,6 @@ class ControlsColumn extends StatelessWidget {
   final VoidCallback onClearDrawing;
   final List<Color> colors;
   final Color activeColor;
-  final FeedbackTranslation translation;
   final ControlMode mode;
 
   @override
@@ -70,7 +67,7 @@ class ControlsColumn extends StatelessWidget {
             quarterTurns: 1,
             child: MaterialButton(
               key: const Key('navigate_button'),
-              child: Text(translation.navigate),
+              child: Text(FeedbackLocalizations.of(context).navigate),
               onPressed: isNavigatingActive
                   ? null
                   : () {
@@ -84,7 +81,7 @@ class ControlsColumn extends StatelessWidget {
             child: MaterialButton(
               key: const Key('draw_button'),
               minWidth: 20,
-              child: Text(translation.draw),
+              child: Text(FeedbackLocalizations.of(context).draw),
               onPressed: isNavigatingActive
                   ? () {
                       onControlModeChanged(ControlMode.draw);

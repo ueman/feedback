@@ -15,14 +15,14 @@ void main() {
         listenerWasCalled = true;
       });
 
-      controller.show();
+      controller.show((_, __) {});
       expect(controller.isVisible, true);
       expect(listenerWasCalled, true);
     });
 
     test(' change visibility from visible to hidden', () {
       final controller = FeedbackController();
-      controller.show();
+      controller.show((_, __) {});
       var listenerWasCalled = false;
       controller.addListener(() {
         listenerWasCalled = true;

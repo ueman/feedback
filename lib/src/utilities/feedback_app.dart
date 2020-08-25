@@ -1,16 +1,25 @@
+import 'package:feedback/src/l18n/translation.dart';
+import 'package:feedback/src/theme/feedback_theme.dart';
 import 'package:feedback/src/utilities/media_query_from_window.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class FeedbackApp extends StatelessWidget {
-  const FeedbackApp({Key key, @required this.child}) : super(key: key);
+  const FeedbackApp({
+    Key key,
+    @required this.child,
+    this.data,
+  }) : super(key: key);
 
   final Widget child;
+  final FeedbackThemeData data;
 
   Iterable<LocalizationsDelegate<dynamic>> get _localizationsDelegates sync* {
     yield DefaultMaterialLocalizations.delegate;
     yield DefaultCupertinoLocalizations.delegate;
+    yield DefaultWidgetsLocalizations.delegate;
+    yield const GlobalFeedbackLocalizationsDelegate();
   }
 
   @override
@@ -19,7 +28,19 @@ class FeedbackApp extends StatelessWidget {
       child: Localizations(
         delegates: _localizationsDelegates.toList(growable: false),
         locale: const Locale('en'),
-        child: Material(child: child),
+        child: FeedbackTheme(
+          data: data ?? FeedbackThemeData(),
+          child: Overlay(
+            initialEntries: [
+              OverlayEntry(
+                opaque: true,
+                builder: (context) {
+                  return child;
+                },
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

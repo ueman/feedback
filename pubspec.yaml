@@ -1,6 +1,6 @@
 name: feedback
 description: A Flutter package for getting better feedback. It allows the user to give interactive feedback directly in the app.
-version: 1.0.0
+version: 1.0.0-beta
 author: Jonas Uekötter
 homepage: https://uekoetter.dev/
 repository: https://github.com/ueman/feedback

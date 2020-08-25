@@ -57,7 +57,7 @@ class ControlsColumn extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           FeedbackIconButton(
-            key: const Key('close_controls_column'),
+            key: const ValueKey<String>('close_controls_column'),
             minButtonSize: 48,
             icon: const Icon(Icons.close),
             onPressed: onCloseFeedback,
@@ -66,36 +66,32 @@ class ControlsColumn extends StatelessWidget {
           RotatedBox(
             quarterTurns: 1,
             child: MaterialButton(
-              key: const Key('navigate_button'),
+              key: const ValueKey<String>('navigate_button'),
               child: Text(FeedbackLocalizations.of(context).navigate),
               onPressed: isNavigatingActive
                   ? null
-                  : () {
-                      onControlModeChanged(ControlMode.navigate);
-                    },
+                  : () => onControlModeChanged(ControlMode.navigate),
             ),
           ),
           _ColumnDivider(),
           RotatedBox(
             quarterTurns: 1,
             child: MaterialButton(
-              key: const Key('draw_button'),
+              key: const ValueKey<String>('draw_button'),
               minWidth: 20,
               child: Text(FeedbackLocalizations.of(context).draw),
               onPressed: isNavigatingActive
-                  ? () {
-                      onControlModeChanged(ControlMode.draw);
-                    }
+                  ? () => onControlModeChanged(ControlMode.draw)
                   : null,
             ),
           ),
           FeedbackIconButton(
-            key: const Key('undo_button'),
+            key: const ValueKey<String>('undo_button'),
             icon: const Icon(Icons.undo),
             onPressed: isNavigatingActive ? null : onUndo,
           ),
           FeedbackIconButton(
-            key: const Key('clear_button'),
+            key: const ValueKey<String>('clear_button'),
             icon: const Icon(Icons.delete),
             onPressed: isNavigatingActive ? null : onClearDrawing,
           ),
@@ -103,11 +99,7 @@ class ControlsColumn extends StatelessWidget {
             _ColorSelectionIconButton(
               key: ValueKey<Color>(color),
               color: color,
-              onPressed: isNavigatingActive
-                  ? null
-                  : (col) {
-                      onColorChanged(col);
-                    },
+              onPressed: isNavigatingActive ? null : onColorChanged,
               isActive: activeColor == color,
             ),
         ],

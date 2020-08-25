@@ -14,6 +14,7 @@ void main() {
       );
 
       await tester.pumpWidget(widget);
+      await tester.pumpAndSettle();
       await expectLater(find.byType(BetterFeedback),
           matchesGoldenFile('golden_images/closed_feedback.png'));
     });
@@ -26,7 +27,7 @@ void main() {
       );
 
       await tester.pumpWidget(widget);
-
+      await tester.pumpAndSettle();
       // open feedback
       final openFeedbackButton = find.byKey(const Key('open_feedback'));
       await tester.tap(openFeedbackButton);

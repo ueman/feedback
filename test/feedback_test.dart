@@ -20,6 +20,7 @@ void main() {
       );
 
       await tester.pumpWidget(widget);
+      await tester.pumpAndSettle();
 
       // feedback is closed
       var userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
@@ -42,6 +43,7 @@ void main() {
       );
 
       await tester.pumpWidget(widget);
+      await tester.pumpAndSettle();
 
       // feedback is closed
       final userInputFields = find.byKey(const Key('feedback_bottom_sheet'));

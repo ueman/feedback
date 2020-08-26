@@ -4,20 +4,32 @@ import 'package:feedback/src/feedback_widget.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
 import 'package:feedback/src/utilities/feedback_app.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:feedback/src/l18n/translation.dart';
 
 /// This widget should be at the top of your widget tree.
 class BetterFeedback extends StatefulWidget {
   const BetterFeedback({
     Key key,
     @required this.child,
-    this.themeData,
+    this.theme,
+    this.localizationsDelegates,
   })  : assert(child != null),
         super(key: key);
 
   /// The application to wrap, typically a [MaterialApp].
   final Widget child;
 
-  final FeedbackThemeData themeData;
+  /// Theme wich gets used to style the feedback mode.
+  final FeedbackThemeData theme;
+
+  /// The delegates for this library's FeedbackLocalization widget.
+  /// You need to supply the following delegates if you choose to customize it.
+  /// [MaterialLocalizations]
+  /// [CupertinoLocalizations]
+  /// [WidgetsLocalizations]
+  /// an instance of [LocalizationsDelegate]<[FeedbackLocalizations]>
+  final List<LocalizationsDelegate> localizationsDelegates;
 
   /// Call `BetterFeedback.of(context)` to get an instance of
   /// [FeedbackData] on which you can call `.show()` or `.hide()`
@@ -47,9 +59,8 @@ class _BetterFeedbackState extends State<BetterFeedback> {
   @override
   Widget build(BuildContext context) {
     return FeedbackApp(
-      data: widget.themeData,
-      // The overlay is needed by the TextField
-      // in the feedback bottom sheet.
+      data: widget.theme,
+      localizationsDelegates: widget.localizationsDelegates,
       child: FeedbackData(
         controller: controller,
         child: Builder(

@@ -4,8 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class FeedbackLocalization extends StatelessWidget {
-  const FeedbackLocalization({Key key, this.child}) : super(key: key);
+  const FeedbackLocalization({
+    Key key,
+    @required this.child,
+    this.delegates,
+  }) : super(key: key);
+
   final Widget child;
+  final List<LocalizationsDelegate<dynamic>> delegates;
 
   Iterable<LocalizationsDelegate<dynamic>> get _localizationsDelegates sync* {
     yield DefaultMaterialLocalizations.delegate;
@@ -17,7 +23,7 @@ class FeedbackLocalization extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Localizations(
-      delegates: _localizationsDelegates.toList(growable: false),
+      delegates: delegates ?? _localizationsDelegates.toList(growable: false),
       locale: const Locale('en'),
       child: child,
     );

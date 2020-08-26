@@ -26,40 +26,33 @@ First, you will need to add `feedback` to your `pubspec.yaml`:
 dependencies:
   flutter:
     sdk: flutter
-  feedback: 0.3.0 # use the latest version found on pub.dev
+  feedback: x.y.z # use the latest version found on pub.dev
 ```
 
 Then, run `flutter packages get` in your terminal.
 
 ## Getting Started
 
-Just wrap your app in a `BetterFeedback` widget and supply
-an `onFeedback` function. The function gets called when 
-the user submits his feedback. To show the feedback view just
-call `BetterFeedback.of(context).show();`
+Just wrap your app in a `BetterFeedback` widget.
+To show the feedback view just call `BetterFeedback.of(context).show(...);`.
+The callback gets called when the user submits his feedback. 
 
 ```dart
 import 'dart:typed_data';
 import 'package:feedback/feedback.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(
     BetterFeedback(
       child: const MyApp(),
-      onFeedback: (
-        BuildContext context,
-        String feedbackText, // the feedback from the user
-        Uint8List feedbackScreenshot, // raw png encoded image data
-      ) {
-        // TODO: upload to feedback to server or let the user share his feedback 
-      },
     ),
   );
 }
 ```
 
-Provide a way to show the feedback panel by calling `BetterFeedback.of(context).show();`
+Provide a way to show the feedback panel by calling `BetterFeedback.of(context).show(...);`
 Provide a way to hide the feedback panel by calling  `BetterFeedback.of(context).hide();` 
 
 ### Upload feedback
@@ -74,27 +67,35 @@ import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(
-    BetterFeedback(
-      // You can customize the background color, ...
-      backgroundColor: Colors.grey,
-      // ... the colors with which the user can draw..
-      drawColors: [Colors.red, Colors.green, Colors.blue, Colors.yellow],
-      // ... and the language used by BetterFeedback.
-      // You can pass any subclass of [FeedbackTranslation] to change the 
-      // the text.
-      translation: DeTranslation(),
-      child: MyApp(),
-      onFeedback: alertFeedbackFunction,
-    ),
-  );
+  void main() {
+    runApp(
+      BetterFeedback(
+        child: const MyApp(),
+        theme: FeedbackThemeData(
+          // You can customize the background color, ...
+          background: Colors.grey,
+          // ... the color of the bottomsheet, ...
+          feedbackSheetColor: Colors.grey[50],
+          // ... the colors with which the user can draw...
+          drawColors: [
+            Colors.red,
+            Colors.green,
+            Colors.blue,
+            Colors.yellow,
+          ],
+        ),
+        // ... and the language used by BetterFeedback.
+        localizationsDelegates: const [
+          DefaultMaterialLocalizations.delegate,
+          DefaultCupertinoLocalizations.delegate,
+          DefaultWidgetsLocalizations.delegate,
+          GlobalFeedbackLocalizationsDelegate(),
+        ],
+      ),
+    );
+  }
 }
 ```
-
-For development purposes this library includes two methods which can be passed 
-directly as `onFeedback`-callback. 
-- `alertFeedbackFunction` which shows a simple alert dialog with the image and the corresponding user feedback.
-- `consoleFeedbackFunction` which prints the user feedback and the image size with `print` to console.
 
 ## Tips, tricks and usage scenarios
 
@@ -110,7 +111,6 @@ information upon hitting an error.
 
 ## Known Issues and limitations
 
-- Some draggable widgets like ReorderableListView look strange while dragging.
 - Platform views are invisible in screenshots (like [webview](https://pub.dev/packages/webview_flutter) or [Google Maps](https://pub.dev/packages/google_maps_flutter))
 - Why does the content of my Scaffold change (gets repositioned upwards) while I'm
     writing my feedback?

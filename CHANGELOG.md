@@ -1,3 +1,8 @@
+## [1.0.0-beta]
+- Removed dependency on MaterialApp
+- Use Flutter mechanism for localization
+- Theming is now done through FeedbackTheme
+
 ## [0.2.1+1] - 06. April 2020
 
 - better readme

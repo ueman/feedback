@@ -25,7 +25,7 @@ class FeedbackThemeData {
         assert(
           // ignore: prefer_is_empty
           drawColors != null && drawColors.length > 0,
-          'There must be at least one color to draw',
+          'There must be at least one color to draw with',
         );
 
   /// The background of the feedback view.

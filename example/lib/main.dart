@@ -87,10 +87,14 @@ class _MyHomePageState extends State<MyHomePage> {
             RaisedButton(
               child: const Text('Open another scaffold'),
               onPressed: () {
-                Navigator.push<void>(context,
-                    MaterialPageRoute(builder: (context) {
-                  return _SecondaryScaffold();
-                }));
+                Navigator.push<void>(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return _SecondaryScaffold();
+                    },
+                  ),
+                );
               },
             ),
             FlatButton(

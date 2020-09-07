@@ -1,7 +1,7 @@
 import 'package:feedback/src/better_feedback.dart';
 import 'package:feedback/src/controls_column.dart';
+import 'package:feedback/src/feedback_bottom_sheet.dart';
 import 'package:feedback/src/feedback_functions.dart';
-import 'package:feedback/src/l18n/translation.dart';
 import 'package:feedback/src/paint_on_background.dart';
 import 'package:feedback/src/painter.dart';
 import 'package:feedback/src/scale_and_clip.dart';
@@ -91,13 +91,6 @@ class FeedbackWidgetState extends State<FeedbackWidget>
 
   @override
   Widget build(BuildContext context) {
-    // Possible optimization:
-    // If feedback is invisible just build widget.child
-    // without the whole feedback foo.
-    //if (!widget.isFeedbackVisible) {
-    //  return widget.child;
-    //}
-
     final scaleAnimation = Tween<double>(begin: 1, end: 0.65)
         .chain(CurveTween(curve: Curves.easeInSine))
         .animate(_controller);
@@ -116,6 +109,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
         return ColoredBox(
           color: FeedbackTheme.of(context).background,
           child: Stack(
+            fit: StackFit.passthrough,
             alignment: Alignment.center,
             children: <Widget>[
               Align(
@@ -179,51 +173,17 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                   // especially if the keyboard is shown
                   bottom: MediaQuery.of(context).viewInsets.bottom,
                   right: 0,
-                  child: ColoredBox(
-                    color: FeedbackTheme.of(context).feedbackSheetColor,
-                    child: Padding(
-                      padding: const EdgeInsets.all(30),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          Text(
-                            FeedbackLocalizations.of(context)
-                                .feedbackDescriptionText,
-                            maxLines: 2,
-                          ),
-                          Material(
-                            child: TextField(
-                              maxLines: 2,
-                              minLines: 2,
-                              controller: textEditingController,
-                            ),
-                          ),
-                          Builder(
-                            builder: (innerContext) {
-                              // Through using a Builder we can supply an
-                              // appropriate BuildContext to the callback
-                              // function.
-                              return FlatButton(
-                                key: const Key('submit_feedback_button'),
-                                child: Text(
-                                  FeedbackLocalizations.of(context)
-                                      .submitButtonText,
-                                ),
-                                onPressed: () {
-                                  sendFeedback(
-                                    innerContext,
-                                    FeedbackData.of(context).onFeedback,
-                                    screenshotController,
-                                    textEditingController,
-                                  );
-                                },
-                              );
-                            },
-                          ),
-                        ],
-                      ),
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: FeedbackBottomSheet(
+                      onSubmit: (context, feedback) {
+                        sendFeedback(
+                          context,
+                          FeedbackData.of(context).onFeedback,
+                          screenshotController,
+                          feedback,
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -239,7 +199,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     BuildContext context,
     OnFeedbackCallback onFeedbackSubmitted,
     ScreenshotController controller,
-    TextEditingController textEditingController, {
+    String feedbackText, {
     Duration delay = const Duration(milliseconds: 200),
     bool showKeyboard = false,
   }) async {
@@ -258,9 +218,6 @@ class FeedbackWidgetState extends State<FeedbackWidget>
           pixelRatio: 3,
           delay: const Duration(milliseconds: 0),
         );
-
-        // Get feedback text
-        final feedbackText = textEditingController.text;
 
         // Close feedback mode
         FeedbackData.of(context)?.hide();

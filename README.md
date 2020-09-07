@@ -117,6 +117,6 @@ information upon hitting an error.
     - Probably because Scaffold.[resizeToAvoidBottomInset](https://api.flutter.dev/flutter/material/Scaffold/resizeToAvoidBottomInset.html) 
       is set to true. You could set it to false while the user provides feedback.
 
-# A personal note
+# Known usages
 
-Let me know if you are using this in your app, I would love to see it.
+A list of apps which use this library can be found [here](usages.md).

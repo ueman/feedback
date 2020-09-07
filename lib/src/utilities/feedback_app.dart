@@ -26,14 +26,7 @@ class FeedbackApp extends StatelessWidget {
           data: data ?? FeedbackThemeData(),
           // The overlay is needed by the TextField
           // in the feedback bottom sheet.
-          child: Overlay(
-            initialEntries: [
-              OverlayEntry(
-                opaque: true,
-                builder: (context) => child,
-              ),
-            ],
-          ),
+          child: child,
         ),
       ),
     );

@@ -13,13 +13,19 @@ const _defaultDrawColors = [
 /// or the default value of ThemeData.canvasColor
 const _lightGrey = Color(0xFFFAFAFA);
 
+const _defaultBottomSheetDescriptionStyle = TextStyle(
+  color: Colors.black,
+);
+
 class FeedbackThemeData {
   FeedbackThemeData({
     this.background = Colors.grey,
     this.feedbackSheetColor = _lightGrey,
     this.drawColors = _defaultDrawColors,
+    this.bottomSheetDescriptionStyle = _defaultBottomSheetDescriptionStyle,
   })  : assert(background != null),
         assert(feedbackSheetColor != null),
+        assert(bottomSheetDescriptionStyle != null),
         // if the user chooses to supply custom drawing colors,
         // make sure there is at least on color to draw with
         assert(
@@ -37,6 +43,9 @@ class FeedbackThemeData {
 
   /// Colors which can be used to draw while in feedback mode.
   final List<Color> drawColors;
+
+  /// Text Style of the text above of the feedback text input.
+  final TextStyle bottomSheetDescriptionStyle;
 }
 
 class FeedbackTheme extends InheritedTheme {

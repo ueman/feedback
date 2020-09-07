@@ -44,6 +44,8 @@ class BetterFeedback extends StatefulWidget {
 class _BetterFeedbackState extends State<BetterFeedback> {
   FeedbackController controller = FeedbackController();
 
+  bool feedbackVisible = false;
+
   @override
   void initState() {
     super.initState();
@@ -67,7 +69,7 @@ class _BetterFeedbackState extends State<BetterFeedback> {
           builder: (context) {
             return FeedbackWidget(
               child: widget.child,
-              isFeedbackVisible: controller.isVisible,
+              isFeedbackVisible: feedbackVisible,
               drawColors: FeedbackTheme.of(context).drawColors,
             );
           },
@@ -77,7 +79,9 @@ class _BetterFeedbackState extends State<BetterFeedback> {
   }
 
   void onUpdateOfController() {
-    setState(() {});
+    setState(() {
+      feedbackVisible = controller.isVisible;
+    });
   }
 }
 

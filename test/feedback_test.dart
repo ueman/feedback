@@ -92,7 +92,6 @@ void main() {
 
   test(' feedback sendFeedback', () async {
     var callbackWasCalled = false;
-    final textController = TextEditingController()..text = 'Hello World!';
     final screenshotController = MockScreenshotController();
     void onFeedback(
       String feedback,
@@ -107,7 +106,7 @@ void main() {
       null,
       onFeedback,
       screenshotController,
-      textController,
+      'Hello World!',
       delay: const Duration(seconds: 0),
       showKeyboard: true,
     );

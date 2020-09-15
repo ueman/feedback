@@ -11,21 +11,22 @@ class FeedbackApp extends StatelessWidget {
     @required this.child,
     this.data,
     this.localizationsDelegates,
+    this.localeOverride,
   }) : super(key: key);
 
   final Widget child;
   final FeedbackThemeData data;
   final List<LocalizationsDelegate<dynamic>> localizationsDelegates;
+  final Locale localeOverride;
 
   @override
   Widget build(BuildContext context) {
     return MediaQueryFromWindow(
       child: FeedbackLocalization(
         delegates: localizationsDelegates,
+        localeOverride: localeOverride,
         child: FeedbackTheme(
           data: data ?? FeedbackThemeData(),
-          // The overlay is needed by the TextField
-          // in the feedback bottom sheet.
           child: child,
         ),
       ),

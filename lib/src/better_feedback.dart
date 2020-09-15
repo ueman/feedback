@@ -14,6 +14,7 @@ class BetterFeedback extends StatefulWidget {
     @required this.child,
     this.theme,
     this.localizationsDelegates,
+    this.localeOverride,
   })  : assert(child != null),
         super(key: key);
 
@@ -30,6 +31,11 @@ class BetterFeedback extends StatefulWidget {
   /// [WidgetsLocalizations]
   /// an instance of [LocalizationsDelegate]<[FeedbackLocalizations]>
   final List<LocalizationsDelegate> localizationsDelegates;
+
+  /// Can be used to set the locale.
+  /// If it is not set, the platform default locale is used.
+  /// If no platform default locale exists, english is used.
+  final Locale localeOverride;
 
   /// Call `BetterFeedback.of(context)` to get an instance of
   /// [FeedbackData] on which you can call `.show()` or `.hide()`
@@ -63,6 +69,7 @@ class _BetterFeedbackState extends State<BetterFeedback> {
     return FeedbackApp(
       data: widget.theme,
       localizationsDelegates: widget.localizationsDelegates,
+      localeOverride: widget.localeOverride,
       child: FeedbackData(
         controller: controller,
         child: Builder(

@@ -96,6 +96,8 @@ void main() {
   }
 }
 ```
+How the properties of `FeedbackThemeData` correspond to the view can be seen in the following image. 
+![Theme](img/theme_description.png "Theme")
 
 ## Tips, tricks and usage scenarios
 

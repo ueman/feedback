@@ -17,6 +17,8 @@ const _defaultBottomSheetDescriptionStyle = TextStyle(
   color: Colors.black,
 );
 
+/// See the following image to get a better understanding of the properties.
+/// ![Theme](img/theme_description.png "Theme")
 class FeedbackThemeData {
   FeedbackThemeData({
     this.background = Colors.grey,

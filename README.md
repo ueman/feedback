@@ -9,6 +9,7 @@ directly in the app, by annotating a screenshot of the current page, as well as 
 Get it on [pub.dev/packages/feedback](https://pub.dev/packages/feedback)!
 
 ![Example](img/example_0.1.0-beta.gif "Example")
+You can view this as a video [here](img/movie.mp4).
 
 ## Motivation
 

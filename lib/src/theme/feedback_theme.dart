@@ -25,14 +25,12 @@ class FeedbackThemeData {
     this.feedbackSheetColor = _lightGrey,
     this.drawColors = _defaultDrawColors,
     this.bottomSheetDescriptionStyle = _defaultBottomSheetDescriptionStyle,
-  })  : assert(background != null),
-        assert(feedbackSheetColor != null),
-        assert(bottomSheetDescriptionStyle != null),
+  }) :
         // if the user chooses to supply custom drawing colors,
         // make sure there is at least on color to draw with
         assert(
           // ignore: prefer_is_empty
-          drawColors != null && drawColors.length > 0,
+          drawColors.length > 0,
           'There must be at least one color to draw with',
         );
 
@@ -56,12 +54,10 @@ class FeedbackTheme extends InheritedTheme {
   ///
   /// Both [data] and [child] arguments must not be null.
   const FeedbackTheme({
-    Key key,
-    @required this.data,
-    @required Widget child,
-  })  : assert(data != null),
-        assert(child != null),
-        super(key: key, child: child);
+    Key? key,
+    required this.data,
+    required Widget child,
+  }) : super(key: key, child: child);
 
   final FeedbackThemeData data;
 

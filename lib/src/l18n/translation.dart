@@ -11,7 +11,7 @@ abstract class FeedbackLocalizations {
 
   static FeedbackLocalizations of(BuildContext context) {
     return Localizations.of<FeedbackLocalizations>(
-        context, FeedbackLocalizations);
+        context, FeedbackLocalizations)!;
   }
 }
 
@@ -112,7 +112,7 @@ class GlobalFeedbackLocalizationsDelegate
     final languageLocale = Locale(locale.languageCode);
     // We only support language codes for now
     if (_supportedLocales.containsKey(languageLocale)) {
-      return _supportedLocales[languageLocale];
+      return _supportedLocales[languageLocale]!;
     }
     // The default is english
     return EnFeedbackLocalizations.load(locale);

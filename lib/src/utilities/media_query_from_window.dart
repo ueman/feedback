@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 /// its dependents when `window` changes, instead of rebuilding the entire
 /// widget tree.
 class MediaQueryFromWindow extends StatefulWidget {
-  const MediaQueryFromWindow({Key key, this.child}) : super(key: key);
+  const MediaQueryFromWindow({Key? key, required this.child}) : super(key: key);
 
   final Widget child;
 
@@ -20,7 +20,7 @@ class _MediaQueryFromWindowsState extends State<MediaQueryFromWindow>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance!.addObserver(this);
   }
 
   // ACCESSIBILITY
@@ -65,14 +65,14 @@ class _MediaQueryFromWindowsState extends State<MediaQueryFromWindow>
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
-      data: MediaQueryData.fromWindow(WidgetsBinding.instance.window),
+      data: MediaQueryData.fromWindow(WidgetsBinding.instance!.window),
       child: widget.child,
     );
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance!.removeObserver(this);
     super.dispose();
   }
 }

@@ -10,18 +10,17 @@ import 'package:feedback/src/l18n/translation.dart';
 /// This widget should be at the top of your widget tree.
 class BetterFeedback extends StatefulWidget {
   const BetterFeedback({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
     this.theme,
     this.localizationsDelegates,
-  })  : assert(child != null),
-        super(key: key);
+  }) : super(key: key);
 
   /// The application to wrap, typically a [MaterialApp].
   final Widget child;
 
   /// Theme wich gets used to style the feedback mode.
-  final FeedbackThemeData theme;
+  final FeedbackThemeData? theme;
 
   /// The delegates for this library's FeedbackLocalization widget.
   /// You need to supply the following delegates if you choose to customize it.
@@ -29,12 +28,12 @@ class BetterFeedback extends StatefulWidget {
   /// [CupertinoLocalizations]
   /// [WidgetsLocalizations]
   /// an instance of [LocalizationsDelegate]<[FeedbackLocalizations]>
-  final List<LocalizationsDelegate> localizationsDelegates;
+  final List<LocalizationsDelegate>? localizationsDelegates;
 
   /// Call `BetterFeedback.of(context)` to get an instance of
   /// [FeedbackData] on which you can call `.show()` or `.hide()`
   /// to enable or disable the feedback view.
-  static FeedbackData of(BuildContext context) =>
+  static FeedbackData? of(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<FeedbackData>();
 
   @override
@@ -87,12 +86,10 @@ class _BetterFeedbackState extends State<BetterFeedback> {
 
 class FeedbackData extends InheritedWidget {
   const FeedbackData({
-    Key key,
-    @required Widget child,
-    @required this.controller,
-  })  : assert(child != null),
-        assert(controller != null),
-        super(key: key, child: child);
+    Key? key,
+    required Widget child,
+    required this.controller,
+  }) : super(key: key, child: child);
 
   final FeedbackController controller;
 
@@ -109,9 +106,9 @@ class FeedbackData extends InheritedWidget {
 
   bool get isVisible => controller.isVisible;
 
-  static FeedbackController of(BuildContext context) {
+  static FeedbackController? of(BuildContext context) {
     final feedbackThemeData =
-        context?.dependOnInheritedWidgetOfExactType<FeedbackData>();
+        context.dependOnInheritedWidgetOfExactType<FeedbackData>();
     return feedbackThemeData?.controller;
   }
 }

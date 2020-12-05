@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 
 void main() {
   Widget create({
-    Color activeColor,
-    ControlMode mode,
-    ValueChanged<Color> onColorChanged,
-    VoidCallback onUndo,
-    ValueChanged<ControlMode> onControlModeChanged,
-    VoidCallback onCloseFeedback,
-    VoidCallback onClearDrawing,
-    List<Color> colors,
+    Color? activeColor,
+    ControlMode? mode,
+    ValueChanged<Color>? onColorChanged,
+    VoidCallback? onUndo,
+    ValueChanged<ControlMode>? onControlModeChanged,
+    VoidCallback? onCloseFeedback,
+    VoidCallback? onClearDrawing,
+    List<Color>? colors,
   }) {
     return FeedbackLocalization(
       child: ControlsColumn(
@@ -125,8 +125,8 @@ void main() {
     });
 
     testWidgets(' change color', (tester) async {
-      Color color;
       final colors = [Colors.red, Colors.green, Colors.blue, Colors.yellow];
+      Color color = colors[0];
 
       await tester.pumpWidget(
         create(

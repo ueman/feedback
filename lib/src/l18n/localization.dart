@@ -5,13 +5,13 @@ import 'package:flutter/widgets.dart';
 
 class FeedbackLocalization extends StatelessWidget {
   const FeedbackLocalization({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
     this.delegates,
   }) : super(key: key);
 
   final Widget child;
-  final List<LocalizationsDelegate<dynamic>> delegates;
+  final List<LocalizationsDelegate<dynamic>>? delegates;
 
   Iterable<LocalizationsDelegate<dynamic>> get _localizationsDelegates sync* {
     yield DefaultMaterialLocalizations.delegate;

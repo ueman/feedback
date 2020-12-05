@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class ScaleAndClip extends StatelessWidget {
   const ScaleAndClip({
-    Key key,
-    this.child,
-    this.scale,
-    this.alignmentProgress,
+    Key? key,
+    required this.child,
+    required this.scale,
+    required this.alignmentProgress,
   }) : super(key: key);
 
   final Widget child;

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 /// [feedbackScreenshot] is a raw png encoded image.
 typedef OnFeedbackCallback = void Function(
   String feedback,
-  Uint8List feedbackScreenshot,
+  Uint8List? feedbackScreenshot,
 );
 
 /// Prints the given feedback to the console.

@@ -11,21 +11,16 @@ enum ControlMode {
 /// is active.
 class ControlsColumn extends StatelessWidget {
   ControlsColumn({
-    Key key,
-    @required this.mode,
-    @required this.activeColor,
-    @required this.onColorChanged,
-    @required this.onUndo,
-    @required this.onControlModeChanged,
-    @required this.onCloseFeedback,
-    @required this.onClearDrawing,
-    @required this.colors,
-  })  : assert(onColorChanged != null),
-        assert(onUndo != null),
-        assert(onControlModeChanged != null),
-        assert(onCloseFeedback != null),
-        assert(onClearDrawing != null),
-        assert(
+    Key? key,
+    required this.mode,
+    required this.activeColor,
+    required this.onColorChanged,
+    required this.onUndo,
+    required this.onControlModeChanged,
+    required this.onCloseFeedback,
+    required this.onClearDrawing,
+    required this.colors,
+  })   : assert(
           colors.isNotEmpty,
           'There must be at least one color to draw in colors',
         ),
@@ -110,14 +105,14 @@ class ControlsColumn extends StatelessWidget {
 
 class _ColorSelectionIconButton extends StatelessWidget {
   const _ColorSelectionIconButton({
-    Key key,
-    this.color,
-    this.onPressed,
-    this.isActive,
+    Key? key,
+    required this.color,
+    required this.onPressed,
+    required this.isActive,
   }) : super(key: key);
 
   final Color color;
-  final ValueChanged<Color> onPressed;
+  final ValueChanged<Color>? onPressed;
   final bool isActive;
 
   @override
@@ -125,7 +120,7 @@ class _ColorSelectionIconButton extends StatelessWidget {
     return FeedbackIconButton(
       icon: Icon(isActive ? Icons.lens : Icons.panorama_fish_eye),
       color: color,
-      onPressed: onPressed == null ? null : () => onPressed(color),
+      onPressed: onPressed == null ? null : () => onPressed!(color),
     );
   }
 }

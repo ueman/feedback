@@ -7,15 +7,15 @@ import 'package:flutter/widgets.dart';
 
 class FeedbackApp extends StatelessWidget {
   const FeedbackApp({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
     this.data,
     this.localizationsDelegates,
   }) : super(key: key);
 
   final Widget child;
-  final FeedbackThemeData data;
-  final List<LocalizationsDelegate<dynamic>> localizationsDelegates;
+  final FeedbackThemeData? data;
+  final List<LocalizationsDelegate<dynamic>>? localizationsDelegates;
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +24,6 @@ class FeedbackApp extends StatelessWidget {
         delegates: localizationsDelegates,
         child: FeedbackTheme(
           data: data ?? FeedbackThemeData(),
-          // The overlay is needed by the TextField
-          // in the feedback bottom sheet.
           child: child,
         ),
       ),

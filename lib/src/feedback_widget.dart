@@ -13,15 +13,13 @@ typedef FeedbackButtonPress = void Function(BuildContext context);
 
 class FeedbackWidget extends StatefulWidget {
   const FeedbackWidget({
-    Key key,
-    @required this.child,
-    @required this.isFeedbackVisible,
-    @required this.drawColors,
-  })  : assert(child != null),
-        assert(isFeedbackVisible != null),
-        assert(
+    Key? key,
+    required this.child,
+    required this.isFeedbackVisible,
+    required this.drawColors,
+  })   : assert(
           // ignore: prefer_is_empty
-          drawColors != null && drawColors.length > 0,
+          drawColors.length > 0,
           'There must be at least one color to draw',
         ),
         super(key: key);
@@ -37,26 +35,24 @@ class FeedbackWidget extends StatefulWidget {
 @visibleForTesting
 class FeedbackWidgetState extends State<FeedbackWidget>
     with SingleTickerProviderStateMixin {
-  PainterController painterController;
+  PainterController painterController = PainterController();
   ScreenshotController screenshotController = ScreenshotController();
   TextEditingController textEditingController = TextEditingController();
 
   bool isNavigatingActive = true;
-  AnimationController _controller;
-  List<Color> drawColors;
+  AnimationController? _controller;
 
   PainterController create() {
-    final PainterController controller = PainterController();
+    final controller = PainterController();
     controller.thickness = 5.0;
-    controller.drawColor = drawColors[0];
+
+    controller.drawColor = widget.drawColors[0];
     return controller;
   }
 
   @override
   void initState() {
     super.initState();
-
-    drawColors = widget.drawColors;
     painterController = create();
 
     _controller = AnimationController(
@@ -68,7 +64,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    _controller?.dispose();
   }
 
   @override
@@ -78,33 +74,34 @@ class FeedbackWidgetState extends State<FeedbackWidget>
         oldWidget.isFeedbackVisible == false) {
       // Feedback is now visible,
       // start animation to show it.
-      _controller.forward();
+      _controller?.forward();
     }
 
     if (oldWidget.isFeedbackVisible != widget.isFeedbackVisible &&
         oldWidget.isFeedbackVisible == true) {
       // Feedback is no longer visible,
       // reverse animation to hide it.
-      _controller.reverse();
+      _controller?.reverse();
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    assert(_controller != null);
     final scaleAnimation = Tween<double>(begin: 1, end: 0.65)
         .chain(CurveTween(curve: Curves.easeInSine))
-        .animate(_controller);
+        .animate(_controller!);
 
     final animation = Tween<double>(begin: 0, end: 1)
         .chain(CurveTween(curve: Curves.easeInSine))
-        .animate(_controller);
+        .animate(_controller!);
 
     final controlsHorizontalAlignment = Tween<double>(begin: 1.4, end: .95)
         .chain(CurveTween(curve: Curves.easeInSine))
-        .animate(_controller);
+        .animate(_controller!);
 
     return AnimatedBuilder(
-      animation: _controller,
+      animation: _controller!,
       builder: (context, child) {
         return ColoredBox(
           color: FeedbackTheme.of(context).background,
@@ -138,7 +135,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                       ? ControlMode.navigate
                       : ControlMode.draw,
                   activeColor: painterController.drawColor,
-                  colors: drawColors,
+                  colors: widget.drawColors,
                   onColorChanged: (color) {
                     setState(() {
                       painterController.drawColor = color;
@@ -161,7 +158,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                   },
                   onCloseFeedback: () {
                     _hideKeyboard(context);
-                    BetterFeedback.of(context).hide();
+                    BetterFeedback.of(context)!.hide();
                   },
                 ),
               ),
@@ -179,7 +176,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                       onSubmit: (context, feedback) {
                         sendFeedback(
                           context,
-                          FeedbackData.of(context).onFeedback,
+                          FeedbackData.of(context)!.onFeedback!,
                           screenshotController,
                           feedback,
                         );
@@ -203,7 +200,6 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     Duration delay = const Duration(milliseconds: 200),
     bool showKeyboard = false,
   }) async {
-    assert(onFeedbackSubmitted != null);
     if (!showKeyboard) {
       _hideKeyboard(context);
     }

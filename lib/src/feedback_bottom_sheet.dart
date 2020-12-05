@@ -6,7 +6,7 @@ typedef OnSubmit = void Function(BuildContext context, String feedback);
 
 /// Shows the text input in which the user can describe his feedback.
 class FeedbackBottomSheet extends StatelessWidget {
-  FeedbackBottomSheet({Key key, @required this.onSubmit})
+  FeedbackBottomSheet({Key? key, required this.onSubmit})
       : _controller = TextEditingController(),
         super(key: key);
 

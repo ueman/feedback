@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 class PaintOnChild extends StatelessWidget {
   const PaintOnChild({
-    Key key,
-    @required this.child,
-    @required this.isPaintingActive,
-    @required this.controller,
+    Key? key,
+    required this.child,
+    required this.isPaintingActive,
+    required this.controller,
   }) : super(key: key);
 
   final Widget child;

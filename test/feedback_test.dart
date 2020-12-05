@@ -90,37 +90,36 @@ void main() {
     }, skip: true);
   });
 
-  test(' feedback sendFeedback', () async {
+  testWidgets(' feedback sendFeedback', (tester) async {
     var callbackWasCalled = false;
     final screenshotController = MockScreenshotController();
     void onFeedback(
       String feedback,
-      Uint8List feedbackScreenshot,
+      Uint8List? feedbackScreenshot,
     ) {
       expect(feedback, 'Hello World!');
       expect(feedbackScreenshot, Uint8List.fromList([1, 1, 1, 1]));
       callbackWasCalled = true;
     }
 
-    await FeedbackWidgetState.sendFeedback(
-      null,
-      onFeedback,
-      screenshotController,
-      'Hello World!',
-      delay: const Duration(seconds: 0),
-      showKeyboard: true,
+    await tester.pumpWidget(
+      Builder(
+        builder: (BuildContext context) {
+          FeedbackWidgetState.sendFeedback(
+            context,
+            onFeedback,
+            screenshotController,
+            'Hello World!',
+            delay: const Duration(seconds: 0),
+            showKeyboard: true,
+          );
+          // The builder function must return a widget.
+          return Container();
+        },
+      ),
     );
 
     expect(callbackWasCalled, true);
-  });
-
-  test(' assertions', () {
-    // child must not be null
-    expect(() {
-      BetterFeedback(
-        child: null,
-      );
-    }, throwsAssertionError);
   });
 }
 

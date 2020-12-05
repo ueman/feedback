@@ -54,7 +54,7 @@ class _PainterState extends State<Painter> {
 class _PainterPainter extends CustomPainter {
   _PainterPainter(
     this._path, {
-    Listenable repaint,
+    Listenable? repaint,
   }) : super(repaint: repaint);
 
   final _PathHistory _path;
@@ -71,12 +71,12 @@ class _PainterPainter extends CustomPainter {
 }
 
 class _PathHistory {
-  _PathHistory() {
-    _paths = <MapEntry<Path, Paint>>[];
-    _inDrag = false;
-  }
+  _PathHistory()
+      : _paths = <MapEntry<Path, Paint>>[],
+        _inDrag = false,
+        currentPaint = Paint();
 
-  List<MapEntry<Path, Paint>> _paths;
+  final List<MapEntry<Path, Paint>> _paths;
   Paint currentPaint;
   bool _inDrag;
 
@@ -122,14 +122,12 @@ class _PathHistory {
 }
 
 class PainterController extends ChangeNotifier {
-  PainterController() {
-    _pathHistory = _PathHistory();
-  }
+  PainterController() : _pathHistory = _PathHistory();
 
   Color _drawColor = const Color.fromARGB(255, 0, 0, 0);
 
   double _thickness = 1;
-  _PathHistory _pathHistory;
+  final _PathHistory _pathHistory;
 
   Color get drawColor => _drawColor;
   set drawColor(Color color) {

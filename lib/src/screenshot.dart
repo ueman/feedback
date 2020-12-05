@@ -6,81 +6,54 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 class ScreenshotController {
-  ScreenshotController() {
-    _containerKey = GlobalKey();
-  }
+  final GlobalKey _containerKey = GlobalKey();
 
-  GlobalKey _containerKey;
-
-  Future<Uint8List> capture({
+  Future<Uint8List?> capture({
     double pixelRatio = 1,
     Duration delay = const Duration(milliseconds: 20),
   }) {
     //Delay is required. See Issue https://github.com/flutter/flutter/issues/22308
     return Future.delayed(delay, () async {
-      final renderObject = _containerKey.currentContext.findRenderObject();
-      if (renderObject is RenderRepaintBoundary) {
-        final ui.Image image =
-            await renderObject.toImage(pixelRatio: pixelRatio);
-        final ByteData byteData =
-            await image.toByteData(format: ui.ImageByteFormat.png);
-        return byteData.buffer.asUint8List();
+      final renderObject = _containerKey.currentContext?.findRenderObject();
+
+      if (renderObject is! RenderRepaintBoundary) {
+        FlutterError.reportError(_noRenderObject());
       } else {
-        throw Exception('_containerKey is not a RepaintBoundary');
+        final image = await renderObject.toImage(pixelRatio: pixelRatio);
+        final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+        return byteData?.buffer.asUint8List();
       }
     });
   }
+
+  FlutterErrorDetails _noRenderObject() {
+    return FlutterErrorDetails(
+        exception: Exception(
+          '_containerKey.currentContext is null. '
+          'Thus we can\'t create a screenshot',
+        ),
+        library: 'feedback',
+        context: ErrorDescription(
+          'Tried to find a context to use it to create a screenshot',
+        ));
+  }
 }
 
-class Screenshot extends StatefulWidget {
+class Screenshot extends StatelessWidget {
   const Screenshot({
-    Key key,
-    @required this.child,
-    this.containerKey,
-    this.controller,
-  })  : assert(child != null),
-        super(key: key);
-  @override
-  State<Screenshot> createState() {
-    return ScreenshotState();
-  }
+    Key? key,
+    required this.child,
+    required this.controller,
+  }) : super(key: key);
 
   final Widget child;
   final ScreenshotController controller;
-  final GlobalKey containerKey;
-}
-
-class ScreenshotState extends State<Screenshot> with TickerProviderStateMixin {
-  ScreenshotController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = widget.controller ?? ScreenshotController();
-  }
-
-  @override
-  void didUpdateWidget(Screenshot oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (widget.controller != oldWidget.controller) {
-      return;
-    }
-
-    widget.controller._containerKey = oldWidget.controller._containerKey;
-    if (oldWidget.controller != null && widget.controller == null) {
-      _controller._containerKey = oldWidget.controller._containerKey;
-    }
-    if (widget.controller != null && oldWidget.controller == null) {
-      _controller = null;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     return RepaintBoundary(
-      key: _controller._containerKey,
-      child: widget.child,
+      key: controller._containerKey,
+      child: child,
     );
   }
 }

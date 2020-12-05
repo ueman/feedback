@@ -90,7 +90,7 @@ void main() {
     }, skip: true);
   });
 
-  testWidgets(' feedback sendFeedback', (tester) async {
+  test(' feedback sendFeedback', () async {
     var callbackWasCalled = false;
     final screenshotController = MockScreenshotController();
     void onFeedback(
@@ -102,23 +102,12 @@ void main() {
       callbackWasCalled = true;
     }
 
-    await tester.pumpWidget(
-      Builder(
-        builder: (BuildContext context) {
-          FeedbackWidgetState.sendFeedback(
-            context,
-            onFeedback,
-            screenshotController,
-            'Hello World!',
-            delay: const Duration(seconds: 0),
-            showKeyboard: true,
-          );
-          // The builder function must return a widget.
-          return Container();
-        },
-      ),
+    await FeedbackWidgetState.sendFeedback(
+      onFeedback,
+      screenshotController,
+      'Hello World!',
+      delay: const Duration(seconds: 0),
     );
-
     expect(callbackWasCalled, true);
   });
 }

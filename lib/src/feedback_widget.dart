@@ -18,6 +18,7 @@ class FeedbackWidget extends StatefulWidget {
     required this.isFeedbackVisible,
     required this.drawColors,
   })   : assert(
+          // This way, we can have a const constructor
           // ignore: prefer_is_empty
           drawColors.length > 0,
           'There must be at least one color to draw',
@@ -174,7 +175,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                     height: MediaQuery.of(context).size.height,
                     child: FeedbackBottomSheet(
                       onSubmit: (context, feedback) {
-                        sendFeedback(
+                        _sendFeedback(
                           context,
                           FeedbackData.of(context)!.onFeedback!,
                           screenshotController,
@@ -193,17 +194,11 @@ class FeedbackWidgetState extends State<FeedbackWidget>
 
   @visibleForTesting
   static Future<void> sendFeedback(
-    BuildContext context,
     OnFeedbackCallback onFeedbackSubmitted,
     ScreenshotController controller,
     String feedbackText, {
     Duration delay = const Duration(milliseconds: 200),
-    bool showKeyboard = false,
   }) async {
-    if (!showKeyboard) {
-      _hideKeyboard(context);
-    }
-
     // Wait for the keyboard to be closed, and then proceed
     // to take a screenshot
     await Future.delayed(
@@ -215,9 +210,6 @@ class FeedbackWidgetState extends State<FeedbackWidget>
           delay: const Duration(milliseconds: 0),
         );
 
-        // Close feedback mode
-        FeedbackData.of(context)?.hide();
-
         // Give it to the developer
         // to do something with it.
         onFeedbackSubmitted(
@@ -226,6 +218,27 @@ class FeedbackWidgetState extends State<FeedbackWidget>
         );
       },
     );
+  }
+
+  static Future<void> _sendFeedback(
+    BuildContext context,
+    OnFeedbackCallback onFeedbackSubmitted,
+    ScreenshotController controller,
+    String feedbackText, {
+    Duration delay = const Duration(milliseconds: 200),
+    bool showKeyboard = false,
+  }) async {
+    if (!showKeyboard) {
+      _hideKeyboard(context);
+    }
+    sendFeedback(
+      onFeedbackSubmitted,
+      controller,
+      feedbackText,
+      delay: delay,
+    );
+    // Close feedback mode
+    FeedbackData.of(context)?.hide();
   }
 
   static void _hideKeyboard(BuildContext context) {

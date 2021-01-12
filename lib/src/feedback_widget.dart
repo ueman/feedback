@@ -8,6 +8,7 @@ import 'package:feedback/src/scale_and_clip.dart';
 import 'package:feedback/src/screenshot.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
 
 typedef FeedbackButtonPress = void Function(BuildContext context);
 
@@ -192,6 +193,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     );
   }
 
+  @internal
   @visibleForTesting
   static Future<void> sendFeedback(
     OnFeedbackCallback onFeedbackSubmitted,

@@ -1,9 +1,5 @@
-import 'dart:ui';
-
-import 'package:feedback/src/l18n/localization.dart';
 import 'package:feedback/src/l18n/translation.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 typedef OnSubmit = void Function(BuildContext context, String feedback);
@@ -21,7 +17,6 @@ class FeedbackBottomSheet extends StatelessWidget {
       initialEntries: [
         OverlayEntry(
           builder: (context) {
-            final controller = TextEditingController();
             return _FeedbackBottomSheet(
               onSubmit: onSubmit,
             );

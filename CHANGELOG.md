@@ -1,3 +1,6 @@
+## [1.0.0-nullsafety]
+- Migrated to nullsafety
+
 ## [1.0.0-beta]
 - Removed dependency on MaterialApp
 - Use Flutter mechanism for localization

@@ -28,14 +28,15 @@ class ScreenshotController {
 
   FlutterErrorDetails _noRenderObject() {
     return FlutterErrorDetails(
-        exception: Exception(
-          '_containerKey.currentContext is null. '
-          'Thus we can\'t create a screenshot',
-        ),
-        library: 'feedback',
-        context: ErrorDescription(
-          'Tried to find a context to use it to create a screenshot',
-        ));
+      exception: Exception(
+        '_containerKey.currentContext is null. '
+        'Thus we can\'t create a screenshot',
+      ),
+      library: 'feedback',
+      context: ErrorDescription(
+        'Tried to find a context to use it to create a screenshot',
+      ),
+    );
   }
 }
 

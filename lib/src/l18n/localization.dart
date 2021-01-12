@@ -4,6 +4,7 @@ import 'package:feedback/src/l18n/translation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class FeedbackLocalization extends StatelessWidget {
   const FeedbackLocalization({
@@ -17,18 +18,20 @@ class FeedbackLocalization extends StatelessWidget {
   final List<LocalizationsDelegate<dynamic>>? delegates;
   final Locale? localeOverride;
 
-  Iterable<LocalizationsDelegate<dynamic>> get _localizationsDelegates sync* {
-    yield DefaultMaterialLocalizations.delegate;
-    yield DefaultCupertinoLocalizations.delegate;
-    yield DefaultWidgetsLocalizations.delegate;
-    yield const GlobalFeedbackLocalizationsDelegate();
-  }
+  List<LocalizationsDelegate<dynamic>> get _localizationsDelegates => [
+        ...GlobalMaterialLocalizations.delegates,
+        const GlobalFeedbackLocalizationsDelegate(),
+      ];
 
   @override
   Widget build(BuildContext context) {
+    final mergedDelegates = _localizationsDelegates.toList(growable: true);
+    if (delegates != null) {
+      mergedDelegates.insertAll(0, delegates!);
+    }
     return Localizations(
-      delegates: delegates ?? _localizationsDelegates.toList(growable: false),
-      locale: localeOverride ?? (window.locale ?? const Locale('en')),
+      delegates: mergedDelegates,
+      locale: localeOverride ?? window.locale,
       child: child,
     );
   }

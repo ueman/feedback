@@ -27,19 +27,21 @@ void consoleFeedbackFunction(
 void alertFeedbackFunction(
   BuildContext outerContext,
   String feedbackText,
-  Uint8List feedbackScreenshot,
+  Uint8List? feedbackScreenshot,
 ) {
   showDialog<void>(
     context: outerContext,
     builder: (context) {
       return AlertDialog(
         title: Text(feedbackText),
-        content: Image.memory(
-          feedbackScreenshot,
-          height: 600,
-          width: 500,
-          fit: BoxFit.contain,
-        ),
+        content: feedbackScreenshot != null
+            ? Image.memory(
+                feedbackScreenshot,
+                height: 600,
+                width: 500,
+                fit: BoxFit.contain,
+              )
+            : null,
         actions: <Widget>[
           FlatButton(
             child: const Text('Close'),

@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(
@@ -10,7 +11,7 @@ void main() {
       child: const MyApp(),
       theme: FeedbackThemeData(
         background: Colors.grey,
-        feedbackSheetColor: Colors.grey[50],
+        feedbackSheetColor: Colors.grey[50]!,
         drawColors: [
           Colors.red,
           Colors.green,
@@ -19,17 +20,18 @@ void main() {
         ],
       ),
       localizationsDelegates: const [
-        DefaultMaterialLocalizations.delegate,
-        DefaultCupertinoLocalizations.delegate,
-        DefaultWidgetsLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
         GlobalFeedbackLocalizationsDelegate(),
       ],
+      localeOverride: const Locale('en'),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key key, this.title}) : super(key: key);
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -100,10 +102,10 @@ class _MyHomePageState extends State<MyHomePage> {
             FlatButton(
               child: const Text('Get feedback'),
               onPressed: () {
-                BetterFeedback.of(context).show(
+                BetterFeedback.of(context)?.show(
                   (
                     String feedbackText,
-                    Uint8List feedbackScreenshot,
+                    Uint8List? feedbackScreenshot,
                   ) {
                     // upload to server, share whatever
                     // for example purposes just show it to the user

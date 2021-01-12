@@ -69,18 +69,21 @@ class _BetterFeedbackState extends State<BetterFeedback> {
       data: widget.theme,
       localizationsDelegates: widget.localizationsDelegates,
       localeOverride: widget.localeOverride,
-      child: FeedbackData(
-        controller: controller,
-        child: Builder(
-          builder: (context) {
-            return FeedbackWidget(
-              child: widget.child,
-              isFeedbackVisible: feedbackVisible,
-              drawColors: FeedbackTheme.of(context).drawColors,
-            );
-          },
-        ),
-      ),
+      child: Builder(builder: (context) {
+        return FeedbackData(
+          controller: controller,
+          child: Builder(
+            builder: (context) {
+              assert(debugCheckHasFeedbackLocalizations(context));
+              return FeedbackWidget(
+                child: widget.child,
+                isFeedbackVisible: feedbackVisible,
+                drawColors: FeedbackTheme.of(context).drawColors,
+              );
+            },
+          ),
+        );
+      }),
     );
   }
 

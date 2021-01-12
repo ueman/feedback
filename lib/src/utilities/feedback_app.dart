@@ -21,10 +21,10 @@ class FeedbackApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MediaQueryFromWindow(
-      child: FeedbackLocalization(
-        delegates: localizationsDelegates,
-        localeOverride: localeOverride,
+    return FeedbackLocalization(
+      delegates: localizationsDelegates,
+      localeOverride: localeOverride,
+      child: MediaQueryFromWindow(
         child: FeedbackTheme(
           data: data ?? FeedbackThemeData(),
           child: child,

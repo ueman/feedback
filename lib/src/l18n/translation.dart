@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 abstract class FeedbackLocalizations {
@@ -125,7 +126,7 @@ class GlobalFeedbackLocalizationsDelegate
   String toString() => 'DefaultFeedbackLocalizations.delegate(en_EN)';
 }
 
-bool debugCheckHasAboutLocalizations(BuildContext context) {
+bool debugCheckHasFeedbackLocalizations(BuildContext context) {
   assert(() {
     if (Localizations.of<FeedbackLocalizations>(
           context,

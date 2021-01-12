@@ -6,14 +6,16 @@ publish_to: none
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.10.0 <3.0.0'
-  flutter: '>=1.22.0 <2.0.0'
+  sdk: '>=2.12.0-0 <3.0.0'
+  flutter: '>=1.24.0-10.2.pre <2.0.0'
 
 dependencies:
   cupertino_icons: ^1.0.1+1
   feedback:
     path: ../../feedback
   flutter:
+    sdk: flutter
+  flutter_localizations:
     sdk: flutter
 
 dev_dependencies:

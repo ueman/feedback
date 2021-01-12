@@ -53,8 +53,8 @@ void main() {
 }
 ```
 
-Provide a way to show the feedback panel by calling `BetterFeedback.of(context).show(...);`
-Provide a way to hide the feedback panel by calling  `BetterFeedback.of(context).hide();` 
+Provide a way to show the feedback panel by calling `BetterFeedback.of(context)?.show(...);`
+Provide a way to hide the feedback panel by calling  `BetterFeedback.of(context)?.hide();` 
 
 ### Upload feedback
 
@@ -66,35 +66,31 @@ To upload the feedback you should use, for example, a [MultipartRequest](https:/
 import 'dart:typed_data';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
-  void main() {
-    runApp(
-      BetterFeedback(
-        child: const MyApp(),
-        theme: FeedbackThemeData(
-          // You can customize the background color, ...
-          background: Colors.grey,
-          // ... the color of the bottomsheet, ...
-          feedbackSheetColor: Colors.grey[50],
-          // ... the colors with which the user can draw...
-          drawColors: [
-            Colors.red,
-            Colors.green,
-            Colors.blue,
-            Colors.yellow,
-          ],
-        ),
-        // ... and the language used by BetterFeedback.
-        localizationsDelegates: const [
-          DefaultMaterialLocalizations.delegate,
-          DefaultCupertinoLocalizations.delegate,
-          DefaultWidgetsLocalizations.delegate,
-          GlobalFeedbackLocalizationsDelegate(),
+  runApp(
+    BetterFeedback(
+      child: const MyApp(),
+      theme: FeedbackThemeData(
+        background: Colors.grey,
+        feedbackSheetColor: Colors.grey[50]!,
+        drawColors: [
+          Colors.red,
+          Colors.green,
+          Colors.blue,
+          Colors.yellow,
         ],
       ),
-    );
-  }
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalFeedbackLocalizationsDelegate(),
+      ],
+      localeOverride: const Locale('en'),
+    ),
+  );
 }
 ```
 How the properties of `FeedbackThemeData` correspond to the view can be seen in the following image. 

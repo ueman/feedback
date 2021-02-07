@@ -17,7 +17,9 @@
 A Flutter package for obtaining better feedback. It allows the user to provide interactive feedback 
 directly in the app, by annotating a screenshot of the current page, as well as by adding text.
 
-<img src="img/example_0.1.0-beta.gif" height="350" alt="Example Image">
+<p align="center">
+  <img src="img/example_0.1.0-beta.gif" width="200" alt="Example Image">
+</p>
 
 You can view this as a video [here](img/movie.mp4).
 
@@ -108,7 +110,7 @@ void main() {
 }
 ```
 How the properties of `FeedbackThemeData` correspond to the view can be seen in the following image. 
-<img src="img/theme_description.png" height="400" alt="Theme Usages">
+<img src="img/theme_description.png" max-height="400" alt="Theme Usages">
 
 ## Tips, tricks and usage scenarios
 

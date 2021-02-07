@@ -7,6 +7,9 @@
   <a href="https://github.com/ueman/feedback/actions?query=workflow%3Aflutter"><img src="https://github.com/ueman/feedback/workflows/flutter/badge.svg?branch=master" alt="GitHub Workflow Status"></a>
   <a href="https://codecov.io/gh/ueman/feedback"><img src="https://codecov.io/gh/ueman/feedback/branch/master/graph/badge.svg" alt="code coverage"></a>
   <a href="https://github.com/ueman#sponsor-me"><img src="https://img.shields.io/github/sponsors/ueman" alt="Sponsoring"></a>
+  <a href="https://pub.dev/packages/feedback/score"><img src="https://badges.bar/feedback/likes" alt="likes"></a>
+  <a href="https://pub.dev/packages/feedback/score"><img src="https://badges.bar/feedback/popularity" alt="popularity"></a>
+  <a href="https://pub.dev/packages/feedback/score"><img src="https://badges.bar/feedback/pub%20points" alt="pub points"></a>
 </p>
 
 ---
@@ -45,7 +48,7 @@ dependencies:
 
 Then, run `flutter packages get` in your terminal.
 
-## Getting Started
+## 🚀 Getting Started
 
 Just wrap your app in a `BetterFeedback` widget.
 To show the feedback view just call `BetterFeedback.of(context).show(...);`.
@@ -71,7 +74,7 @@ Provide a way to hide the feedback panel by calling  `BetterFeedback.of(context)
 
 To upload the feedback you should use, for example, a [MultipartRequest](https://pub.dev/documentation/http/latest/http/MultipartRequest-class.html).
 
-### Configuration
+### 🎨 Configuration & customization
 
 ```dart
 import 'dart:typed_data';

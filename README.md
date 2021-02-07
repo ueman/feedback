@@ -52,9 +52,7 @@ To show the feedback view just call `BetterFeedback.of(context).show(...);`.
 The callback gets called when the user submits his feedback. 
 
 ```dart
-import 'dart:typed_data';
 import 'package:feedback/feedback.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {

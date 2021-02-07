@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="img/feedback.png" height="100" alt="Feedback" />
+  <img src="img/feedback.png" max-height="100" alt="Feedback" />
 </p>
 
 <p align="center">

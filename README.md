@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="img/feedback.png" max-height="100" alt="Feedback" />
+  <img src="https://raw.githubusercontent.com/ueman/feedback/master/img/feedback.png" max-height="100" alt="Feedback" />
 </p>
 
 <p align="center">
@@ -18,10 +18,10 @@ A Flutter package for obtaining better feedback. It allows the user to provide i
 directly in the app, by annotating a screenshot of the current page, as well as by adding text.
 
 <p align="center">
-  <img src="img/example_0.1.0-beta.gif" width="200" alt="Example Image">
+  <img src="https://raw.githubusercontent.com/ueman/feedback/master/img/example_0.1.0-beta.gif" width="200" alt="Example Image">
 </p>
 
-You can view this as a video [here](img/movie.mp4).
+You can view this as a video [here](https://raw.githubusercontent.com/ueman/feedback/master/img/movie.mp4).
 
 ## Motivation
 
@@ -112,7 +112,7 @@ void main() {
 }
 ```
 How the properties of `FeedbackThemeData` correspond to the view can be seen in the following image. 
-<img src="img/theme_description.png" max-height="400" alt="Theme Usages">
+<img src="https://raw.githubusercontent.com/ueman/feedback/master/img/theme_description.png" max-height="400" alt="Theme Usages">
 
 ## Tips, tricks and usage scenarios
 

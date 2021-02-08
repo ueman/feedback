@@ -37,7 +37,9 @@ of your app. It is like the saying "A picture is worth a thousand words" because
 a textual description can be interpreted in many ways which makes it harder to
 understand.
 
-## Setup
+## 🚀 Getting Started
+
+### Setup
 
 First, you will need to add `feedback` to your `pubspec.yaml`:
 
@@ -50,7 +52,7 @@ dependencies:
 
 Then, run `flutter packages get` in your terminal.
 
-## 🚀 Getting Started
+### Use it
 
 Just wrap your app in a `BetterFeedback` widget.
 To show the feedback view just call `BetterFeedback.of(context).show(...);`.
@@ -129,10 +131,10 @@ information upon hitting an error.
 - Platform views are invisible in screenshots (like [webview](https://pub.dev/packages/webview_flutter) or [Google Maps](https://pub.dev/packages/google_maps_flutter))
 - Flutter for web is currently not supported, see this [issue](https://github.com/ueman/feedback/issues/13)
 
-# Known usages
+## 📣  Author
 
-A list of apps which use this library can be found [here](usages.md).
+- Jonas Uekötter [GitHub](https://github.com/ueman) [Twitter](https://twitter.com/ue_man)
 
-# Sponsoring
+## Sponsoring
 
 I'm working on my packages on my free-time, but I don't have as much time as I would. If this package or any other package I created is helping you, please consider to [sponsor](https://github.com/ueman#sponsor-me) me. By doing so, I will prioritize your issues or your pull-requests before the others.

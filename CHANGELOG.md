@@ -1,3 +1,6 @@
+## [1.0.0-nullsafety.1]
+- Fix deprecation warnings
+
 ## [1.0.0-nullsafety.0+1]
 - Improve Readme
 

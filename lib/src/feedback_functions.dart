@@ -43,7 +43,7 @@ void alertFeedbackFunction(
               )
             : null,
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: const Text('Close'),
             onPressed: () {
               Navigator.pop(context);

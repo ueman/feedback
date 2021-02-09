@@ -56,7 +56,7 @@ class _MyTestPageState extends State<MyTestPage> {
               style: Theme.of(context).textTheme.headline4,
             ),
             const TextField(),
-            FlatButton(
+            TextButton(
               key: const Key('open_feedback'),
               child: const Text('open feedback'),
               onPressed: () {

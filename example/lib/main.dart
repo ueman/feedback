@@ -85,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
               style: Theme.of(context).textTheme.headline4,
             ),
             const TextField(),
-            RaisedButton(
+            ElevatedButton(
               child: const Text('Open another scaffold'),
               onPressed: () {
                 Navigator.push<void>(
@@ -98,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 );
               },
             ),
-            FlatButton(
+            TextButton(
               child: const Text('Get feedback'),
               onPressed: () {
                 BetterFeedback.of(context)?.show(

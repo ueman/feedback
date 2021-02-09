@@ -75,7 +75,7 @@ class __FeedbackBottomSheetState extends State<_FeedbackBottomSheet> {
                     controller: controller,
                   ),
                 ),
-                FlatButton(
+                TextButton(
                   key: const Key('submit_feedback_button'),
                   child: Text(
                     FeedbackLocalizations.of(context).submitButtonText,

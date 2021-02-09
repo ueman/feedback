@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://pub.dartlang.org/packages/feedback"><img src="https://img.shields.io/pub/v/feedback.svg" alt="pub.dev"></a>
-  <a href="https://github.com/ueman/feedback/actions?query=workflow%3Aflutter"><img src="https://github.com/ueman/feedback/workflows/flutter/badge.svg?branch=master" alt="GitHub Workflow Status"></a>
+  <a href="https://github.com/ueman/feedback/actions?query=workflow%3Abuild"><img src="https://github.com/ueman/feedback/workflows/build/badge.svg?branch=master" alt="GitHub Workflow Status"></a>
   <a href="https://codecov.io/gh/ueman/feedback"><img src="https://codecov.io/gh/ueman/feedback/branch/master/graph/badge.svg" alt="code coverage"></a>
   <a href="https://github.com/ueman#sponsor-me"><img src="https://img.shields.io/github/sponsors/ueman" alt="Sponsoring"></a>
   <a href="https://pub.dev/packages/feedback/score"><img src="https://badges.bar/feedback/likes" alt="likes"></a>

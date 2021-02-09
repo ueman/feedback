@@ -1,4 +1,4 @@
-name: flutter
+name: build
 
 on: [push, pull_request]
 
@@ -14,15 +14,7 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           channel: 'beta'
-      - run: flutter format .
-      - name: "Check that there are no changes after formatting"
-        run: |
-          if [ -n "$(git status --porcelain)" ]; then
-            echo Working directory not clean after formatting. Please apply the
-            echo following changes:
-            git diff
-            false
-          fi
+      - run: flutter format -n --set-exit-if-changed .
       - run: flutter analyze
       - run: flutter test --coverage
       - uses: codecov/codecov-action@v1.2.1

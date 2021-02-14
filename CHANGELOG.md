@@ -1,3 +1,6 @@
+## [1.0.0-nullsafety.2]
+- Update meta to ^1.3.0
+
 ## [1.0.0-nullsafety.1]
 - Fix deprecation warnings
 

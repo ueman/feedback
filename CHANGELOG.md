@@ -1,3 +1,6 @@
+## [1.0.1]
+- Fix an [issue](https://github.com/ueman/feedback/issues/42) where the drawing would't make it onto the feedback image
+
 ## [1.0.0]
 - stable null safe release
 

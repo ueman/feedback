@@ -233,7 +233,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     if (!showKeyboard) {
       _hideKeyboard(context);
     }
-    sendFeedback(
+    await sendFeedback(
       onFeedbackSubmitted,
       controller,
       feedbackText,

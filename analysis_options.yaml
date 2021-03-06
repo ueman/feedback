@@ -138,7 +138,7 @@ linter:
     - throw_in_finally
     # - type_annotate_public_apis # subset of always_specify_types
     - type_init_formals
-    # - unawaited_futures # too many false positives
+    - unawaited_futures
     - unnecessary_await_in_return
     - unnecessary_brace_in_string_interps
     - unnecessary_const

@@ -125,6 +125,21 @@ feedback of the user. This way you know how the user got to the location shown
 in the screenshot.
 - Use it as a view for [Sentry](https://sentry.io/)s [user feedback](https://docs.sentry.io/enriching-error-data/user-feedback/?platform=browser) to collect additional user 
 information upon hitting an error.
+- Use it as an internal quality control tool
+
+### Where to share the users feedback?
+Depending on your use case there are wide variety of solutions.
+These are a couple suggestions:
+
+| Target |   Notes |
+|--------|---------|
+| GitLab Issue | GitLab has a [REST API to create issues](https://docs.gitlab.com/ee/api/issues.html) |
+| Share via platform share dialog | [share on pub.dev](https://pub.dev/packages/share) |
+| Firebase | [Firestore](https://pub.dev/packages/cloud_firestore), [Cloud Storage](https://pub.dev/packages/firebase_storage), [Database](https://pub.dev/packages/firebase_database)
+|   Jira | Jira has a [REST API to create issues and upload files](https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-an-issue-examples) |
+| Trello | Trello has a [REST API to create issues and upload files](https://developer.atlassian.com/cloud/trello/rest/api-group-actions/) |
+
+If you have sample code on how to upload it to one of those platform I would really appreciate a PR to the example app.
 
 ## Known Issues and limitations
 

@@ -1,7 +1,7 @@
 ## [1.0.2]
 
 - Fix: Color Icon buttons are bigger to improve accessibility
-
+- Fix: Clear drawing after sending feedback (#46)
 
 ## [1.0.1]
 - Fix an [issue](https://github.com/ueman/feedback/issues/42) where the drawing would't make it onto the feedback image

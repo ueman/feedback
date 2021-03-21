@@ -175,13 +175,14 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                   child: SizedBox(
                     height: MediaQuery.of(context).size.height,
                     child: FeedbackBottomSheet(
-                      onSubmit: (context, feedback) {
-                        _sendFeedback(
+                      onSubmit: (context, feedback) async {
+                        await _sendFeedback(
                           context,
                           FeedbackData.of(context)!.onFeedback!,
                           screenshotController,
                           feedback,
                         );
+                        painterController.clear();
                       },
                     ),
                   ),
@@ -239,6 +240,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
       feedbackText,
       delay: delay,
     );
+
     // Close feedback mode
     FeedbackData.of(context)?.hide();
   }

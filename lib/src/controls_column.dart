@@ -1,4 +1,3 @@
-import 'package:feedback/src/icon_button.dart';
 import 'package:feedback/src/l18n/translation.dart';
 import 'package:flutter/material.dart';
 
@@ -51,9 +50,8 @@ class ControlsColumn extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          FeedbackIconButton(
+          IconButton(
             key: const ValueKey<String>('close_controls_column'),
-            minButtonSize: 48,
             icon: const Icon(Icons.close),
             onPressed: onCloseFeedback,
           ),
@@ -80,12 +78,12 @@ class ControlsColumn extends StatelessWidget {
                   : null,
             ),
           ),
-          FeedbackIconButton(
+          IconButton(
             key: const ValueKey<String>('undo_button'),
             icon: const Icon(Icons.undo),
             onPressed: isNavigatingActive ? null : onUndo,
           ),
-          FeedbackIconButton(
+          IconButton(
             key: const ValueKey<String>('clear_button'),
             icon: const Icon(Icons.delete),
             onPressed: isNavigatingActive ? null : onClearDrawing,
@@ -117,7 +115,7 @@ class _ColorSelectionIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FeedbackIconButton(
+    return IconButton(
       icon: Icon(isActive ? Icons.lens : Icons.panorama_fish_eye),
       color: color,
       onPressed: onPressed == null ? null : () => onPressed!(color),

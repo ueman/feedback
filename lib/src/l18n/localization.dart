@@ -31,7 +31,8 @@ class FeedbackLocalization extends StatelessWidget {
     }
 
     Locale fallbackLocale = const Locale('en', 'US');
-    if(window.locale != null && window.locale.toString() != '') {
+    // ignore: unnecessary_null_comparison
+    if (window.locale != null && window.locale.toString() != '') {
       fallbackLocale = window.locale;
     }
 

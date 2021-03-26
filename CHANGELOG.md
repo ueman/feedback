@@ -1,3 +1,8 @@
+## [1.1.0]
+
+- Fix: Color Icon buttons are bigger to improve accessibility
+- Fix: Clear drawing after sending feedback (#46)
+
 ## [1.0.2]
 
 - Fix: Color Icon buttons are bigger to improve accessibility

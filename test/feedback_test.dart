@@ -34,9 +34,12 @@ void main() {
 
       userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
       final activeDrawingColor = find.byWidgetPredicate((widget) {
-        if(!(widget is IconButton)) return false;
-        var selectButton = widget as IconButton;
-        return selectButton.color != null && selectButton.onPressed != null;
+        if (widget is IconButton) {
+          final IconButton selectButton = widget;
+          return selectButton.color != null && selectButton.onPressed != null;
+        } else {
+          return false;
+        }
       });
 
       expect(userInputFields, findsOneWidget);
@@ -68,9 +71,12 @@ void main() {
 
       userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
       final activeDrawingColor = find.byWidgetPredicate((widget) {
-        if(!(widget is IconButton)) return false;
-        var selectButton = widget as IconButton;
-        return selectButton.color != null && selectButton.onPressed != null;
+        if (widget is IconButton) {
+          final IconButton selectButton = widget;
+          return selectButton.color != null && selectButton.onPressed != null;
+        } else {
+          return false;
+        }
       });
 
       expect(userInputFields, findsOneWidget);

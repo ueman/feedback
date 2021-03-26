@@ -11,18 +11,16 @@ environment:
 
 dependencies:
   cupertino_icons: ^1.0.1+1
+  feedback:
+    path: ../../feedback
   flutter:
     sdk: flutter
+  flutter_email_sender: "^5.0.0"
   flutter_localizations:
     sdk: flutter
-
   http: ^0.13.0
   path_provider: ^2.0.0
   share: ^2.0.0
-
-  feedback:
-    path: ../../feedback
-  flutter_email_sender: "^5.0.0"
 
 dev_dependencies:
   flutter_test:

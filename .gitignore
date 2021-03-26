@@ -74,3 +74,4 @@ build/
 
 pubspec.lock
 /test/failures/
+/coverage/lcov.info

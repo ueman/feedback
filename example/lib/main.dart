@@ -114,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ) async {
                     // upload to server, share whatever
                     // example below: draft an email and send to yourself
-                    // (only works in iOS and Android, as writing files and sending emails is only supported there)
+                    // (only works in iOS and Android)
                     if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
                       final Directory output = await getTemporaryDirectory();
                       final String screenshotFilePath =

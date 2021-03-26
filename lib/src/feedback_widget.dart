@@ -19,7 +19,7 @@ class FeedbackWidget extends StatefulWidget {
     required this.isFeedbackVisible,
     required this.drawColors,
     this.defaultNavigate = true,
-  })   : assert(
+  })  : assert(
           // This way, we can have a const constructor
           // ignore: prefer_is_empty
           drawColors.length > 0,

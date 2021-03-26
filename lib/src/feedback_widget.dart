@@ -2,6 +2,7 @@ import 'package:feedback/src/better_feedback.dart';
 import 'package:feedback/src/controls_column.dart';
 import 'package:feedback/src/feedback_bottom_sheet.dart';
 import 'package:feedback/src/feedback_functions.dart';
+import 'package:feedback/src/feedback_mode.dart';
 import 'package:feedback/src/paint_on_background.dart';
 import 'package:feedback/src/painter.dart';
 import 'package:feedback/src/scale_and_clip.dart';
@@ -18,8 +19,8 @@ class FeedbackWidget extends StatefulWidget {
     required this.child,
     required this.isFeedbackVisible,
     required this.drawColors,
-    this.defaultNavigate = true,
-  })  : assert(
+    required this.mode,
+  })   : assert(
           // This way, we can have a const constructor
           // ignore: prefer_is_empty
           drawColors.length > 0,
@@ -28,7 +29,7 @@ class FeedbackWidget extends StatefulWidget {
         super(key: key);
 
   final bool isFeedbackVisible;
-  final bool defaultNavigate;
+  final FeedbackMode mode;
   final Widget child;
   final List<Color> drawColors;
 
@@ -43,7 +44,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
   ScreenshotController screenshotController = ScreenshotController();
   TextEditingController textEditingController = TextEditingController();
 
-  bool isNavigatingActive = false;
+  FeedbackMode mode = FeedbackMode.navigate;
   AnimationController? _controller;
 
   PainterController create() {
@@ -59,7 +60,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     super.initState();
     painterController = create();
 
-    isNavigatingActive = widget.defaultNavigate;
+    mode = widget.mode;
 
     _controller = AnimationController(
       vsync: this,
@@ -125,7 +126,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                     child: PaintOnChild(
                       controller: painterController,
                       isPaintingActive:
-                          !isNavigatingActive && widget.isFeedbackVisible,
+                          mode == FeedbackMode.draw && widget.isFeedbackVisible,
                       child: widget.child,
                     ),
                   ),
@@ -137,9 +138,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                   -0.7,
                 ),
                 child: ControlsColumn(
-                  mode: isNavigatingActive
-                      ? ControlMode.navigate
-                      : ControlMode.draw,
+                  mode: mode,
                   activeColor: painterController.drawColor,
                   colors: widget.drawColors,
                   onColorChanged: (color) {
@@ -158,7 +157,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                   },
                   onControlModeChanged: (mode) {
                     setState(() {
-                      isNavigatingActive = mode == ControlMode.navigate;
+                      this.mode = mode;
                       _hideKeyboard(context);
                     });
                   },

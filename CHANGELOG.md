@@ -1,7 +1,7 @@
 ## [1.1.0]
 
-- Fix locale for Flutter Web (#13, #50)
-- Add option for changing the default navigation mode
+- Fix Flutter Web (#13, #50)
+- Add option for changing the default feedback mode
 
 ## [1.0.2]
 

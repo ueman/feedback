@@ -1,4 +1,5 @@
 import 'package:feedback/src/controls_column.dart';
+import 'package:feedback/src/feedback_mode.dart';
 import 'package:feedback/src/l18n/localization.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
@@ -6,10 +7,10 @@ import 'package:flutter/material.dart';
 void main() {
   Widget create({
     Color? activeColor,
-    ControlMode? mode,
+    FeedbackMode? mode,
     ValueChanged<Color>? onColorChanged,
     VoidCallback? onUndo,
-    ValueChanged<ControlMode>? onControlModeChanged,
+    ValueChanged<FeedbackMode>? onControlModeChanged,
     VoidCallback? onCloseFeedback,
     VoidCallback? onClearDrawing,
     List<Color>? colors,
@@ -17,7 +18,7 @@ void main() {
     return FeedbackLocalization(
       child: ControlsColumn(
         activeColor: activeColor ?? Colors.red,
-        mode: mode ?? ControlMode.draw,
+        mode: mode ?? FeedbackMode.draw,
         colors:
             colors ?? [Colors.red, Colors.green, Colors.blue, Colors.yellow],
         onClearDrawing: onClearDrawing ?? () {},
@@ -51,7 +52,7 @@ void main() {
     });
 
     testWidgets(' change navigation to drawing', (tester) async {
-      var mode = ControlMode.navigate;
+      var mode = FeedbackMode.navigate;
 
       await tester.pumpWidget(
         create(
@@ -67,11 +68,11 @@ void main() {
       expect(drawButton, findsOneWidget);
       await tester.tap(drawButton);
 
-      expect(mode, ControlMode.draw);
+      expect(mode, FeedbackMode.draw);
     });
 
     testWidgets(' change drawing to navigating', (tester) async {
-      var mode = ControlMode.draw;
+      var mode = FeedbackMode.draw;
 
       await tester.pumpWidget(
         create(
@@ -87,7 +88,7 @@ void main() {
           find.byKey(const ValueKey<String>('navigate_button'));
       await tester.tap(navigateButton);
 
-      expect(mode, ControlMode.navigate);
+      expect(mode, FeedbackMode.navigate);
     });
 
     testWidgets(' drawing is inactive while navigating', (tester) async {
@@ -97,7 +98,7 @@ void main() {
       await tester.pumpWidget(
         create(
           colors: colors,
-          mode: ControlMode.navigate,
+          mode: FeedbackMode.navigate,
           onClearDrawing: () {
             drawingCallbackWasCalled = true;
           },
@@ -130,7 +131,7 @@ void main() {
 
       await tester.pumpWidget(
         create(
-          mode: ControlMode.draw,
+          mode: FeedbackMode.draw,
           colors: colors,
           activeColor: colors[0],
           onColorChanged: (newColor) {

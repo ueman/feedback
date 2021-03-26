@@ -10,7 +10,7 @@ import 'test_app.dart';
 
 void main() {
   group('BetterFeedback', () {
-    testWidgets(' can open feedback with default settings', (tester) async {
+    testWidgets('can open feedback with default settings', (tester) async {
       final widget = BetterFeedback(
         child: Builder(
           builder: (context) {
@@ -39,9 +39,9 @@ void main() {
       expect(activeDrawingColor, findsNothing);
     });
 
-    testWidgets(' can open feedback in drawing mode', (tester) async {
+    testWidgets('can open feedback in drawing mode', (tester) async {
       final widget = BetterFeedback(
-        defaultNavigate: false,
+        mode: FeedbackMode.draw,
         child: Builder(
           builder: (context) {
             return const MyTestApp();
@@ -69,7 +69,7 @@ void main() {
       expect(activeDrawingColor.evaluate().length, 4);
     });
 
-    testWidgets(' can close feedback', (tester) async {
+    testWidgets('can close feedback', (tester) async {
       const widget = BetterFeedback(
         child: MyTestApp(),
       );
@@ -99,7 +99,7 @@ void main() {
     });
 
     // TODO(ju): figure out a way to test this
-    testWidgets(' feedback callback gets called', (tester) async {
+    testWidgets('feedback callback gets called', (tester) async {
       const widget = BetterFeedback(
         child: MyTestApp(),
       );
@@ -122,7 +122,7 @@ void main() {
     }, skip: true);
   });
 
-  test(' feedback sendFeedback', () async {
+  test('feedback sendFeedback', () async {
     var callbackWasCalled = false;
     final screenshotController = MockScreenshotController();
     void onFeedback(

@@ -30,7 +30,7 @@ void main() {
         GlobalFeedbackLocalizationsDelegate(),
       ],
       localeOverride: const Locale('en'),
-      defaultNavigate: false,
+      mode: FeedbackMode.navigate,
     ),
   );
 }

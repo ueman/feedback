@@ -1,10 +1,6 @@
+import 'package:feedback/src/feedback_mode.dart';
 import 'package:feedback/src/l18n/translation.dart';
 import 'package:flutter/material.dart';
-
-enum ControlMode {
-  draw,
-  navigate,
-}
 
 /// This is the Widget on the right side of the app when the feedback view
 /// is active.
@@ -28,16 +24,16 @@ class ControlsColumn extends StatelessWidget {
 
   final ValueChanged<Color> onColorChanged;
   final VoidCallback onUndo;
-  final ValueChanged<ControlMode> onControlModeChanged;
+  final ValueChanged<FeedbackMode> onControlModeChanged;
   final VoidCallback onCloseFeedback;
   final VoidCallback onClearDrawing;
   final List<Color> colors;
   final Color activeColor;
-  final ControlMode mode;
+  final FeedbackMode mode;
 
   @override
   Widget build(BuildContext context) {
-    final isNavigatingActive = ControlMode.navigate == mode;
+    final isNavigatingActive = FeedbackMode.navigate == mode;
     return Card(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
@@ -63,7 +59,7 @@ class ControlsColumn extends StatelessWidget {
               child: Text(FeedbackLocalizations.of(context).navigate),
               onPressed: isNavigatingActive
                   ? null
-                  : () => onControlModeChanged(ControlMode.navigate),
+                  : () => onControlModeChanged(FeedbackMode.navigate),
             ),
           ),
           _ColumnDivider(),
@@ -74,7 +70,7 @@ class ControlsColumn extends StatelessWidget {
               minWidth: 20,
               child: Text(FeedbackLocalizations.of(context).draw),
               onPressed: isNavigatingActive
-                  ? () => onControlModeChanged(ControlMode.draw)
+                  ? () => onControlModeChanged(FeedbackMode.draw)
                   : null,
             ),
           ),

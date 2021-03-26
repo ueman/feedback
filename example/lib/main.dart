@@ -1,8 +1,13 @@
+import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:feedback/feedback.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+
+import 'package:feedback/feedback.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:path_provider/path_provider.dart';
 
 void main() {
   runApp(
@@ -25,6 +30,7 @@ void main() {
         GlobalFeedbackLocalizationsDelegate(),
       ],
       localeOverride: const Locale('en'),
+      defaultNavigate: false,
     ),
   );
 }
@@ -84,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
-            const TextField(),
+            const SizedBox(height: 10),
             ElevatedButton(
               child: const Text('Open another scaffold'),
               onPressed: () {
@@ -98,14 +104,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 );
               },
             ),
+            const SizedBox(height: 10),
             TextButton(
-              child: const Text('Get feedback'),
+              child: const Text('Provide feedback'),
               onPressed: () {
                 BetterFeedback.of(context)?.show(
                   (
                     String feedbackText,
                     Uint8List? feedbackScreenshot,
-                  ) {
+                  ) async {
                     // upload to server, share whatever
                     // for example purposes just show it to the user
                     alertFeedbackFunction(
@@ -113,7 +120,38 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                 );
               },
-            )
+            ),
+            const SizedBox(height: 10),
+            Visibility(
+              visible: !kIsWeb && (Platform.isAndroid || Platform.isIOS),
+              child: TextButton(
+                child: const Text('Provide E-Mail feedback'),
+                onPressed: () {
+                  BetterFeedback.of(context)?.show(
+                    (
+                      String feedbackText,
+                      Uint8List? feedbackScreenshot,
+                    ) async {
+                      // draft an email and send to developer
+                      final Directory output = await getTemporaryDirectory();
+                      final String screenshotFilePath =
+                          '${output.path}/feedback.png';
+                      final File screenshotFile = File(screenshotFilePath);
+                      await screenshotFile.writeAsBytes(feedbackScreenshot!);
+
+                      final Email email = Email(
+                        body: feedbackText,
+                        subject: 'App Feedback',
+                        recipients: ['john.doe@flutter.dev'],
+                        attachmentPaths: [screenshotFilePath],
+                        isHTML: false,
+                      );
+                      await FlutterEmailSender.send(email);
+                    },
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),

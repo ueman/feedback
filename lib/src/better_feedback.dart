@@ -15,6 +15,7 @@ class BetterFeedback extends StatefulWidget {
     this.theme,
     this.localizationsDelegates,
     this.localeOverride,
+    this.defaultNavigate = true,
   }) : super(key: key);
 
   /// The application to wrap, typically a [MaterialApp].
@@ -35,6 +36,11 @@ class BetterFeedback extends StatefulWidget {
   /// If it is not set, the platform default locale is used.
   /// If no platform default locale exists, english is used.
   final Locale? localeOverride;
+
+  /// Set the default controlling mode when launching feedback
+  /// By default it will use start with the navigation option
+  /// Set to false to launch in drawing mode
+  final bool defaultNavigate;
 
   /// Call `BetterFeedback.of(context)` to get an instance of
   /// [FeedbackData] on which you can call `.show()` or `.hide()`
@@ -79,6 +85,7 @@ class _BetterFeedbackState extends State<BetterFeedback> {
                 child: widget.child,
                 isFeedbackVisible: feedbackVisible,
                 drawColors: FeedbackTheme.of(context).drawColors,
+                defaultNavigate: widget.defaultNavigate,
               );
             },
           ),

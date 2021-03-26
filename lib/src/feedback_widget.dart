@@ -18,6 +18,7 @@ class FeedbackWidget extends StatefulWidget {
     required this.child,
     required this.isFeedbackVisible,
     required this.drawColors,
+    this.defaultNavigate = true,
   })   : assert(
           // This way, we can have a const constructor
           // ignore: prefer_is_empty
@@ -27,6 +28,7 @@ class FeedbackWidget extends StatefulWidget {
         super(key: key);
 
   final bool isFeedbackVisible;
+  final bool defaultNavigate;
   final Widget child;
   final List<Color> drawColors;
 
@@ -41,7 +43,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
   ScreenshotController screenshotController = ScreenshotController();
   TextEditingController textEditingController = TextEditingController();
 
-  bool isNavigatingActive = true;
+  bool isNavigatingActive = false;
   AnimationController? _controller;
 
   PainterController create() {
@@ -56,6 +58,8 @@ class FeedbackWidgetState extends State<FeedbackWidget>
   void initState() {
     super.initState();
     painterController = create();
+
+    isNavigatingActive = widget.defaultNavigate;
 
     _controller = AnimationController(
       vsync: this,

@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:feedback/src/l18n/translation.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -31,7 +32,7 @@ class FeedbackLocalization extends StatelessWidget {
     }
     return Localizations(
       delegates: mergedDelegates,
-      locale: localeOverride ?? window.locale,
+      locale: localeOverride ?? window.locale ?? const Locale('en', 'US'),
       child: child,
     );
   }

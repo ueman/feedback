@@ -139,7 +139,9 @@ These are a couple suggestions:
 |   Jira | Jira has a [REST API to create issues and upload files](https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-an-issue-examples) |
 | Trello | Trello has a [REST API to create issues and upload files](https://developer.atlassian.com/cloud/trello/rest/api-group-actions/) |
 
-If you have sample code on how to upload it to one of those platform I would really appreciate a PR to the example app.
+[Here](https://github.com/ueman/feedback/blob/master/example/lib/main.dart#L112) you can find a simple example that uses the users email app to send the details to an email address of your choice.
+
+If you have sample code on how to upload it to different platforms, I would appreciate a PR to the example app.
 
 ## Known Issues and limitations
 

@@ -1,7 +1,7 @@
 ## [1.1.0]
 
-- Fix: Color Icon buttons are bigger to improve accessibility
-- Fix: Clear drawing after sending feedback (#46)
+- Fix locale for Flutter Web (#13, #50)
+- Add option for changing the default navigation mode
 
 ## [1.0.2]
 

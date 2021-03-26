@@ -138,8 +138,7 @@ These are a couple suggestions:
 | Firebase | [Firestore](https://pub.dev/packages/cloud_firestore), [Cloud Storage](https://pub.dev/packages/firebase_storage), [Database](https://pub.dev/packages/firebase_database)
 |   Jira | Jira has a [REST API to create issues and upload files](https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-an-issue-examples) |
 | Trello | Trello has a [REST API to create issues and upload files](https://developer.atlassian.com/cloud/trello/rest/api-group-actions/) |
-
-[Here](https://github.com/ueman/feedback/blob/master/example/lib/main.dart#L112) you can find a simple example that uses the users email app to send the details to an email address of your choice.
+| E-Mail | You can use the users email client like [in the sample app](https://github.com/ueman/feedback/blob/master/example/lib/main.dart) to send feedback to yourself using the [flutter_email_sender](https://pub.dev/packages/flutter_email_sender) plugin.
 
 If you have sample code on how to upload it to different platforms, I would appreciate a PR to the example app.
 

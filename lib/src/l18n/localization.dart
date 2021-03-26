@@ -30,16 +30,16 @@ class FeedbackLocalization extends StatelessWidget {
       mergedDelegates.insertAll(0, delegates!);
     }
 
-    Locale fallbackLocale = const Locale('en', 'US');
-    // ignore: unnecessary_null_comparison
-    if (window.locale != null && window.locale.toString() != '') {
-      fallbackLocale = window.locale;
-    }
-
     return Localizations(
       delegates: mergedDelegates,
-      locale: localeOverride ?? fallbackLocale,
+      locale: localeOverride ?? _defaultLocale,
       child: child,
     );
   }
+}
+
+Locale get _defaultLocale {
+  // Flutter 1.26 (2.0.1) returns `Locale?`, 1.27 `Locale`
+  final Locale? locale = window.locale;
+  return locale ?? const Locale('en', 'US');
 }

@@ -50,6 +50,26 @@ void main() {
       expect(closeButtonCallbackExecuted, true);
     });
 
+    testWidgets(' change navigation to drawing', (tester) async {
+      var mode = ControlMode.navigate;
+
+      await tester.pumpWidget(
+        create(
+          mode: mode,
+          onControlModeChanged: (newMode) {
+            mode = newMode;
+          },
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final drawButton = find.byKey(const ValueKey<String>('draw_button'));
+      expect(drawButton, findsOneWidget);
+      await tester.tap(drawButton);
+
+      expect(mode, ControlMode.draw);
+    });
+
     testWidgets(' change drawing to navigating', (tester) async {
       var mode = ControlMode.draw;
 
@@ -68,40 +88,6 @@ void main() {
       await tester.tap(navigateButton);
 
       expect(mode, ControlMode.navigate);
-    });
-
-    testWidgets(' can launch with drawing mode', (tester) async {
-      var drawingCallbackWasCalled = false;
-      final colors = [Colors.red, Colors.green, Colors.blue, Colors.yellow];
-
-      await tester.pumpWidget(
-        create(
-          colors: colors,
-          mode: ControlMode.navigate,
-          onClearDrawing: () {
-            drawingCallbackWasCalled = true;
-          },
-          onColorChanged: (_) {
-            drawingCallbackWasCalled = true;
-          },
-          onUndo: () {
-            drawingCallbackWasCalled = true;
-          },
-        ),
-      );
-      await tester.pumpAndSettle();
-      final undoButton = find.byKey(const ValueKey<String>('undo_button'));
-      await tester.tap(undoButton);
-
-      final clearButton = find.byKey(const ValueKey<String>('clear_button'));
-      await tester.tap(clearButton);
-
-      for (final color in colors) {
-        final colorButton = find.byKey(ValueKey<Color>(color));
-        await tester.tap(colorButton);
-      }
-
-      expect(drawingCallbackWasCalled, false);
     });
 
     testWidgets(' drawing is inactive while navigating', (tester) async {

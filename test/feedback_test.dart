@@ -33,14 +33,7 @@ void main() {
       await tester.pumpAndSettle();
 
       userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
-      final activeDrawingColor = find.byWidgetPredicate((widget) {
-        if (widget is IconButton) {
-          final IconButton selectButton = widget;
-          return selectButton.color != null && selectButton.onPressed != null;
-        } else {
-          return false;
-        }
-      });
+      final activeDrawingColor = getActiveColorButton();
 
       expect(userInputFields, findsOneWidget);
       expect(activeDrawingColor, findsNothing);
@@ -70,14 +63,7 @@ void main() {
       await tester.pumpAndSettle();
 
       userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
-      final activeDrawingColor = find.byWidgetPredicate((widget) {
-        if (widget is IconButton) {
-          final IconButton selectButton = widget;
-          return selectButton.color != null && selectButton.onPressed != null;
-        } else {
-          return false;
-        }
-      });
+      final activeDrawingColor = getActiveColorButton();
 
       expect(userInputFields, findsOneWidget);
       expect(activeDrawingColor.evaluate().length, 4);
@@ -165,4 +151,15 @@ class MockScreenshotController implements ScreenshotController {
       Duration delay = const Duration(milliseconds: 20)}) {
     return Future.value(Uint8List.fromList([1, 1, 1, 1]));
   }
+}
+
+Finder getActiveColorButton() {
+  return find.byWidgetPredicate((widget) {
+    if (widget is IconButton) {
+      final IconButton selectButton = widget;
+      return selectButton.color != null && selectButton.onPressed != null;
+    } else {
+      return false;
+    }
+  });
 }

@@ -75,3 +75,4 @@ build/
 pubspec.lock
 /test/failures/
 /coverage/lcov.info
+.flutter-plugins-dependencies

@@ -90,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
-            const TextField(),
+            const SizedBox(height: 10),
             ElevatedButton(
               child: const Text('Open another scaffold'),
               onPressed: () {
@@ -104,6 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 );
               },
             ),
+            const SizedBox(height: 10),
             TextButton(
               child: const Text('Provide feedback'),
               onPressed: () {
@@ -113,9 +114,25 @@ class _MyHomePageState extends State<MyHomePage> {
                     Uint8List? feedbackScreenshot,
                   ) async {
                     // upload to server, share whatever
-                    // example below: draft an email and send to yourself
-                    // (only works in iOS and Android)
-                    if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+                    // for example purposes just show it to the user
+                    alertFeedbackFunction(
+                        context, feedbackText, feedbackScreenshot);
+                  },
+                );
+              },
+            ),
+            const SizedBox(height: 10),
+            Visibility(
+              visible: !kIsWeb && (Platform.isAndroid || Platform.isIOS),
+              child: TextButton(
+                child: const Text('Provide E-Mail feedback'),
+                onPressed: () {
+                  BetterFeedback.of(context)?.show(
+                    (
+                      String feedbackText,
+                      Uint8List? feedbackScreenshot,
+                    ) async {
+                      // draft an email and send to developer
                       final Directory output = await getTemporaryDirectory();
                       final String screenshotFilePath =
                           '${output.path}/feedback.png';
@@ -130,15 +147,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         isHTML: false,
                       );
                       await FlutterEmailSender.send(email);
-                    } else {
-                      // just show debugging interface
-                      alertFeedbackFunction(
-                          context, feedbackText, feedbackScreenshot);
-                    }
-                  },
-                );
-              },
-            )
+                    },
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),

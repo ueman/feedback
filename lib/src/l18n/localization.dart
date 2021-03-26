@@ -29,9 +29,15 @@ class FeedbackLocalization extends StatelessWidget {
     if (delegates != null) {
       mergedDelegates.insertAll(0, delegates!);
     }
+
+    Locale fallbackLocale = const Locale('en', 'US');
+    if(window.locale != null && window.locale.toString() != '') {
+      fallbackLocale = window.locale;
+    }
+
     return Localizations(
       delegates: mergedDelegates,
-      locale: localeOverride ?? window.locale ?? const Locale('en', 'US'),
+      locale: localeOverride ?? fallbackLocale,
       child: child,
     );
   }

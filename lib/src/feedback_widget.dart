@@ -20,7 +20,8 @@ class FeedbackWidget extends StatefulWidget {
     required this.isFeedbackVisible,
     required this.drawColors,
     required this.mode,
-  })   : assert(
+    this.pixelRatio = 3.0,
+  })  : assert(
           // This way, we can have a const constructor
           // ignore: prefer_is_empty
           drawColors.length > 0,
@@ -30,6 +31,7 @@ class FeedbackWidget extends StatefulWidget {
 
   final bool isFeedbackVisible;
   final FeedbackMode mode;
+  final double pixelRatio;
   final Widget child;
   final List<Color> drawColors;
 
@@ -184,6 +186,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                           FeedbackData.of(context)!.onFeedback!,
                           screenshotController,
                           feedback,
+                          pixelRatio: widget.pixelRatio,
                         );
                         painterController.clear();
                       },
@@ -204,6 +207,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     ScreenshotController controller,
     String feedbackText, {
     Duration delay = const Duration(milliseconds: 200),
+    double pixelRatio = 3.0,
   }) async {
     // Wait for the keyboard to be closed, and then proceed
     // to take a screenshot
@@ -212,7 +216,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
       () async {
         // Take high resolution screenshot
         final screenshot = await controller.capture(
-          pixelRatio: 3,
+          pixelRatio: pixelRatio,
           delay: const Duration(milliseconds: 0),
         );
 
@@ -233,6 +237,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     String feedbackText, {
     Duration delay = const Duration(milliseconds: 200),
     bool showKeyboard = false,
+    double pixelRatio = 3.0,
   }) async {
     if (!showKeyboard) {
       _hideKeyboard(context);
@@ -242,6 +247,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
       controller,
       feedbackText,
       delay: delay,
+      pixelRatio: pixelRatio,
     );
 
     // Close feedback mode

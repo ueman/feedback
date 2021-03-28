@@ -17,6 +17,7 @@ class BetterFeedback extends StatefulWidget {
     this.localizationsDelegates,
     this.localeOverride,
     this.mode = FeedbackMode.navigate,
+    this.pixelRatio = 3.0,
   }) : super(key: key);
 
   /// The application to wrap, typically a [MaterialApp].
@@ -42,6 +43,11 @@ class BetterFeedback extends StatefulWidget {
   /// By default it will allow the user to navigate.
   /// See [FeedbackMode] for other options.
   final FeedbackMode mode;
+
+  /// Set the quality and size of the screenshot
+  /// Default is 3.0 for high resolution
+  /// A ratio below 1.0 is not recommended
+  final double pixelRatio;
 
   /// Call `BetterFeedback.of(context)` to get an instance of
   /// [FeedbackData] on which you can call `.show()` or `.hide()`
@@ -87,6 +93,7 @@ class _BetterFeedbackState extends State<BetterFeedback> {
                 isFeedbackVisible: feedbackVisible,
                 drawColors: FeedbackTheme.of(context).drawColors,
                 mode: widget.mode,
+                pixelRatio: widget.pixelRatio,
               );
             },
           ),

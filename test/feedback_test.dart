@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:feedback/feedback.dart';
@@ -122,7 +123,7 @@ void main() {
     }, skip: true);
   });
 
-  test('feedback sendFeedback', () async {
+  test('feedback sendFeedback with default settings', () async {
     var callbackWasCalled = false;
     final screenshotController = MockScreenshotController();
     void onFeedback(
@@ -130,7 +131,7 @@ void main() {
       Uint8List? feedbackScreenshot,
     ) {
       expect(feedback, 'Hello World!');
-      expect(feedbackScreenshot, Uint8List.fromList([1, 1, 1, 1]));
+      expect(feedbackScreenshot?.length, 64);
       callbackWasCalled = true;
     }
 
@@ -142,6 +143,28 @@ void main() {
     );
     expect(callbackWasCalled, true);
   });
+
+  test('feedback sendFeedback with low resolution', () async {
+    var callbackWasCalled = false;
+    final screenshotController = MockScreenshotController();
+    void onFeedback(
+      String feedback,
+      Uint8List? feedbackScreenshot,
+    ) {
+      expect(feedback, 'Hello World!');
+      expect(feedbackScreenshot?.length, 4);
+      callbackWasCalled = true;
+    }
+
+    await FeedbackWidgetState.sendFeedback(
+      onFeedback,
+      screenshotController,
+      'Hello World!',
+      delay: const Duration(seconds: 0),
+      pixelRatio: 1,
+    );
+    expect(callbackWasCalled, true);
+  });
 }
 
 class MockScreenshotController implements ScreenshotController {
@@ -149,7 +172,9 @@ class MockScreenshotController implements ScreenshotController {
   Future<Uint8List> capture(
       {double pixelRatio = 1,
       Duration delay = const Duration(milliseconds: 20)}) {
-    return Future.value(Uint8List.fromList([1, 1, 1, 1]));
+    return Future.value(Uint8List.fromList(
+      List.generate(pow(4, pixelRatio).ceil(), (number) => 1),
+    ));
   }
 }
 

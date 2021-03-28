@@ -1,3 +1,7 @@
+## [1.2.0]
+
+- Add option for changing the quality and size of the screenshot
+
 ## [1.1.0]
 
 - Fix Flutter Web (#13, #50)

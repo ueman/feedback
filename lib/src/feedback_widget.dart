@@ -20,8 +20,8 @@ class FeedbackWidget extends StatefulWidget {
     required this.isFeedbackVisible,
     required this.drawColors,
     required this.mode,
-    this.pixelRatio = 3.0,
-  })  : assert(
+    required this.pixelRatio,
+  })   : assert(
           // This way, we can have a const constructor
           // ignore: prefer_is_empty
           drawColors.length > 0,
@@ -186,7 +186,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                           FeedbackData.of(context)!.onFeedback!,
                           screenshotController,
                           feedback,
-                          pixelRatio: widget.pixelRatio,
+                          widget.pixelRatio,
                         );
                         painterController.clear();
                       },
@@ -205,9 +205,9 @@ class FeedbackWidgetState extends State<FeedbackWidget>
   static Future<void> sendFeedback(
     OnFeedbackCallback onFeedbackSubmitted,
     ScreenshotController controller,
-    String feedbackText, {
+    String feedbackText,
+    double pixelRatio, {
     Duration delay = const Duration(milliseconds: 200),
-    double pixelRatio = 3.0,
   }) async {
     // Wait for the keyboard to be closed, and then proceed
     // to take a screenshot
@@ -234,10 +234,10 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     BuildContext context,
     OnFeedbackCallback onFeedbackSubmitted,
     ScreenshotController controller,
-    String feedbackText, {
+    String feedbackText,
+    double pixelRatio, {
     Duration delay = const Duration(milliseconds: 200),
     bool showKeyboard = false,
-    double pixelRatio = 3.0,
   }) async {
     if (!showKeyboard) {
       _hideKeyboard(context);
@@ -246,8 +246,8 @@ class FeedbackWidgetState extends State<FeedbackWidget>
       onFeedbackSubmitted,
       controller,
       feedbackText,
+      pixelRatio,
       delay: delay,
-      pixelRatio: pixelRatio,
     );
 
     // Close feedback mode

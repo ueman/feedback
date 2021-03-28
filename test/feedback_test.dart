@@ -123,7 +123,7 @@ void main() {
     }, skip: true);
   });
 
-  test('feedback sendFeedback with default settings', () async {
+  test('feedback sendFeedback with high resolution', () async {
     var callbackWasCalled = false;
     final screenshotController = MockScreenshotController();
     void onFeedback(
@@ -139,6 +139,7 @@ void main() {
       onFeedback,
       screenshotController,
       'Hello World!',
+      3,
       delay: const Duration(seconds: 0),
     );
     expect(callbackWasCalled, true);
@@ -160,8 +161,8 @@ void main() {
       onFeedback,
       screenshotController,
       'Hello World!',
+      1,
       delay: const Duration(seconds: 0),
-      pixelRatio: 1,
     );
     expect(callbackWasCalled, true);
   });

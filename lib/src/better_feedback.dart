@@ -18,7 +18,11 @@ class BetterFeedback extends StatefulWidget {
     this.localeOverride,
     this.mode = FeedbackMode.navigate,
     this.pixelRatio = 3.0,
-  }) : super(key: key);
+  })  : assert(
+          pixelRatio > 0,
+          'pixelRatio needs to be larger than 0',
+        ),
+        super(key: key);
 
   /// The application to wrap, typically a [MaterialApp].
   final Widget child;

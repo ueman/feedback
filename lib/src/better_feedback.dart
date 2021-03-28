@@ -48,9 +48,13 @@ class BetterFeedback extends StatefulWidget {
   /// See [FeedbackMode] for other options.
   final FeedbackMode mode;
 
-  /// Set the quality and size of the screenshot
-  /// Default is 3.0 for high resolution
-  /// A ratio below 1.0 is not recommended
+  /// The pixelRatio describes the scale between
+  /// the logical pixels and the size of the output image.
+  /// Specifying 1.0 will give you a 1:1 mapping between
+  /// logical pixels and the output pixels in the image.
+  /// The default is a pixel ration of 3 and a value below 1 is not recommended.
+  /// See [RenderRepaintBoundary](https://api.flutter.dev/flutter/rendering/RenderRepaintBoundary/toImage.html)
+  /// for the underlying implementation.
   final double pixelRatio;
 
   /// Call `BetterFeedback.of(context)` to get an instance of

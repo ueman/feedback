@@ -1,6 +1,6 @@
 ## [1.2.0]
 
-- Add option for changing the quality and size of the screenshot
+- Add option for changing the quality and size of the screenshot (`BetterFeedback.pixelRatio`)
 
 ## [1.1.0]
 

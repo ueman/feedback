@@ -76,7 +76,20 @@ Provide a way to hide the feedback panel by calling  `BetterFeedback.of(context)
 
 ### Upload feedback
 
-To upload the feedback you should use, for example, a [MultipartRequest](https://pub.dev/documentation/http/latest/http/MultipartRequest-class.html).
+Depending on your use case there are wide variety of solutions.
+These are a couple suggestions:
+
+| Target |   Notes |
+|--------|---------|
+| Upload to a server | To upload the feedback to a server you shoudl use for example a [MultipartRequest](https://pub.dev/documentation/http/latest/http/MultipartRequest-class.html). |
+| GitLab Issue | GitLab has a [REST API to create issues](https://docs.gitlab.com/ee/api/issues.html) |
+| Share via platform share dialog | [share on pub.dev](https://pub.dev/packages/share) |
+| Firebase | [Firestore](https://pub.dev/packages/cloud_firestore), [Cloud Storage](https://pub.dev/packages/firebase_storage), [Database](https://pub.dev/packages/firebase_database)
+|   Jira | Jira has a [REST API to create issues and upload files](https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-an-issue-examples) |
+| Trello | Trello has a [REST API to create issues and upload files](https://developer.atlassian.com/cloud/trello/rest/api-group-actions/) |
+| E-Mail | You can use the users email client like [in the sample app](https://github.com/ueman/feedback/blob/master/example/lib/main.dart) to send feedback to yourself using the [flutter_email_sender](https://pub.dev/packages/flutter_email_sender) plugin.
+
+If you have sample code on how to upload it to a platform, I would appreciate a PR to the example app.
 
 ### 🎨 Configuration & customization
 
@@ -127,25 +140,10 @@ in the screenshot.
 information upon hitting an error.
 - Use it as an internal quality control tool
 
-### Where to share the users feedback?
-Depending on your use case there are wide variety of solutions.
-These are a couple suggestions:
-
-| Target |   Notes |
-|--------|---------|
-| GitLab Issue | GitLab has a [REST API to create issues](https://docs.gitlab.com/ee/api/issues.html) |
-| Share via platform share dialog | [share on pub.dev](https://pub.dev/packages/share) |
-| Firebase | [Firestore](https://pub.dev/packages/cloud_firestore), [Cloud Storage](https://pub.dev/packages/firebase_storage), [Database](https://pub.dev/packages/firebase_database)
-|   Jira | Jira has a [REST API to create issues and upload files](https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-an-issue-examples) |
-| Trello | Trello has a [REST API to create issues and upload files](https://developer.atlassian.com/cloud/trello/rest/api-group-actions/) |
-| E-Mail | You can use the users email client like [in the sample app](https://github.com/ueman/feedback/blob/master/example/lib/main.dart) to send feedback to yourself using the [flutter_email_sender](https://pub.dev/packages/flutter_email_sender) plugin.
-
-If you have sample code on how to upload it to different platforms, I would appreciate a PR to the example app.
 
 ## Known Issues and limitations
 
-- Platform views are invisible in screenshots (like [webview](https://pub.dev/packages/webview_flutter) or [Google Maps](https://pub.dev/packages/google_maps_flutter))
-- Flutter for web is currently not supported, see this [issue](https://github.com/ueman/feedback/issues/13)
+- Platform views are invisible in screenshots (like [webview](https://pub.dev/packages/webview_flutter) or [Google Maps](https://pub.dev/packages/google_maps_flutter)). For further details, see this [Flutter issue](https://github.com/flutter/flutter/issues/25306).
 
 ## 📣  Author
 

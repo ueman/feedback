@@ -31,6 +31,7 @@ void main() {
       ],
       localeOverride: const Locale('en'),
       mode: FeedbackMode.navigate,
+      pixelRatio: 1,
     ),
   );
 }

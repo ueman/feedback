@@ -53,6 +53,7 @@ class BetterFeedback extends StatefulWidget {
   /// Specifying 1.0 will give you a 1:1 mapping between
   /// logical pixels and the output pixels in the image.
   /// The default is a pixel ration of 3 and a value below 1 is not recommended.
+  ///
   /// See [RenderRepaintBoundary](https://api.flutter.dev/flutter/rendering/RenderRepaintBoundary/toImage.html)
   /// for the underlying implementation.
   final double pixelRatio;

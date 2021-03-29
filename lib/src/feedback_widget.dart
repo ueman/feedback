@@ -20,6 +20,7 @@ class FeedbackWidget extends StatefulWidget {
     required this.isFeedbackVisible,
     required this.drawColors,
     required this.mode,
+    required this.pixelRatio,
   })   : assert(
           // This way, we can have a const constructor
           // ignore: prefer_is_empty
@@ -30,6 +31,7 @@ class FeedbackWidget extends StatefulWidget {
 
   final bool isFeedbackVisible;
   final FeedbackMode mode;
+  final double pixelRatio;
   final Widget child;
   final List<Color> drawColors;
 
@@ -184,6 +186,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                           FeedbackData.of(context)!.onFeedback!,
                           screenshotController,
                           feedback,
+                          widget.pixelRatio,
                         );
                         painterController.clear();
                       },
@@ -202,7 +205,8 @@ class FeedbackWidgetState extends State<FeedbackWidget>
   static Future<void> sendFeedback(
     OnFeedbackCallback onFeedbackSubmitted,
     ScreenshotController controller,
-    String feedbackText, {
+    String feedbackText,
+    double pixelRatio, {
     Duration delay = const Duration(milliseconds: 200),
   }) async {
     // Wait for the keyboard to be closed, and then proceed
@@ -212,7 +216,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
       () async {
         // Take high resolution screenshot
         final screenshot = await controller.capture(
-          pixelRatio: 3,
+          pixelRatio: pixelRatio,
           delay: const Duration(milliseconds: 0),
         );
 
@@ -230,7 +234,8 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     BuildContext context,
     OnFeedbackCallback onFeedbackSubmitted,
     ScreenshotController controller,
-    String feedbackText, {
+    String feedbackText,
+    double pixelRatio, {
     Duration delay = const Duration(milliseconds: 200),
     bool showKeyboard = false,
   }) async {
@@ -241,6 +246,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
       onFeedbackSubmitted,
       controller,
       feedbackText,
+      pixelRatio,
       delay: delay,
     );
 

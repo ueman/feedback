@@ -17,7 +17,12 @@ class BetterFeedback extends StatefulWidget {
     this.localizationsDelegates,
     this.localeOverride,
     this.mode = FeedbackMode.navigate,
-  }) : super(key: key);
+    this.pixelRatio = 3.0,
+  })  : assert(
+          pixelRatio > 0,
+          'pixelRatio needs to be larger than 0',
+        ),
+        super(key: key);
 
   /// The application to wrap, typically a [MaterialApp].
   final Widget child;
@@ -42,6 +47,16 @@ class BetterFeedback extends StatefulWidget {
   /// By default it will allow the user to navigate.
   /// See [FeedbackMode] for other options.
   final FeedbackMode mode;
+
+  /// The pixelRatio describes the scale between
+  /// the logical pixels and the size of the output image.
+  /// Specifying 1.0 will give you a 1:1 mapping between
+  /// logical pixels and the output pixels in the image.
+  /// The default is a pixel ration of 3 and a value below 1 is not recommended.
+  ///
+  /// See [RenderRepaintBoundary](https://api.flutter.dev/flutter/rendering/RenderRepaintBoundary/toImage.html)
+  /// for the underlying implementation.
+  final double pixelRatio;
 
   /// Call `BetterFeedback.of(context)` to get an instance of
   /// [FeedbackData] on which you can call `.show()` or `.hide()`
@@ -87,6 +102,7 @@ class _BetterFeedbackState extends State<BetterFeedback> {
                 isFeedbackVisible: feedbackVisible,
                 drawColors: FeedbackTheme.of(context).drawColors,
                 mode: widget.mode,
+                pixelRatio: widget.pixelRatio,
               );
             },
           ),

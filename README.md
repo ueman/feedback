@@ -22,6 +22,7 @@ directly in the app, by annotating a screenshot of the current page, as well as 
 </p>
 
 You can view this as a video [here](https://raw.githubusercontent.com/ueman/feedback/master/img/movie.mp4).
+An interactive web version is available [here](https://flutter-feedback.netlify.app/).
 
 ## Motivation
 

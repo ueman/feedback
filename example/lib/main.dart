@@ -5,9 +5,12 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'package:share/share.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 void main() {
   runApp(
@@ -46,120 +49,134 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+class MyHomePage extends StatelessWidget {
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: const Text('Feedback Example'),
       ),
       drawer: Drawer(
-        child: Container(
-          color: Colors.blue,
-        ),
+        child: Container(color: Colors.blue),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              child: const Text('Open another scaffold'),
-              onPressed: () {
-                Navigator.push<void>(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return _SecondaryScaffold();
-                    },
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: 10),
-            TextButton(
-              child: const Text('Provide feedback'),
-              onPressed: () {
-                BetterFeedback.of(context)?.show(
-                  (
-                    String feedbackText,
-                    Uint8List? feedbackScreenshot,
-                  ) async {
-                    // upload to server, share whatever
-                    // for example purposes just show it to the user
-                    alertFeedbackFunction(
-                        context, feedbackText, feedbackScreenshot);
-                  },
-                );
-              },
-            ),
-            const SizedBox(height: 10),
-            Visibility(
-              visible: !kIsWeb && (Platform.isAndroid || Platform.isIOS),
-              child: TextButton(
-                child: const Text('Provide E-Mail feedback'),
+      body: Padding(
+        padding: const EdgeInsets.all(24),
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              const Text('This is the example app for the "feedback" library.'),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                child: const Text('Go to library page on pub.dev'),
+                onPressed: () {
+                  launch('https://pub.dev/packages/feedback');
+                },
+              ),
+              const SizedBox(height: 10),
+              const MarkdownBody(
+                data: '# How does it work?\n'
+                    '1. Just press the `Provide feedback` button.\n'
+                    '2. The feedback view opens. '
+                    'You can choose between draw and navigation mode. '
+                    'When in navigate mode, you can freely navigate in the '
+                    'app. Try it by opening the navigation drawer or by '
+                    'tapping the `Open scaffold` button. To switch to the '
+                    'drawing mode just press the `Draw` button on the right '
+                    'side. Now you can draw on the screen.\n'
+                    '3. To finish your feedback just write a message '
+                    'below and send it by pressing the `Submit` button.',
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                child: const Text('Open scaffold'),
+                onPressed: () {
+                  Navigator.push<void>(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return _SecondaryScaffold();
+                      },
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                child: const Text('Provide feedback'),
                 onPressed: () {
                   BetterFeedback.of(context)?.show(
                     (
                       String feedbackText,
                       Uint8List? feedbackScreenshot,
                     ) async {
-                      // draft an email and send to developer
-                      final Directory output = await getTemporaryDirectory();
-                      final String screenshotFilePath =
-                          '${output.path}/feedback.png';
-                      final File screenshotFile = File(screenshotFilePath);
-                      await screenshotFile.writeAsBytes(feedbackScreenshot!);
-
-                      final Email email = Email(
-                        body: feedbackText,
-                        subject: 'App Feedback',
-                        recipients: ['john.doe@flutter.dev'],
-                        attachmentPaths: [screenshotFilePath],
-                        isHTML: false,
+                      // upload to server, share whatever
+                      // for example purposes just show it to the user
+                      alertFeedbackFunction(
+                        context,
+                        feedbackText,
+                        feedbackScreenshot,
                       );
-                      await FlutterEmailSender.send(email);
                     },
                   );
                 },
               ),
-            ),
-          ],
+              if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) ...[
+                const SizedBox(height: 10),
+                TextButton(
+                  child: const Text('Provide E-Mail feedback'),
+                  onPressed: () {
+                    BetterFeedback.of(context)?.show(
+                      (
+                        String feedbackText,
+                        Uint8List? feedbackScreenshot,
+                      ) async {
+                        // draft an email and send to developer
+                        final screenshotFilePath =
+                            await writeImageToStorage(feedbackScreenshot!);
+
+                        final Email email = Email(
+                          body: feedbackText,
+                          subject: 'App Feedback',
+                          recipients: ['john.doe@flutter.dev'],
+                          attachmentPaths: [screenshotFilePath],
+                          isHTML: false,
+                        );
+                        await FlutterEmailSender.send(email);
+                      },
+                    );
+                  },
+                ),
+                const SizedBox(height: 10),
+                TextButton(
+                  child: const Text('Provide feedback via platform sharing'),
+                  onPressed: () {
+                    BetterFeedback.of(context)?.show(
+                      (
+                        String feedbackText,
+                        Uint8List? feedbackScreenshot,
+                      ) async {
+                        final screenshotFilePath =
+                            await writeImageToStorage(feedbackScreenshot!);
+
+                        await Share.shareFiles(
+                          [screenshotFilePath],
+                          text: feedbackText,
+                        );
+                      },
+                    );
+                  },
+                ),
+              ],
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }
@@ -177,4 +194,12 @@ class _SecondaryScaffold extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<String> writeImageToStorage(Uint8List feedbackScreenshot) async {
+  final Directory output = await getTemporaryDirectory();
+  final String screenshotFilePath = '${output.path}/feedback.png';
+  final File screenshotFile = File(screenshotFilePath);
+  await screenshotFile.writeAsBytes(feedbackScreenshot);
+  return screenshotFilePath;
 }

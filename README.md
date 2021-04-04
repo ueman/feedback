@@ -82,9 +82,9 @@ These are a couple suggestions:
 
 | Target |   Notes |
 |--------|---------|
-| Upload to a server | To upload the feedback to a server you shoudl use for example a [MultipartRequest](https://pub.dev/documentation/http/latest/http/MultipartRequest-class.html). |
+| Upload to a server | To upload the feedback to a server you should use for example a [MultipartRequest](https://pub.dev/documentation/http/latest/http/MultipartRequest-class.html). |
 | GitLab Issue | GitLab has a [REST API to create issues](https://docs.gitlab.com/ee/api/issues.html) |
-| Share via platform share dialog | [share on pub.dev](https://pub.dev/packages/share) |
+| Share via platform share dialog | [share on pub.dev](https://pub.dev/packages/share). Also shown in the example. |
 | Firebase | [Firestore](https://pub.dev/packages/cloud_firestore), [Cloud Storage](https://pub.dev/packages/firebase_storage), [Database](https://pub.dev/packages/firebase_database)
 |   Jira | Jira has a [REST API to create issues and upload files](https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-an-issue-examples) |
 | Trello | Trello has a [REST API to create issues and upload files](https://developer.atlassian.com/cloud/trello/rest/api-group-actions/) |
@@ -95,7 +95,6 @@ If you have sample code on how to upload it to a platform, I would appreciate a 
 ### 🎨 Configuration & customization
 
 ```dart
-import 'dart:typed_data';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';

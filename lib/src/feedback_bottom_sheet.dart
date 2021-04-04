@@ -73,6 +73,7 @@ class __FeedbackBottomSheetState extends State<_FeedbackBottomSheet> {
                     maxLines: 2,
                     minLines: 2,
                     controller: controller,
+                    textInputAction: TextInputAction.done,
                   ),
                 ),
                 TextButton(

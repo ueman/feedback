@@ -1,4 +1,6 @@
-## [Upcoming]
+## [1.2.1]
+- Enter-Button on the keyboard dismisses the keyboard
+- Improved example app
 
 ## [1.2.0]
 

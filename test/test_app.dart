@@ -2,7 +2,9 @@ import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 
 class MyTestApp extends StatelessWidget {
-  const MyTestApp({Key? key}) : super(key: key);
+  const MyTestApp({Key? key, this.onFeedback}) : super(key: key);
+
+  final OnFeedbackCallback? onFeedback;
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +19,14 @@ class MyTestApp extends StatelessWidget {
 }
 
 class MyTestPage extends StatefulWidget {
-  const MyTestPage({Key? key, required this.title}) : super(key: key);
+  const MyTestPage({
+    Key? key,
+    required this.title,
+    this.onFeedback,
+  }) : super(key: key);
+
   final String title;
+  final OnFeedbackCallback? onFeedback;
 
   @override
   _MyTestPageState createState() => _MyTestPageState();
@@ -60,7 +68,8 @@ class _MyTestPageState extends State<MyTestPage> {
               key: const Key('open_feedback'),
               child: const Text('open feedback'),
               onPressed: () {
-                BetterFeedback.of(context)?.show((_, __) {});
+                BetterFeedback.of(context)
+                    ?.show(widget.onFeedback ?? (_, __) {});
               },
             )
           ],

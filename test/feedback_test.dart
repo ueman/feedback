@@ -123,8 +123,8 @@ void main() {
         await tester.tap(submitFeedbackButton);
         await tester.pumpAndSettle();
       });
-    });
-  }, skip: true);
+    }, skip: true);
+  });
 
   test('feedback sendFeedback with high resolution', () async {
     var callbackWasCalled = false;

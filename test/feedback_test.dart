@@ -99,29 +99,32 @@ void main() {
       expect(userInputFields, findsNothing);
     });
 
-    // TODO(ju): figure out a way to test this
     testWidgets('feedback callback gets called', (tester) async {
-      const widget = BetterFeedback(
-        child: MyTestApp(),
+      final widget = BetterFeedback(
+        child: MyTestApp(
+          onFeedback: (text, screenshot) {
+            expect(screenshot, isNotNull);
+          },
+        ),
       );
 
-      await tester.pumpWidget(widget);
+      await tester.runAsync(() async {
+        await tester.pumpWidget(widget);
 
-      // open feedback
-      final openFeedbackButton = find.byKey(const Key('open_feedback'));
-      await tester.tap(openFeedbackButton);
-      await tester.pumpAndSettle();
+        // open feedback
+        final openFeedbackButton = find.byKey(const Key('open_feedback'));
+        await tester.tap(openFeedbackButton);
+        await tester.pumpAndSettle();
 
-      // submit feedback
-      final submitFeedbackButton =
-          find.byKey(const Key('submit_feedback_button'));
+        // submit feedback
+        final submitFeedbackButton =
+            find.byKey(const Key('submit_feedback_button'));
 
-      await tester.tap(submitFeedbackButton);
-      await tester.pumpAndSettle();
-
-      await tester.pumpAndSettle(const Duration(milliseconds: 1000));
-    }, skip: true);
-  });
+        await tester.tap(submitFeedbackButton);
+        await tester.pumpAndSettle();
+      });
+    });
+  }, skip: true);
 
   test('feedback sendFeedback with high resolution', () async {
     var callbackWasCalled = false;

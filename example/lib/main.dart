@@ -1,16 +1,17 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:feedback/feedback.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-
-import 'package:share/share.dart';
-import 'package:feedback/feedback.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+import 'package:share/share.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(
@@ -202,4 +203,51 @@ Future<String> writeImageToStorage(Uint8List feedbackScreenshot) async {
   final File screenshotFile = File(screenshotFilePath);
   await screenshotFile.writeAsBytes(feedbackScreenshot);
   return screenshotFilePath;
+}
+
+Future<void> createGitlabIssueFromFeedback(BuildContext context) async {
+  BetterFeedback.of(context)?.show((
+    feedbackText,
+    feedbackScreenshot,
+  ) async {
+    const projectId = 'your-gitlab-project-id';
+    const apiToken = 'your-gitlab-api-token';
+
+    final screenshotFilePath = await writeImageToStorage(feedbackScreenshot!);
+
+    // Upload screenshot
+    final uploadRequest = http.MultipartRequest(
+      'POST',
+      Uri.https(
+        'gitlab.com',
+        '/api/v4/projects/$projectId/uploads',
+      ),
+    )
+      ..files.add(await http.MultipartFile.fromPath(
+        'file',
+        screenshotFilePath,
+      ))
+      ..headers.putIfAbsent('PRIVATE-TOKEN', () => apiToken);
+    final uploadResponse = await uploadRequest.send();
+
+    final dynamic uploadResponseMap = jsonDecode(
+      await uploadResponse.stream.bytesToString(),
+    );
+
+    // Create issue
+    await http.post(
+      Uri.https(
+        'gitlab.com',
+        '/api/v4/projects/$projectId/issues',
+        <String, String>{
+          'title': feedbackText.padRight(80),
+          'description': '$feedbackText\n'
+              "${uploadResponseMap["markdown"] ?? "Missing image!"}",
+        },
+      ),
+      headers: {
+        'PRIVATE-TOKEN': apiToken,
+      },
+    );
+  });
 }

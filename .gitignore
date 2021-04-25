@@ -76,3 +76,6 @@ pubspec.lock
 /test/failures/
 /coverage/lcov.info
 .flutter-plugins-dependencies
+example/lib/generated_plugin_registrant.dart
+example/macos/Flutter/ephemeral
+example/macos/Flutter/GeneratedPluginRegistrant.swift

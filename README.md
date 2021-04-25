@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/ueman/feedback/master/img/feedback.png" max-height="100" alt="Feedback" />
+  <img src="https://raw.githubusercontent.com/ueman/feedback/master/img/feedback.svg" max-height="100" alt="Feedback" />
 </p>
 
 <p align="center">

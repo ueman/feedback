@@ -23,7 +23,7 @@ directly in the app, by annotating a screenshot of the current page, as well as 
 
 ## Demo
 
-An interactive web example is available here: <a href="https://flutter-feedback.netlify.app/"><img src="https://img.shields.io/badge/Try-Flutter%20Web%20demo-blue" alt="Online demo"></a>.
+An interactive web example is available here: <a href="https://flutter-feedback.netlify.app/"><img src="https://img.shields.io/badge/Try-Flutter%20Web%20demo-blue" alt="Online demo"></a>. It also contains a small tutorial on how to use this library.
 
 ## Motivation
 
@@ -43,7 +43,8 @@ understand.
 
 ### Setup
 
-First, you will need to add `feedback` to your `pubspec.yaml`:
+First, you will need to add `feedback` to your `pubspec.yaml`.
+The latest version is <a href="https://pub.dev/packages/feedback"><img src="https://img.shields.io/pub/v/feedback.svg" alt="pub.dev"></a>.
 
 ```yaml
 dependencies:
@@ -51,7 +52,6 @@ dependencies:
     sdk: flutter
   feedback: x.y.z # use the latest version found on pub.dev
 ```
-The latest version is <a href="https://pub.dev/packages/feedback"><img src="https://img.shields.io/pub/v/feedback.svg" alt="pub.dev"></a>.
 
 Then, run `flutter packages get` in your terminal.
 
@@ -98,9 +98,10 @@ These are a couple suggestions:
 | Firebase | [Firestore](https://pub.dev/packages/cloud_firestore), [Cloud Storage](https://pub.dev/packages/firebase_storage), [Database](https://pub.dev/packages/firebase_database)
 |   Jira | Jira has a [REST API to create issues and upload files](https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-an-issue-examples) |
 | Trello | Trello has a [REST API to create issues and upload files](https://developer.atlassian.com/cloud/trello/rest/api-group-actions/) |
-| E-Mail | You can use the users email client like [in the sample app](https://github.com/ueman/feedback/blob/master/example/lib/main.dart) to send feedback to yourself using the [flutter_email_sender](https://pub.dev/packages/flutter_email_sender) plugin.
+| E-Mail | You can use the users email client like [in the sample app](https://github.com/ueman/feedback/blob/master/example/lib/main.dart) to send feedback to yourself using the [flutter_email_sender](https://pub.dev/packages/flutter_email_sender) plugin. |
+| Sentry | Use it as a view for [Sentry](https://sentry.io/)s [user feedback](https://docs.sentry.io/enriching-error-data/user-feedback/?platform=browser) to collect additional user information upon hitting an error. |
 
-If you have sample code on how to upload it to a platform, I would appreciate a PR to the example app.
+If you have sample code on how to upload it to a platform, I would appreciate a pull request to the example app.
 
 ### 🎨 Configuration & customization
 
@@ -147,8 +148,6 @@ his feedback and debug his issues.
 - You can record the users navigation with a [NavigatorObserver](https://api.flutter.dev/flutter/widgets/NavigatorObserver-class.html) and send it as an addition to the 
 feedback of the user. This way you know how the user got to the location shown
 in the screenshot.
-- Use it as a view for [Sentry](https://sentry.io/)s [user feedback](https://docs.sentry.io/enriching-error-data/user-feedback/?platform=browser) to collect additional user 
-information upon hitting an error.
 - Use it as an internal quality control tool
 
 
@@ -159,7 +158,13 @@ information upon hitting an error.
 
 ## 📣  Author
 
-- Jonas Uekötter [GitHub](https://github.com/ueman) [Twitter](https://twitter.com/ue_man)
+- Jonas Uekötter: [GitHub](https://github.com/ueman) and [Twitter](https://twitter.com/ue_man)
+
+## Issues, questions and contributing
+
+You can raise issues [here](https://github.com/ueman/feedback/issues).
+If you've got a question do not hesitate to ask it [here](https://github.com/ueman/feedback/discussions).
+Contributions are also welcome. You can do a pull request on GitHub [here](https://github.com/ueman/feedback/pulls). Please take a look at [`up for grabs`](https://github.com/ueman/feedback/issues?q=is%3Aopen+is%3Aissue+label%3Aup-for-grabs) issues first.
 
 ## Sponsoring
 

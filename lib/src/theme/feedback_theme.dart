@@ -9,7 +9,7 @@ const _defaultDrawColors = [
   Colors.yellow,
 ];
 
-/// This is the same as Colors.grey[50]
+/// This is the same as `Colors.grey[50]`
 /// or the default value of ThemeData.canvasColor
 const _lightGrey = Color(0xFFFAFAFA);
 
@@ -18,7 +18,7 @@ const _defaultBottomSheetDescriptionStyle = TextStyle(
 );
 
 /// See the following image to get a better understanding of the properties.
-/// ![Theme](img/theme_description.png "Theme")
+/// ![Theme](https://raw.githubusercontent.com/ueman/feedback/master/img/theme_description.png "Theme")
 class FeedbackThemeData {
   FeedbackThemeData({
     this.background = Colors.grey,

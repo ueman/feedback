@@ -1,9 +1,9 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/ueman/feedback/master/img/feedback.png" max-height="100" alt="Feedback" />
+  <img src="https://raw.githubusercontent.com/ueman/feedback/master/img/feedback.svg" max-height="100" alt="Feedback" />
 </p>
 
 <p align="center">
-  <a href="https://pub.dartlang.org/packages/feedback"><img src="https://img.shields.io/pub/v/feedback.svg" alt="pub.dev"></a>
+  <a href="https://pub.dev/packages/feedback"><img src="https://img.shields.io/pub/v/feedback.svg" alt="pub.dev"></a>
   <a href="https://github.com/ueman/feedback/actions?query=workflow%3Abuild"><img src="https://github.com/ueman/feedback/workflows/build/badge.svg?branch=master" alt="GitHub Workflow Status"></a>
   <a href="https://codecov.io/gh/ueman/feedback"><img src="https://codecov.io/gh/ueman/feedback/branch/master/graph/badge.svg" alt="code coverage"></a>
   <a href="https://github.com/ueman#sponsor-me"><img src="https://img.shields.io/github/sponsors/ueman" alt="Sponsoring"></a>
@@ -21,8 +21,9 @@ directly in the app, by annotating a screenshot of the current page, as well as 
   <img src="https://raw.githubusercontent.com/ueman/feedback/master/img/example_0.1.0-beta.gif" width="200" alt="Example Image">
 </p>
 
-You can view this as a video [here](https://raw.githubusercontent.com/ueman/feedback/master/img/movie.mp4).
-An interactive web version is available [here](https://flutter-feedback.netlify.app/).
+## Demo
+
+An interactive web example is available here: <a href="https://flutter-feedback.netlify.app/"><img src="https://img.shields.io/badge/Try-Flutter%20Web%20demo-blue" alt="Online demo"></a>. It also contains a small tutorial on how to use this library.
 
 ## Motivation
 
@@ -42,7 +43,8 @@ understand.
 
 ### Setup
 
-First, you will need to add `feedback` to your `pubspec.yaml`:
+First, you will need to add `feedback` to your `pubspec.yaml`.
+The latest version is <a href="https://pub.dev/packages/feedback"><img src="https://img.shields.io/pub/v/feedback.svg" alt="pub.dev"></a>.
 
 ```yaml
 dependencies:
@@ -72,10 +74,18 @@ void main() {
 }
 ```
 
-Provide a way to show the feedback panel by calling `BetterFeedback.of(context)?.show(...);`
+Provide a way to show the feedback panel by calling 
+```dart
+BetterFeedback.of(context)?.show((String feedback, Uint8List? feedbackScreenshot) {
+  // feedback is the text which the user entered
+  // feedbackScreenshot is the PNG encoded screenshot as raw bytes
+  //
+  // See the examples below for examples of what to do with it
+});
+```
 Provide a way to hide the feedback panel by calling  `BetterFeedback.of(context)?.hide();` 
 
-### Upload feedback
+### Use the feedback
 
 Depending on your use case there are wide variety of solutions.
 These are a couple suggestions:
@@ -88,9 +98,10 @@ These are a couple suggestions:
 | Firebase | [Firestore](https://pub.dev/packages/cloud_firestore), [Cloud Storage](https://pub.dev/packages/firebase_storage), [Database](https://pub.dev/packages/firebase_database)
 |   Jira | Jira has a [REST API to create issues and upload files](https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-an-issue-examples) |
 | Trello | Trello has a [REST API to create issues and upload files](https://developer.atlassian.com/cloud/trello/rest/api-group-actions/) |
-| E-Mail | You can use the users email client like [in the sample app](https://github.com/ueman/feedback/blob/master/example/lib/main.dart) to send feedback to yourself using the [flutter_email_sender](https://pub.dev/packages/flutter_email_sender) plugin.
+| E-Mail | You can use the users email client like [in the sample app](https://github.com/ueman/feedback/blob/master/example/lib/main.dart) to send feedback to yourself using the [flutter_email_sender](https://pub.dev/packages/flutter_email_sender) plugin. |
+| Sentry | Use it as a view for [Sentry](https://sentry.io/)s [user feedback](https://docs.sentry.io/enriching-error-data/user-feedback/?platform=browser) to collect additional user information upon hitting an error. |
 
-If you have sample code on how to upload it to a platform, I would appreciate a PR to the example app.
+If you have sample code on how to upload it to a platform, I would appreciate a pull request to the example app.
 
 ### 🎨 Configuration & customization
 
@@ -124,10 +135,11 @@ void main() {
   );
 }
 ```
+You can customize the text by using custom `localizationsDelegates`.
 How the properties of `FeedbackThemeData` correspond to the view can be seen in the following image. 
 <img src="https://raw.githubusercontent.com/ueman/feedback/master/img/theme_description.png" max-height="400" alt="Theme Usages">
 
-## Tips, tricks and usage scenarios
+## 💡 Tips, tricks and usage scenarios
 
 - You can combine this with [device_info](https://pub.dev/packages/device_info)
 and [package_info](https://pub.dev/packages/package_info) to 
@@ -136,19 +148,23 @@ his feedback and debug his issues.
 - You can record the users navigation with a [NavigatorObserver](https://api.flutter.dev/flutter/widgets/NavigatorObserver-class.html) and send it as an addition to the 
 feedback of the user. This way you know how the user got to the location shown
 in the screenshot.
-- Use it as a view for [Sentry](https://sentry.io/)s [user feedback](https://docs.sentry.io/enriching-error-data/user-feedback/?platform=browser) to collect additional user 
-information upon hitting an error.
 - Use it as an internal quality control tool
 
 
-## Known Issues and limitations
+## ⚠️ Known Issues and limitations
 
 - Platform views are invisible in screenshots (like [webview](https://pub.dev/packages/webview_flutter) or [Google Maps](https://pub.dev/packages/google_maps_flutter)). For further details, see this [Flutter issue](https://github.com/flutter/flutter/issues/25306).
 - Web only works with Flutter's CanvasKit Renderer, for more information see [Flutter Web Renderer docs](https://flutter.dev/docs/development/tools/web-renderers).
 
 ## 📣  Author
 
-- Jonas Uekötter [GitHub](https://github.com/ueman) [Twitter](https://twitter.com/ue_man)
+- Jonas Uekötter: [GitHub](https://github.com/ueman) and [Twitter](https://twitter.com/ue_man)
+
+## Issues, questions and contributing
+
+You can raise issues [here](https://github.com/ueman/feedback/issues).
+If you've got a question do not hesitate to ask it [here](https://github.com/ueman/feedback/discussions).
+Contributions are also welcome. You can do a pull request on GitHub [here](https://github.com/ueman/feedback/pulls). Please take a look at [`up for grabs`](https://github.com/ueman/feedback/issues?q=is%3Aopen+is%3Aissue+label%3Aup-for-grabs) issues first.
 
 ## Sponsoring
 

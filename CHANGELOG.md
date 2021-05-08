@@ -1,4 +1,7 @@
 ## [1.2.1]
+- Documentation update
+
+## [1.2.1]
 - Enter-Button on the keyboard dismisses the keyboard
 - Improved example app
 

@@ -60,6 +60,7 @@ class ControlsColumn extends StatelessWidget {
               onPressed: isNavigatingActive
                   ? null
                   : () => onControlModeChanged(FeedbackMode.navigate),
+              disabledTextColor: Theme.of(context).accentColor,
             ),
           ),
           _ColumnDivider(),
@@ -72,6 +73,7 @@ class ControlsColumn extends StatelessWidget {
               onPressed: isNavigatingActive
                   ? () => onControlModeChanged(FeedbackMode.draw)
                   : null,
+              disabledTextColor: Theme.of(context).accentColor,
             ),
           ),
           IconButton(

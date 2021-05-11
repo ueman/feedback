@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class MyTestApp extends StatelessWidget {
   const MyTestApp({Key? key, this.onFeedback}) : super(key: key);
 
-  final OnFeedbackCallback? onFeedback;
+  final OnFeedbackCallback<String>? onFeedback;
 
   @override
   Widget build(BuildContext context) {

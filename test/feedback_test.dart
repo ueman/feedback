@@ -110,6 +110,12 @@ void main() {
 
       await tester.runAsync(() async {
         await tester.pumpWidget(widget);
+        await tester.pumpAndSettle();
+
+        // feedback is closed
+        final userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
+
+        expect(userInputFields, findsNothing);
 
         // open feedback
         final openFeedbackButton = find.byKey(const Key('open_feedback'));
@@ -123,7 +129,7 @@ void main() {
         await tester.tap(submitFeedbackButton);
         await tester.pumpAndSettle();
       });
-    }, skip: true);
+    });
   });
 
   test('feedback sendFeedback with high resolution', () async {

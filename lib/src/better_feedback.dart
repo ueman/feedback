@@ -182,9 +182,9 @@ class FeedbackData<T> extends InheritedWidget {
 
   bool get isVisible => controller.isVisible;
 
-  static FeedbackController? of(BuildContext context) {
+  static FeedbackController<T>? of<T>(BuildContext context) {
     final feedbackThemeData =
-        context.dependOnInheritedWidgetOfExactType<FeedbackData>();
+        context.dependOnInheritedWidgetOfExactType<FeedbackData<T>>();
     return feedbackThemeData?.controller;
   }
 }

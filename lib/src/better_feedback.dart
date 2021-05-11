@@ -13,10 +13,12 @@ typedef OnSubmit<T> = void Function(BuildContext context, T feedback);
 
 typedef GetFeedback<T> = Widget Function(OnSubmit<T>);
 
-/// The default `BetterFeedback` class. Only prompts for single-string feedback.
-/// If you want to prompt the user for more complex/customized feedback (eg
-/// include a drop down that asks a user if their feedback is a bug report or
-/// feature request), use `CustomizedBetterFeedback` instead.
+/// The default `BetterFeedback` class. This widget should be at the top of your
+/// widget tree.
+/// Only prompts for single-string feedback. If you want to prompt the user for
+/// more complex/customized feedback (eg you want to include a drop down that
+/// asks a user if their feedback is a bug report or feature request), use
+/// `CustomizedBetterFeedback` instead.
 class BetterFeedback extends CustomizedBetterFeedback<String> {
   const BetterFeedback({
     Key? key,
@@ -44,7 +46,11 @@ class BetterFeedback extends CustomizedBetterFeedback<String> {
       CustomizedBetterFeedback.of<String>(context);
 }
 
-/// This widget should be at the top of your widget tree.
+/// A feedback widget that uses a custom widget and data type for
+/// prompting the user for their feedback. This widget should be at the top of
+/// your widget tree.
+/// If you only need basic feedback in the form of a single text field, use
+/// `BetterFeedback` instead.
 class CustomizedBetterFeedback<T> extends StatefulWidget {
   const CustomizedBetterFeedback({
     Key? key,
@@ -99,8 +105,8 @@ class CustomizedBetterFeedback<T> extends StatefulWidget {
   /// for the underlying implementation.
   final double pixelRatio;
 
-  /// Call `CustomizedBetterFeedback.of(context)` to get an instance of
-  /// [FeedbackData] on which you can call `.show()` or `.hide()`
+  /// Call `CustomizedBetterFeedback<your_data_type>.of(context)` to get an
+  /// instance of [FeedbackData] on which you can call `.show()` or `.hide()`
   /// to enable or disable the feedback view.
   static FeedbackData<T>? of<T>(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<FeedbackData<T>>();

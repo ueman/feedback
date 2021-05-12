@@ -15,10 +15,10 @@ typedef GetFeedback<T> = Widget Function(OnSubmit<T>);
 
 /// The default `BetterFeedback` class. This widget should be at the top of your
 /// widget tree.
-/// Only prompts for single-string feedback. If you want to prompt the user for
-/// more complex/customized feedback (eg you want to include a drop down that
-/// asks a user if their feedback is a bug report or feature request), use
-/// `CustomizedBetterFeedback` instead.
+/// Only prompts for single-string feedback (see [getStringFeedback]). If you
+/// want to prompt the user for more complex/customized feedback (eg you want to
+/// include a drop down that asks a user if their feedback is a bug report or
+/// feature request), use [CustomizedBetterFeedback] instead.
 class BetterFeedback extends CustomizedBetterFeedback<String> {
   const BetterFeedback({
     Key? key,
@@ -72,6 +72,8 @@ class CustomizedBetterFeedback<T> extends StatefulWidget {
 
   /// Returns a widget that prompts the user for feedback and calls the provided
   /// submit function with their completed feedback.
+  /// See [getStringFeedback] for an example implementation using `String` and a
+  /// single editable text field.
   final GetFeedback<T> getFeedback;
 
   /// Theme wich gets used to style the feedback mode.

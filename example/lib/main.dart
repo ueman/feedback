@@ -13,6 +13,32 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+enum _FeedbackType {
+  bug_report,
+  feature_request,
+}
+
+enum _FeedbackRating {
+  horrible,
+  bad,
+  neutral,
+  good,
+  great,
+}
+
+@immutable
+class _CustomFeedback {
+  const _CustomFeedback({
+    required this.feedbackType,
+    required this.feedbackText,
+    required this.rating,
+  });
+
+  final _FeedbackType feedbackType;
+  final String feedbackText;
+  final int? rating;
+}
+
 void main() {
   runApp(
     BetterFeedback(
@@ -170,6 +196,30 @@ class MyHomePage extends StatelessWidget {
                           [screenshotFilePath],
                           text: feedbackText,
                         );
+                      },
+                    );
+                  },
+                ),
+                TextButton(
+                  child: const Text('Provide Customized E-Mail feedback'),
+                  onPressed: () {
+                    BetterFeedback.of(context)?.show(
+                      (
+                        String feedbackText,
+                        Uint8List? feedbackScreenshot,
+                      ) async {
+                        // draft an email and send to developer
+                        final screenshotFilePath =
+                            await writeImageToStorage(feedbackScreenshot!);
+
+                        final Email email = Email(
+                          body: feedbackText,
+                          subject: 'App Feedback',
+                          recipients: ['john.doe@flutter.dev'],
+                          attachmentPaths: [screenshotFilePath],
+                          isHTML: false,
+                        );
+                        await FlutterEmailSender.send(email);
                       },
                     );
                   },

@@ -10,7 +10,7 @@ Widget getStringFeedback(OnSubmit<String> onSubmit) =>
 
 /// A form and submit button that prompts the user for feedback with a single
 /// text field.
-/// This is the default feedback widget for `BetterFeedback`.
+/// This is the default feedback widget used by [BetterFeedback].
 class StringFeedback extends StatefulWidget {
   const StringFeedback({
     Key? key,

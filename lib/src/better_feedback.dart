@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:feedback/src/l18n/translation.dart';
 
-typedef OnSubmit<T> = void Function(BuildContext context, T feedback);
+typedef OnSubmit<T> = void Function(T feedback);
 
 typedef GetFeedback<T> = Widget Function(OnSubmit<T>);
 

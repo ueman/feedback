@@ -184,7 +184,7 @@ class FeedbackWidgetState<T> extends State<FeedbackWidget<T>>
                     height: MediaQuery.of(context).size.height,
                     child: FeedbackBottomSheet(
                       getFeedback: widget.getFeedback,
-                      onSubmit: (context, T feedback) async {
+                      onSubmit: (T feedback) async {
                         await _sendFeedback(
                           context,
                           FeedbackData.of<T>(context)!.onFeedback!,

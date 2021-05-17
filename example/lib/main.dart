@@ -40,9 +40,64 @@ class _CustomFeedback {
 }
 
 void main() {
-  runApp(
-    BetterFeedback(
-      child: const MyApp(),
+  runApp(const MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool _useCustomFeedback = false;
+
+  @override
+  Widget build(BuildContext context) {
+    // Use customized widgets for collecting and submitting user feedback.
+    if (_useCustomFeedback) {
+      return CustomizedBetterFeedback(
+        child: MaterialApp(
+          title: 'Feedback Demo',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: const MyHomePage(),
+        ),
+        theme: FeedbackThemeData(
+          background: Colors.grey,
+          feedbackSheetColor: Colors.grey[50]!,
+          drawColors: [
+            Colors.red,
+            Colors.green,
+            Colors.blue,
+            Colors.yellow,
+          ],
+        ),
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalFeedbackLocalizationsDelegate(),
+        ],
+        localeOverride: const Locale('en'),
+        mode: FeedbackMode.navigate,
+        pixelRatio: 1,
+        getFeedback: (onSubmit) {
+          return Container();
+        },
+      );
+    }
+    // Use the default text field for collecting and submitting user feedback.
+    return BetterFeedback(
+      child: MaterialApp(
+        title: 'Feedback Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: const MyHomePage(),
+      ),
       theme: FeedbackThemeData(
         background: Colors.grey,
         feedbackSheetColor: Colors.grey[50]!,
@@ -62,21 +117,6 @@ void main() {
       localeOverride: const Locale('en'),
       mode: FeedbackMode.navigate,
       pixelRatio: 1,
-    ),
-  );
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Feedback Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(),
     );
   }
 }

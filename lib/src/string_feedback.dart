@@ -66,7 +66,7 @@ class _StringFeedbackState extends State<StringFeedback> {
                     FeedbackLocalizations.of(context).submitButtonText,
                   ),
                   onPressed: () {
-                    widget.onSubmit(context, controller.text);
+                    widget.onSubmit(controller.text);
                   },
                 ),
               ],

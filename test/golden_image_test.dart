@@ -22,7 +22,7 @@ void main() {
           find.byType(BetterFeedback),
           matchesGoldenFile(
               'golden_images/closed_feedback-$_platformString.png'));
-    }, skip: _platformString == null);
+    });
 
     testWidgets(' open feedback', (tester) async {
       await setGoldenImageSurfaceSize(tester);
@@ -42,8 +42,8 @@ void main() {
           find.byType(BetterFeedback),
           matchesGoldenFile(
               'golden_images/open_feedback-$_platformString.png'));
-    }, skip: _platformString == null);
-  });
+    });
+  }, skip: _skipMessage);
 }
 
 String? get _platformString {
@@ -56,13 +56,8 @@ String? get _platformString {
   return null;
 }
 
-// TODO(caseycrogers): the `skip` argument for [group] is currently ignored by
-// TestWidget. This bug was fixed in Flutter version 2.1 which is not yet out on
-// stable. Once it is, we should remove the `skip` arguments from `testWidgets`
-// and move them to `group`.
-// See: https://github.com/flutter/flutter/pull/76174
-// ignore: unused_element
-String get _skipMessage =>
-    'Golden image tests are platform specific. $_platformString is not '
-    'currently supported. Please create a PR against '
-    'https://github.com/ueman/feedback to add golden images for your platform.';
+String? get _skipMessage => _platformString != null
+    ? null
+    : 'Golden image tests are platform specific. $_platformString is not '
+        'currently supported. Please create a PR against '
+        'https://github.com/ueman/feedback to add golden images for your platform.';

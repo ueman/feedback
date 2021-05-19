@@ -117,7 +117,7 @@ class CustomizedBetterFeedback<T> extends StatefulWidget {
   _BetterFeedbackState createState() => _BetterFeedbackState<T>();
 }
 
-class _BetterFeedbackState<T> extends State<BetterFeedback> {
+class _BetterFeedbackState<T> extends State<CustomizedBetterFeedback<T>> {
   FeedbackController<T> controller = FeedbackController<T>();
 
   bool feedbackVisible = false;

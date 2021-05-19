@@ -63,7 +63,7 @@ class _MyAppState extends State<MyApp> {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: const MyHomePage(),
+          home: MyHomePage(_toggleCustomizedFeedback),
         ),
         theme: FeedbackThemeData(
           background: Colors.grey,
@@ -96,7 +96,7 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const MyHomePage(),
+        home: MyHomePage(_toggleCustomizedFeedback),
       ),
       theme: FeedbackThemeData(
         background: Colors.grey,
@@ -119,10 +119,15 @@ class _MyAppState extends State<MyApp> {
       pixelRatio: 1,
     );
   }
+
+  void _toggleCustomizedFeedback() =>
+      setState(() => _useCustomFeedback = !_useCustomFeedback);
 }
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage(this.toggleCustomizedFeedback, {Key? key}) : super(key: key);
+
+  final VoidCallback toggleCustomizedFeedback;
 
   @override
   Widget build(BuildContext context) {
@@ -178,7 +183,7 @@ class MyHomePage extends StatelessWidget {
               ElevatedButton(
                 child: const Text('Provide feedback'),
                 onPressed: () {
-                  BetterFeedback.of(context)?.show(
+                  BetterFeedback.of(context)!.show(
                     (
                       String feedbackText,
                       Uint8List? feedbackScreenshot,
@@ -199,7 +204,7 @@ class MyHomePage extends StatelessWidget {
                 TextButton(
                   child: const Text('Provide E-Mail feedback'),
                   onPressed: () {
-                    BetterFeedback.of(context)?.show(
+                    BetterFeedback.of(context)!.show(
                       (
                         String feedbackText,
                         Uint8List? feedbackScreenshot,
@@ -224,7 +229,7 @@ class MyHomePage extends StatelessWidget {
                 TextButton(
                   child: const Text('Provide feedback via platform sharing'),
                   onPressed: () {
-                    BetterFeedback.of(context)?.show(
+                    BetterFeedback.of(context)!.show(
                       (
                         String feedbackText,
                         Uint8List? feedbackScreenshot,
@@ -243,7 +248,7 @@ class MyHomePage extends StatelessWidget {
                 TextButton(
                   child: const Text('Provide Customized E-Mail feedback'),
                   onPressed: () {
-                    BetterFeedback.of(context)?.show(
+                    BetterFeedback.of(context)!.show(
                       (
                         String feedbackText,
                         Uint8List? feedbackScreenshot,
@@ -268,6 +273,9 @@ class MyHomePage extends StatelessWidget {
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => toggleCustomizedFeedback(),
       ),
     );
   }
@@ -296,7 +304,7 @@ Future<String> writeImageToStorage(Uint8List feedbackScreenshot) async {
 }
 
 Future<void> createGitlabIssueFromFeedback(BuildContext context) async {
-  BetterFeedback.of(context)?.show((
+  BetterFeedback.of(context)!.show((
     feedbackText,
     feedbackScreenshot,
   ) async {

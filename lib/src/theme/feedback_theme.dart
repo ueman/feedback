@@ -13,6 +13,10 @@ const _defaultDrawColors = [
 /// or the default value of ThemeData.canvasColor
 const _lightGrey = Color(0xFFFAFAFA);
 
+/// This is the same as `Colors.blue`
+/// or the default value of ThemeData.accentColor
+const _blue = Color(0xFF2196F3);
+
 const _defaultBottomSheetDescriptionStyle = TextStyle(
   color: Colors.black,
 );
@@ -23,6 +27,7 @@ class FeedbackThemeData {
   FeedbackThemeData({
     this.background = Colors.grey,
     this.feedbackSheetColor = _lightGrey,
+    this.activeFeedbackModeColor = _blue,
     this.drawColors = _defaultDrawColors,
     this.bottomSheetDescriptionStyle = _defaultBottomSheetDescriptionStyle,
   }) :
@@ -38,8 +43,11 @@ class FeedbackThemeData {
   final Color background;
 
   /// The background color of the bottomsheet in which the user can input
-  /// his feedback and thougts.
+  /// his feedback and thoughts.
   final Color feedbackSheetColor;
+
+  /// The color to highlight the currently selected feedback mode.
+  final Color activeFeedbackModeColor;
 
   /// Colors which can be used to draw while in feedback mode.
   final List<Color> drawColors;

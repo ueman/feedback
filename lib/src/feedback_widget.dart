@@ -121,12 +121,8 @@ class FeedbackWidgetState extends State<FeedbackWidget>
             fit: StackFit.passthrough,
             alignment: Alignment.center,
             children: <Widget>[
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom:
-                    MediaQuery.of(context).size.height * .3 * animation.value,
+              Align(
+                alignment: Alignment.topCenter,
                 child: ScaleAndClip(
                   scale: scaleAnimation.value,
                   alignmentProgress: animation.value,
@@ -186,14 +182,16 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                   // especially if the keyboard is shown
                   bottom: MediaQuery.of(context).viewInsets.bottom,
                   right: 0,
+                  height: MediaQuery.of(context).size.height *
+                      // height should be screen size minus the bottom edge of
+                      // screenshot widget:
+                      //   1 - (scaleOrigin + height*scaleFactor)
+                      (1 - (.35 / 2 + 1.65 / 2 * .65)),
                   child: SlideTransition(
                     position: Tween(begin: const Offset(0, 1), end: Offset.zero)
                         .animate(animation),
-                    child: SizedBox(
-                      // TODO(caseycrogers): this height was set by eyeballing,
-                      // it should be defined directly in terms of the scale and
-                      // alignment applied to widget.child above
-                      height: MediaQuery.of(context).size.height / 4,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 24),
                       child: FeedbackBottomSheet(
                         getFeedback: widget.getFeedback,
                         onSubmit: (Object feedback) async {

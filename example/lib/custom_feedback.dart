@@ -76,9 +76,17 @@ class _CustomFeedbackFormState extends State<CustomFeedbackForm> {
             ),
           ],
         ),
+        const Divider(),
+        const Text('What is your feedback?'),
         TextField(
           onChanged: (newFeedback) =>
               _customFeedback.feedbackText = newFeedback,
+        ),
+        const Divider(),
+        const Text('How does this make you feel?'),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: FeedbackRating.values.map(_ratingToIcon).toList(),
         ),
         TextButton(
           // disable this button until the user has specified a feedback type
@@ -88,6 +96,28 @@ class _CustomFeedbackFormState extends State<CustomFeedbackForm> {
           child: const Text('submit'),
         ),
       ],
+    );
+  }
+
+  Widget _ratingToIcon(FeedbackRating rating) {
+    final bool isSelected = _customFeedback.rating == rating;
+    late IconData icon;
+    switch (rating) {
+      case FeedbackRating.bad:
+        icon = Icons.sentiment_dissatisfied;
+        break;
+      case FeedbackRating.neutral:
+        icon = Icons.sentiment_neutral;
+        break;
+      case FeedbackRating.good:
+        icon = Icons.sentiment_satisfied;
+        break;
+    }
+    return IconButton(
+      color: isSelected ? Theme.of(context).accentColor : Colors.grey,
+      onPressed: () => setState(() => _customFeedback.rating = rating),
+      icon: Icon(icon),
+      iconSize: 36,
     );
   }
 }

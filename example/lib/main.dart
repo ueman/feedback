@@ -204,7 +204,12 @@ class MyHomePage extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(20))),
         child: const Text('toggle feedback mode',
             style: TextStyle(color: Colors.white)),
-        onPressed: () => toggleCustomizedFeedback(),
+        onPressed: () {
+          // don't toggle the feedback mode if it's currently visible
+          if (!BetterFeedback.of(context)!.isVisible) {
+            toggleCustomizedFeedback();
+          }
+        },
       ),
     );
   }

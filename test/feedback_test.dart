@@ -193,7 +193,7 @@ void main() {
     var callbackWasCalled = false;
     final screenshotController = MockScreenshotController();
     void onFeedback(
-      String feedback,
+      Object feedback,
       Uint8List? feedbackScreenshot,
     ) {
       expect(feedback, 'Hello World!');
@@ -215,7 +215,7 @@ void main() {
     var callbackWasCalled = false;
     final screenshotController = MockScreenshotController();
     void onFeedback(
-      String feedback,
+      Object feedback,
       Uint8List? feedbackScreenshot,
     ) {
       expect(feedback, 'Hello World!');

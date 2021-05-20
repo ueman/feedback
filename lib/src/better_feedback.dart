@@ -22,7 +22,7 @@ class BetterFeedback extends StatefulWidget {
   const BetterFeedback({
     Key? key,
     required this.child,
-    this.getFeedback = getStringFeedback,
+    this.getFeedback,
     this.theme,
     this.localizationsDelegates,
     this.localeOverride,
@@ -41,7 +41,7 @@ class BetterFeedback extends StatefulWidget {
   /// submit function with their completed feedback.
   /// Defaults to [getStringFeedback] which uses a single editable text field to
   /// prompt for input and submit a string.
-  final GetFeedback getFeedback;
+  final GetFeedback? getFeedback;
 
   /// Theme wich gets used to style the feedback mode.
   final FeedbackThemeData? theme;
@@ -74,7 +74,7 @@ class BetterFeedback extends StatefulWidget {
   /// for the underlying implementation.
   final double pixelRatio;
 
-  /// Call `CustomizedBetterFeedback.of(context)` to get an
+  /// Call `BetterFeedback.of(context)` to get an
   /// instance of [FeedbackData] on which you can call `.show()` or `.hide()`
   /// to enable or disable the feedback view.
   static FeedbackData? of(BuildContext context) =>
@@ -119,7 +119,7 @@ class _BetterFeedbackState extends State<BetterFeedback> {
                 drawColors: FeedbackTheme.of(context).drawColors,
                 mode: widget.mode,
                 pixelRatio: widget.pixelRatio,
-                getFeedback: widget.getFeedback,
+                getFeedback: widget.getFeedback ?? getStringFeedback,
               );
             },
           ),
@@ -150,7 +150,7 @@ class FeedbackData extends InheritedWidget {
   }
 
   /// Shows the feedback view
-  void show(OnFeedbackCallback<Object> callback) => controller.show(callback);
+  void show(OnFeedbackCallback callback) => controller.show(callback);
 
   /// Hides the feedback view
   void hide() => controller.hide();

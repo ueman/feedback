@@ -121,8 +121,12 @@ class FeedbackWidgetState extends State<FeedbackWidget>
             fit: StackFit.passthrough,
             alignment: Alignment.center,
             children: <Widget>[
-              Align(
-                alignment: Alignment.topCenter,
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom:
+                    MediaQuery.of(context).size.height * .3 * animation.value,
                 child: ScaleAndClip(
                   scale: scaleAnimation.value,
                   alignmentProgress: animation.value,
@@ -172,7 +176,9 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                   },
                 ),
               ),
-              if (widget.isFeedbackVisible)
+              // only display if feedback is visible or this widget is still
+              // animating out
+              if (widget.isFeedbackVisible || !animation.isDismissed)
                 Positioned(
                   key: const Key('feedback_bottom_sheet'),
                   left: 0,
@@ -180,20 +186,27 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                   // especially if the keyboard is shown
                   bottom: MediaQuery.of(context).viewInsets.bottom,
                   right: 0,
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height,
-                    child: FeedbackBottomSheet(
-                      getFeedback: widget.getFeedback,
-                      onSubmit: (Object feedback) async {
-                        await _sendFeedback(
-                          context,
-                          FeedbackData.of(context)!.onFeedback!,
-                          screenshotController,
-                          feedback,
-                          widget.pixelRatio,
-                        );
-                        painterController.clear();
-                      },
+                  child: SlideTransition(
+                    position: Tween(begin: const Offset(0, 1), end: Offset.zero)
+                        .animate(animation),
+                    child: SizedBox(
+                      // TODO(caseycrogers): this height was set by eyeballing,
+                      // it should be defined directly in terms of the scale and
+                      // alignment applied to widget.child above
+                      height: MediaQuery.of(context).size.height / 4,
+                      child: FeedbackBottomSheet(
+                        getFeedback: widget.getFeedback,
+                        onSubmit: (Object feedback) async {
+                          await _sendFeedback(
+                            context,
+                            FeedbackData.of(context)!.onFeedback!,
+                            screenshotController,
+                            feedback,
+                            widget.pixelRatio,
+                          );
+                          painterController.clear();
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -206,10 +219,10 @@ class FeedbackWidgetState extends State<FeedbackWidget>
 
   @internal
   @visibleForTesting
-  static Future<void> sendFeedback<T>(
-    OnFeedbackCallback<T> onFeedbackSubmitted,
+  static Future<void> sendFeedback(
+    OnFeedbackCallback onFeedbackSubmitted,
     ScreenshotController controller,
-    T feedback,
+    Object feedback,
     double pixelRatio, {
     Duration delay = const Duration(milliseconds: 200),
   }) async {
@@ -236,7 +249,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
 
   static Future<void> _sendFeedback(
     BuildContext context,
-    OnFeedbackCallback<Object> onFeedbackSubmitted,
+    OnFeedbackCallback onFeedbackSubmitted,
     ScreenshotController controller,
     Object feedback,
     double pixelRatio, {
@@ -246,7 +259,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     if (!showKeyboard) {
       _hideKeyboard(context);
     }
-    await sendFeedback<Object>(
+    await sendFeedback(
       onFeedbackSubmitted,
       controller,
       feedback,

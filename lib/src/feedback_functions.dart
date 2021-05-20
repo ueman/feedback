@@ -3,10 +3,10 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 
 /// Function which gets called when the user submits his feedback.
-/// [feedback] is the user generated feedback text.
+/// [feedback] is the user generated feedback.
 /// [feedbackScreenshot] is a raw png encoded image.
-typedef OnFeedbackCallback<T> = void Function(
-  T feedback,
+typedef OnFeedbackCallback = void Function(
+  Object feedback,
   Uint8List? feedbackScreenshot,
 );
 

@@ -17,7 +17,7 @@ class ScaleAndClip extends StatelessWidget {
     return Transform.scale(
       alignment: Alignment(
         -0.3 * alignmentProgress,
-        -0.65 * alignmentProgress,
+        0,
       ),
       scale: scale,
       child: ClipRRect(

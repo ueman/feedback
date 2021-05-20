@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class MyTestApp extends StatelessWidget {
   const MyTestApp({Key? key, this.onFeedback}) : super(key: key);
 
-  final OnFeedbackCallback<Object>? onFeedback;
+  final OnFeedbackCallback? onFeedback;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class MyTestPage extends StatefulWidget {
   }) : super(key: key);
 
   final String title;
-  final OnFeedbackCallback<Object>? onFeedback;
+  final OnFeedbackCallback? onFeedback;
 
   @override
   _MyTestPageState createState() => _MyTestPageState();

@@ -13,31 +13,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-enum _FeedbackType {
-  bug_report,
-  feature_request,
-}
-
-enum _FeedbackRating {
-  horrible,
-  bad,
-  neutral,
-  good,
-  great,
-}
-
-@immutable
-class _CustomFeedback {
-  const _CustomFeedback({
-    required this.feedbackType,
-    required this.feedbackText,
-    required this.rating,
-  });
-
-  final _FeedbackType feedbackType;
-  final String feedbackText;
-  final int? rating;
-}
+import 'custom_feedback.dart';
 
 void main() {
   runApp(const MyApp());
@@ -50,54 +26,24 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
-  bool _useCustomFeedback = false;
+bool _useCustomFeedback = false;
 
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    // Use customized widgets for collecting and submitting user feedback.
-    if (_useCustomFeedback) {
-      return BetterFeedback(
-        child: MaterialApp(
-          title: 'Feedback Demo',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
-          home: MyHomePage(_toggleCustomizedFeedback),
-        ),
-        theme: FeedbackThemeData(
-          background: Colors.grey,
-          feedbackSheetColor: Colors.grey[50]!,
-          drawColors: [
-            Colors.red,
-            Colors.green,
-            Colors.blue,
-            Colors.yellow,
-          ],
-        ),
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalFeedbackLocalizationsDelegate(),
-        ],
-        localeOverride: const Locale('en'),
-        mode: FeedbackMode.navigate,
-        pixelRatio: 1,
-        getFeedback: (onSubmit) {
-          return Container();
-        },
-      );
-    }
-    // Use the default text field for collecting and submitting user feedback.
     return BetterFeedback(
       child: MaterialApp(
         title: 'Feedback Demo',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: _useCustomFeedback ? Colors.green : Colors.blue,
         ),
         home: MyHomePage(_toggleCustomizedFeedback),
       ),
+      // If custom feedback is not enabled, supply null and the default text
+      // feedback form will be used.
+      getFeedback: _useCustomFeedback
+          ? (onSubmit) => CustomFeedbackForm(onSubmit: onSubmit)
+          : null,
       theme: FeedbackThemeData(
         background: Colors.grey,
         feedbackSheetColor: Colors.grey[50]!,
@@ -133,7 +79,9 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Feedback Example'),
+        title: Text(_useCustomFeedback
+            ? '(Custom) Feedback Example'
+            : 'Feedback Example'),
       ),
       drawer: Drawer(
         child: Container(color: Colors.blue),
@@ -185,15 +133,14 @@ class MyHomePage extends StatelessWidget {
                 onPressed: () {
                   BetterFeedback.of(context)!.show(
                     (
-                      Object feedbackText,
+                      Object feedback,
                       Uint8List? feedbackScreenshot,
                     ) async {
                       // upload to server, share whatever
                       // for example purposes just show it to the user
                       alertFeedbackFunction(
                         context,
-                        // We have to cast feedback to the appropriate type
-                        feedbackText as String,
+                        _feedbackToString(feedback),
                         feedbackScreenshot,
                       );
                     },
@@ -207,7 +154,7 @@ class MyHomePage extends StatelessWidget {
                   onPressed: () {
                     BetterFeedback.of(context)!.show(
                       (
-                        Object feedbackText,
+                        Object feedback,
                         Uint8List? feedbackScreenshot,
                       ) async {
                         // draft an email and send to developer
@@ -215,8 +162,7 @@ class MyHomePage extends StatelessWidget {
                             await writeImageToStorage(feedbackScreenshot!);
 
                         final Email email = Email(
-                          // We have to cast feedback to the appropriate type
-                          body: feedbackText as String,
+                          body: _feedbackToString(feedback),
                           subject: 'App Feedback',
                           recipients: ['john.doe@flutter.dev'],
                           attachmentPaths: [screenshotFilePath],
@@ -233,7 +179,7 @@ class MyHomePage extends StatelessWidget {
                   onPressed: () {
                     BetterFeedback.of(context)!.show(
                       (
-                        Object feedbackText,
+                        Object feedback,
                         Uint8List? feedbackScreenshot,
                       ) async {
                         final screenshotFilePath =
@@ -241,35 +187,8 @@ class MyHomePage extends StatelessWidget {
 
                         await Share.shareFiles(
                           [screenshotFilePath],
-
-                          // We have to cast feedback to the appropriate type
-                          text: feedbackText as String,
+                          text: _feedbackToString(feedback),
                         );
-                      },
-                    );
-                  },
-                ),
-                TextButton(
-                  child: const Text('Provide Customized E-Mail feedback'),
-                  onPressed: () {
-                    BetterFeedback.of(context)!.show(
-                      (
-                        Object feedbackText,
-                        Uint8List? feedbackScreenshot,
-                      ) async {
-                        // draft an email and send to developer
-                        final screenshotFilePath =
-                            await writeImageToStorage(feedbackScreenshot!);
-
-                        final Email email = Email(
-                          // We have to cast feedback to the appropriate type
-                          body: feedbackText as String,
-                          subject: 'App Feedback',
-                          recipients: ['john.doe@flutter.dev'],
-                          attachmentPaths: [screenshotFilePath],
-                          isHTML: false,
-                        );
-                        await FlutterEmailSender.send(email);
                       },
                     );
                   },
@@ -279,7 +198,12 @@ class MyHomePage extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: MaterialButton(
+        color: Theme.of(context).primaryColor,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20))),
+        child: const Text('toggle feedback mode',
+            style: TextStyle(color: Colors.white)),
         onPressed: () => toggleCustomizedFeedback(),
       ),
     );
@@ -353,4 +277,13 @@ Future<void> createGitlabIssueFromFeedback(BuildContext context) async {
       },
     );
   });
+}
+
+String _feedbackToString(Object feedback) {
+  if (feedback is String) {
+    return feedback;
+  }
+  // We must currently be using the custom feedback form. Cast to the correct
+  // type and convert to string.
+  return (feedback as CustomFeedback).toString();
 }

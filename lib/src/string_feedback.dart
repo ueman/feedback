@@ -35,44 +35,28 @@ class _StringFeedbackState extends State<StringFeedback> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        ColoredBox(
-          color: FeedbackTheme.of(context).feedbackSheetColor,
-          child: Padding(
-            padding: const EdgeInsets.all(30),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Text(
-                  FeedbackLocalizations.of(context).feedbackDescriptionText,
-                  maxLines: 2,
-                  style: FeedbackTheme.of(context).bottomSheetDescriptionStyle,
-                ),
-                Material(
-                  child: TextField(
-                    key: const Key('text_input_field'),
-                    maxLines: 2,
-                    minLines: 2,
-                    controller: controller,
-                    textInputAction: TextInputAction.done,
-                  ),
-                ),
-                TextButton(
-                  key: const Key('submit_feedback_button'),
-                  child: Text(
-                    FeedbackLocalizations.of(context).submitButtonText,
-                  ),
-                  onPressed: () {
-                    widget.onSubmit(controller.text);
-                  },
-                ),
-              ],
-            ),
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Text(
+          FeedbackLocalizations.of(context).feedbackDescriptionText,
+          maxLines: 2,
+          style: FeedbackTheme.of(context).bottomSheetDescriptionStyle,
+        ),
+        TextField(
+          key: const Key('text_input_field'),
+          maxLines: 2,
+          minLines: 2,
+          controller: controller,
+          textInputAction: TextInputAction.done,
+        ),
+        TextButton(
+          key: const Key('submit_feedback_button'),
+          child: Text(
+            FeedbackLocalizations.of(context).submitButtonText,
           ),
+          onPressed: () {
+            widget.onSubmit(controller.text);
+          },
         ),
       ],
     );

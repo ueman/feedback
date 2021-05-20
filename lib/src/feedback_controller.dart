@@ -6,9 +6,9 @@ class FeedbackController extends ChangeNotifier {
 
   bool get isVisible => _isVisible;
 
-  OnFeedbackCallback<Object>? onFeedback;
+  OnFeedbackCallback? onFeedback;
 
-  void show(OnFeedbackCallback<Object> onFeedback) {
+  void show(OnFeedbackCallback onFeedback) {
     _isVisible = true;
     this.onFeedback = onFeedback;
     notifyListeners();

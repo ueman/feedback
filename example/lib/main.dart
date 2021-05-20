@@ -57,7 +57,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     // Use customized widgets for collecting and submitting user feedback.
     if (_useCustomFeedback) {
-      return CustomizedBetterFeedback(
+      return BetterFeedback(
         child: MaterialApp(
           title: 'Feedback Demo',
           theme: ThemeData(
@@ -185,14 +185,15 @@ class MyHomePage extends StatelessWidget {
                 onPressed: () {
                   BetterFeedback.of(context)!.show(
                     (
-                      String feedbackText,
+                      Object feedbackText,
                       Uint8List? feedbackScreenshot,
                     ) async {
                       // upload to server, share whatever
                       // for example purposes just show it to the user
                       alertFeedbackFunction(
                         context,
-                        feedbackText,
+                        // We have to cast feedback to the appropriate type
+                        feedbackText as String,
                         feedbackScreenshot,
                       );
                     },
@@ -206,7 +207,7 @@ class MyHomePage extends StatelessWidget {
                   onPressed: () {
                     BetterFeedback.of(context)!.show(
                       (
-                        String feedbackText,
+                        Object feedbackText,
                         Uint8List? feedbackScreenshot,
                       ) async {
                         // draft an email and send to developer
@@ -214,7 +215,8 @@ class MyHomePage extends StatelessWidget {
                             await writeImageToStorage(feedbackScreenshot!);
 
                         final Email email = Email(
-                          body: feedbackText,
+                          // We have to cast feedback to the appropriate type
+                          body: feedbackText as String,
                           subject: 'App Feedback',
                           recipients: ['john.doe@flutter.dev'],
                           attachmentPaths: [screenshotFilePath],
@@ -231,7 +233,7 @@ class MyHomePage extends StatelessWidget {
                   onPressed: () {
                     BetterFeedback.of(context)!.show(
                       (
-                        String feedbackText,
+                        Object feedbackText,
                         Uint8List? feedbackScreenshot,
                       ) async {
                         final screenshotFilePath =
@@ -239,7 +241,9 @@ class MyHomePage extends StatelessWidget {
 
                         await Share.shareFiles(
                           [screenshotFilePath],
-                          text: feedbackText,
+
+                          // We have to cast feedback to the appropriate type
+                          text: feedbackText as String,
                         );
                       },
                     );
@@ -250,7 +254,7 @@ class MyHomePage extends StatelessWidget {
                   onPressed: () {
                     BetterFeedback.of(context)!.show(
                       (
-                        String feedbackText,
+                        Object feedbackText,
                         Uint8List? feedbackScreenshot,
                       ) async {
                         // draft an email and send to developer
@@ -258,7 +262,8 @@ class MyHomePage extends StatelessWidget {
                             await writeImageToStorage(feedbackScreenshot!);
 
                         final Email email = Email(
-                          body: feedbackText,
+                          // We have to cast feedback to the appropriate type
+                          body: feedbackText as String,
                           subject: 'App Feedback',
                           recipients: ['john.doe@flutter.dev'],
                           attachmentPaths: [screenshotFilePath],
@@ -338,7 +343,7 @@ Future<void> createGitlabIssueFromFeedback(BuildContext context) async {
         'gitlab.com',
         '/api/v4/projects/$projectId/issues',
         <String, String>{
-          'title': feedbackText.padRight(80),
+          'title': (feedbackText as String).padRight(80),
           'description': '$feedbackText\n'
               "${uploadResponseMap["markdown"] ?? "Missing image!"}",
         },

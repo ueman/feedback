@@ -13,7 +13,7 @@ import 'package:meta/meta.dart';
 
 typedef FeedbackButtonPress = void Function(BuildContext context);
 
-class FeedbackWidget<T> extends StatefulWidget {
+class FeedbackWidget extends StatefulWidget {
   const FeedbackWidget({
     Key? key,
     required this.child,
@@ -22,7 +22,7 @@ class FeedbackWidget<T> extends StatefulWidget {
     required this.mode,
     required this.pixelRatio,
     required this.getFeedback,
-  })   : assert(
+  })  : assert(
           // This way, we can have a const constructor
           // ignore: prefer_is_empty
           drawColors.length > 0,
@@ -36,14 +36,14 @@ class FeedbackWidget<T> extends StatefulWidget {
   final Widget child;
   final List<Color> drawColors;
 
-  final GetFeedback<T> getFeedback;
+  final GetFeedback getFeedback;
 
   @override
-  FeedbackWidgetState createState() => FeedbackWidgetState<T>();
+  FeedbackWidgetState createState() => FeedbackWidgetState();
 }
 
 @visibleForTesting
-class FeedbackWidgetState<T> extends State<FeedbackWidget<T>>
+class FeedbackWidgetState extends State<FeedbackWidget>
     with SingleTickerProviderStateMixin {
   PainterController painterController = PainterController();
   ScreenshotController screenshotController = ScreenshotController();
@@ -80,7 +80,7 @@ class FeedbackWidgetState<T> extends State<FeedbackWidget<T>>
   }
 
   @override
-  void didUpdateWidget(FeedbackWidget<T> oldWidget) {
+  void didUpdateWidget(FeedbackWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.isFeedbackVisible != widget.isFeedbackVisible &&
         oldWidget.isFeedbackVisible == false) {
@@ -184,10 +184,10 @@ class FeedbackWidgetState<T> extends State<FeedbackWidget<T>>
                     height: MediaQuery.of(context).size.height,
                     child: FeedbackBottomSheet(
                       getFeedback: widget.getFeedback,
-                      onSubmit: (T feedback) async {
+                      onSubmit: (Object feedback) async {
                         await _sendFeedback(
                           context,
-                          FeedbackData.of<T>(context)!.onFeedback!,
+                          FeedbackData.of(context)!.onFeedback!,
                           screenshotController,
                           feedback,
                           widget.pixelRatio,
@@ -234,11 +234,11 @@ class FeedbackWidgetState<T> extends State<FeedbackWidget<T>>
     );
   }
 
-  static Future<void> _sendFeedback<T>(
+  static Future<void> _sendFeedback(
     BuildContext context,
-    OnFeedbackCallback<T> onFeedbackSubmitted,
+    OnFeedbackCallback<Object> onFeedbackSubmitted,
     ScreenshotController controller,
-    T feedback,
+    Object feedback,
     double pixelRatio, {
     Duration delay = const Duration(milliseconds: 200),
     bool showKeyboard = false,
@@ -246,7 +246,7 @@ class FeedbackWidgetState<T> extends State<FeedbackWidget<T>>
     if (!showKeyboard) {
       _hideKeyboard(context);
     }
-    await sendFeedback<T>(
+    await sendFeedback<Object>(
       onFeedbackSubmitted,
       controller,
       feedback,
@@ -255,7 +255,7 @@ class FeedbackWidgetState<T> extends State<FeedbackWidget<T>>
     );
 
     // Close feedback mode
-    FeedbackData.of<T>(context)?.hide();
+    FeedbackData.of(context)?.hide();
   }
 
   static void _hideKeyboard(BuildContext context) {

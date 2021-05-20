@@ -100,30 +100,50 @@ void main() {
     });
 
     testWidgets('feedback callback gets called', (tester) async {
+      String? submittedText;
+      Uint8List? submittedScreenshot;
+
       final widget = BetterFeedback(
         child: MyTestApp(
           onFeedback: (text, screenshot) {
-            expect(screenshot, isNotNull);
+            submittedText = text;
+            submittedScreenshot = screenshot;
           },
         ),
       );
+      await tester.pumpWidget(widget);
+      await tester.pumpAndSettle();
+      final feedbackWidgetState =
+          tester.state<FeedbackWidgetState>(find.byType(FeedbackWidget));
+      feedbackWidgetState.screenshotController = MockScreenshotController();
 
-      await tester.runAsync(() async {
-        await tester.pumpWidget(widget);
+      // feedback is closed
+      final userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
 
-        // open feedback
-        final openFeedbackButton = find.byKey(const Key('open_feedback'));
-        await tester.tap(openFeedbackButton);
-        await tester.pumpAndSettle();
+      expect(userInputFields, findsNothing);
 
-        // submit feedback
-        final submitFeedbackButton =
-            find.byKey(const Key('submit_feedback_button'));
+      // open feedback
+      final openFeedbackButton = find.byKey(const Key('open_feedback'));
+      await tester.tap(openFeedbackButton);
+      await tester.pumpAndSettle();
 
-        await tester.tap(submitFeedbackButton);
-        await tester.pumpAndSettle();
-      });
-    }, skip: true);
+      // write text
+      final textField = find.byKey(const Key('text_input_field'));
+      expect(textField, findsOneWidget);
+      await tester.enterText(textField, 'This app is lame, 2/10.');
+      await tester.pumpAndSettle();
+
+      // submit feedback
+      final submitFeedbackButton =
+          find.byKey(const Key('submit_feedback_button'));
+
+      await tester.tap(submitFeedbackButton);
+      // pump for 200 milliseconds to wait for keyboard to hide on submit
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+
+      expect(submittedText, 'This app is lame, 2/10.');
+      expect(submittedScreenshot, isNotNull);
+    });
   });
 
   test('feedback sendFeedback with high resolution', () async {
@@ -171,7 +191,7 @@ void main() {
   });
 }
 
-class MockScreenshotController implements ScreenshotController {
+class MockScreenshotController extends ScreenshotController {
   @override
   Future<Uint8List> capture(
       {double pixelRatio = 1,

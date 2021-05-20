@@ -13,7 +13,10 @@ class MyTestApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyTestPage(title: 'Feedback Test Page'),
+      home: MyTestPage(
+        title: 'Feedback Test Page',
+        onFeedback: onFeedback,
+      ),
     );
   }
 }

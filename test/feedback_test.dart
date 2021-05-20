@@ -61,6 +61,7 @@ void main() {
       expect(userInputFields, findsOneWidget);
       expect(activeDrawingColor.evaluate().length, 4);
     });
+
     testWidgets('can close feedback', (tester) async {
       await tester.pumpWidget(feedbackWidget);
       await tester.pumpAndSettle();

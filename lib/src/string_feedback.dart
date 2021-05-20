@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 /// Prompt the user for feedback using `StringFeedback`.
-Widget getStringFeedback(OnSubmit<String> onSubmit) =>
+Widget getStringFeedback(OnSubmit onSubmit) =>
     StringFeedback(onSubmit: onSubmit);
 
 /// A form and submit button that prompts the user for feedback with a single
@@ -17,7 +17,7 @@ class StringFeedback extends StatefulWidget {
     required this.onSubmit,
   }) : super(key: key);
 
-  final OnSubmit<String> onSubmit;
+  final OnSubmit onSubmit;
 
   @override
   _StringFeedbackState createState() => _StringFeedbackState();

@@ -9,53 +9,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:feedback/src/l18n/translation.dart';
 
-typedef OnSubmit<T> = void Function(T feedback);
+typedef OnSubmit = void Function(Object feedback);
 
-typedef GetFeedback<T> = Widget Function(OnSubmit<T>);
-
-/// The default `BetterFeedback` class. This widget should be at the top of your
-/// widget tree.
-/// Only prompts for single-string feedback (see [getStringFeedback]). If you
-/// want to prompt the user for more complex/customized feedback (eg you want to
-/// include a drop down that asks a user if their feedback is a bug report or
-/// feature request), use [CustomizedBetterFeedback] instead.
-class BetterFeedback extends CustomizedBetterFeedback<String> {
-  const BetterFeedback({
-    Key? key,
-    required Widget child,
-    FeedbackThemeData? theme,
-    List<LocalizationsDelegate>? localizationsDelegates,
-    Locale? localeOverride,
-    FeedbackMode mode = FeedbackMode.navigate,
-    double pixelRatio = 3.0,
-  }) : super(
-          key: key,
-          child: child,
-          theme: theme,
-          localizationsDelegates: localizationsDelegates,
-          localeOverride: localeOverride,
-          mode: mode,
-          pixelRatio: pixelRatio,
-          getFeedback: getStringFeedback,
-        );
-
-  /// Call `BetterFeedback.of(context)` to get an instance of
-  /// [FeedbackData] on which you can call `.show()` or `.hide()`
-  /// to enable or disable the feedback view.
-  static FeedbackData<String>? of(BuildContext context) =>
-      CustomizedBetterFeedback.of<String>(context);
-}
+typedef GetFeedback = Widget Function(OnSubmit);
 
 /// A feedback widget that uses a custom widget and data type for
 /// prompting the user for their feedback. This widget should be at the top of
 /// your widget tree.
 /// If you only need basic feedback in the form of a single text field, use
 /// `BetterFeedback` instead.
-class CustomizedBetterFeedback<T> extends StatefulWidget {
-  const CustomizedBetterFeedback({
+class BetterFeedback extends StatefulWidget {
+  const BetterFeedback({
     Key? key,
     required this.child,
-    required this.getFeedback,
+    this.getFeedback = getStringFeedback,
     this.theme,
     this.localizationsDelegates,
     this.localeOverride,
@@ -72,9 +39,9 @@ class CustomizedBetterFeedback<T> extends StatefulWidget {
 
   /// Returns a widget that prompts the user for feedback and calls the provided
   /// submit function with their completed feedback.
-  /// See [getStringFeedback] for an example implementation using `String` and a
-  /// single editable text field.
-  final GetFeedback<T> getFeedback;
+  /// Defaults to [getStringFeedback] which uses a single editable text field to
+  /// prompt for input and submit a string.
+  final GetFeedback getFeedback;
 
   /// Theme wich gets used to style the feedback mode.
   final FeedbackThemeData? theme;
@@ -107,18 +74,18 @@ class CustomizedBetterFeedback<T> extends StatefulWidget {
   /// for the underlying implementation.
   final double pixelRatio;
 
-  /// Call `CustomizedBetterFeedback<your_data_type>.of(context)` to get an
+  /// Call `CustomizedBetterFeedback.of(context)` to get an
   /// instance of [FeedbackData] on which you can call `.show()` or `.hide()`
   /// to enable or disable the feedback view.
-  static FeedbackData<T>? of<T>(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<FeedbackData<T>>();
+  static FeedbackData? of(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<FeedbackData>();
 
   @override
-  _BetterFeedbackState createState() => _BetterFeedbackState<T>();
+  _BetterFeedbackState createState() => _BetterFeedbackState();
 }
 
-class _BetterFeedbackState<T> extends State<CustomizedBetterFeedback<T>> {
-  FeedbackController<T> controller = FeedbackController<T>();
+class _BetterFeedbackState extends State<BetterFeedback> {
+  FeedbackController controller = FeedbackController();
 
   bool feedbackVisible = false;
 
@@ -141,7 +108,7 @@ class _BetterFeedbackState<T> extends State<CustomizedBetterFeedback<T>> {
       localizationsDelegates: widget.localizationsDelegates,
       localeOverride: widget.localeOverride,
       child: Builder(builder: (context) {
-        return FeedbackData<T>(
+        return FeedbackData(
           controller: controller,
           child: Builder(
             builder: (context) {
@@ -168,14 +135,14 @@ class _BetterFeedbackState<T> extends State<CustomizedBetterFeedback<T>> {
   }
 }
 
-class FeedbackData<T> extends InheritedWidget {
+class FeedbackData extends InheritedWidget {
   const FeedbackData({
     Key? key,
     required Widget child,
     required this.controller,
   }) : super(key: key, child: child);
 
-  final FeedbackController<T> controller;
+  final FeedbackController controller;
 
   @override
   bool updateShouldNotify(FeedbackData oldWidget) {
@@ -183,16 +150,16 @@ class FeedbackData<T> extends InheritedWidget {
   }
 
   /// Shows the feedback view
-  void show(OnFeedbackCallback<T> callback) => controller.show(callback);
+  void show(OnFeedbackCallback<Object> callback) => controller.show(callback);
 
   /// Hides the feedback view
   void hide() => controller.hide();
 
   bool get isVisible => controller.isVisible;
 
-  static FeedbackController<T>? of<T>(BuildContext context) {
+  static FeedbackController? of(BuildContext context) {
     final feedbackThemeData =
-        context.dependOnInheritedWidgetOfExactType<FeedbackData<T>>();
+        context.dependOnInheritedWidgetOfExactType<FeedbackData>();
     return feedbackThemeData?.controller;
   }
 }

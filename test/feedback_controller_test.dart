@@ -4,12 +4,12 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('FeedbackController', () {
     test(' default is hidden', () {
-      final controller = FeedbackController<String>();
+      final controller = FeedbackController();
       expect(controller.isVisible, false);
     });
 
     test(' change visibility from hidden to visible', () {
-      final controller = FeedbackController<String>();
+      final controller = FeedbackController();
       var listenerWasCalled = false;
       controller.addListener(() {
         listenerWasCalled = true;
@@ -21,7 +21,7 @@ void main() {
     });
 
     test(' change visibility from visible to hidden', () {
-      final controller = FeedbackController<String>();
+      final controller = FeedbackController();
       controller.show((_, __) {});
       var listenerWasCalled = false;
       controller.addListener(() {

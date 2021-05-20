@@ -11,59 +11,59 @@ import 'test_app.dart';
 
 void main() {
   group('BetterFeedback', () {
-    final widgets = {
-      '': _betterFeedback(),
-      //' customized': _customizedBetterFeedback(),
-    };
+    testWidgets('can open feedback with default settings', (tester) async {
+      final widget = BetterFeedback(
+        child: Builder(
+          builder: (context) {
+            return const MyTestApp();
+          },
+        ),
+      );
 
-    // Run all tests once with default feedback and once with customized
-    // feedback.
-    widgets.forEach((descriptor, feedbackWidget) {
-      testWidgets('can open$descriptor feedback with default settings',
-          (tester) async {
-        await tester.pumpWidget(feedbackWidget);
-        await tester.pumpAndSettle();
+      await tester.pumpWidget(widget);
+      await tester.pumpAndSettle();
 
-        // feedback is closed
-        var userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
+      // feedback is closed
+      var userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
 
-        expect(userInputFields, findsNothing);
+      expect(userInputFields, findsNothing);
 
-        // open feedback
-        final openFeedbackButton = find.text('open feedback');
-        await tester.tap(openFeedbackButton);
-        await tester.pumpAndSettle();
+      // open feedback
+      final openFeedbackButton = find.text('open feedback');
+      await tester.tap(openFeedbackButton);
+      await tester.pumpAndSettle();
 
-        userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
-        final activeDrawingColor = getActiveColorButton();
+      userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
+      final activeDrawingColor = getActiveColorButton();
 
-        expect(userInputFields, findsOneWidget);
-        expect(activeDrawingColor, findsNothing);
-      });
+      expect(userInputFields, findsOneWidget);
+      expect(activeDrawingColor, findsNothing);
+    });
 
-      testWidgets('can open feedback in drawing mode', (tester) async {
-        await tester.pumpWidget(feedbackWidget);
-        await tester.pumpAndSettle();
+    testWidgets('can open feedback in drawing mode', (tester) async {
+      final widget = BetterFeedback(
+        mode: FeedbackMode.draw,
+        child: Builder(
+          builder: (context) {
+            return const MyTestApp();
+          },
+        ),
+      );
 
-        // feedback is closed
-        var userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
+      await tester.pumpWidget(widget);
+      await tester.pumpAndSettle();
 
-        expect(userInputFields, findsNothing);
+      // feedback is closed
+      var userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
 
-        // open feedback
-        final openFeedbackButton = find.text('open feedback');
-        await tester.tap(openFeedbackButton);
-        await tester.pumpAndSettle();
+      expect(userInputFields, findsNothing);
 
-        userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
-        final activeDrawingColor = getActiveColorButton();
-
-        expect(userInputFields, findsOneWidget);
-        expect(activeDrawingColor.evaluate().length, 4);
-      });
-      testWidgets('can close feedback', (tester) async {
-        await tester.pumpWidget(feedbackWidget);
-        await tester.pumpAndSettle();
+      expect(userInputFields, findsOneWidget);
+      expect(activeDrawingColor.evaluate().length, 4);
+    });
+    testWidgets('can close feedback', (tester) async {
+      await tester.pumpWidget(feedbackWidget);
+      await tester.pumpAndSettle();
 
       expect(userInputFields, findsNothing);
 

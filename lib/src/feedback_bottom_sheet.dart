@@ -70,6 +70,7 @@ class __FeedbackBottomSheetState extends State<_FeedbackBottomSheet> {
                 ),
                 Material(
                   child: TextField(
+                    key: const Key('text_input_field'),
                     maxLines: 2,
                     minLines: 2,
                     controller: controller,

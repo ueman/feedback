@@ -8,8 +8,7 @@ import 'package:flutter/cupertino.dart';
 Widget getStringFeedback(OnSubmit onSubmit) =>
     StringFeedback(onSubmit: onSubmit);
 
-/// A form and submit button that prompts the user for feedback with a single
-/// text field.
+/// A form that prompts the user for feedback with a single text field.
 /// This is the default feedback widget used by [BetterFeedback].
 class StringFeedback extends StatefulWidget {
   const StringFeedback({

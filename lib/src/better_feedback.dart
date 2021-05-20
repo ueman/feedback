@@ -15,9 +15,8 @@ typedef GetFeedback = Widget Function(OnSubmit);
 
 /// A feedback widget that uses a custom widget and data type for
 /// prompting the user for their feedback. This widget should be at the top of
-/// your widget tree.
-/// If you only need basic feedback in the form of a single text field, use
-/// `BetterFeedback` instead.
+/// your widget tree. Specifically, it should be above any [Navigator] widgets,
+/// including the navigator provided by [MaterialApp].
 class BetterFeedback extends StatefulWidget {
   const BetterFeedback({
     Key? key,
@@ -40,10 +39,10 @@ class BetterFeedback extends StatefulWidget {
   /// Returns a widget that prompts the user for feedback and calls the provided
   /// submit function with their completed feedback.
   /// Defaults to [getStringFeedback] which uses a single editable text field to
-  /// prompt for input and submit a string.
+  /// prompt for input.
   final GetFeedback? getFeedback;
 
-  /// Theme wich gets used to style the feedback mode.
+  /// Theme which gets used to style the feedback mode.
   final FeedbackThemeData? theme;
 
   /// The delegates for this library's FeedbackLocalization widget.

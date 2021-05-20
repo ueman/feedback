@@ -17,10 +17,10 @@ class FeedbackBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     // We need to supply a navigator so that the contents of the bottom sheet
     // have access to an overlay (overlays are used by many material widgets
-    // such as `TextField`.
-    // Typically, the navigator would be fetched from `MaterialApp`, but
-    // `BetterFeedback` should be used above `MaterialApp` in the widget tree so
-    // that the nested navigation in navigate mode works properly.
+    // such as `TextField` and `DropDownButton`.
+    // Typically, the navigator would be provided by a `MaterialApp`, but
+    // `BetterFeedback` is used above `MaterialApp` in the widget tree so that
+    // the nested navigation in navigate mode works properly.
     return Navigator(
       onGenerateRoute: (_) => MaterialPageRoute<void>(
         builder: (context) => Material(

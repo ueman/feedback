@@ -58,13 +58,67 @@ void main() {
 
       expect(userInputFields, findsNothing);
 
+      // open feedback
+      final openFeedbackButton = find.text('open feedback');
+      await tester.tap(openFeedbackButton);
+      await tester.pumpAndSettle();
+
+      userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
+      final activeDrawingColor = getActiveColorButton();
+
       expect(userInputFields, findsOneWidget);
       expect(activeDrawingColor.evaluate().length, 4);
     });
 
     testWidgets('can close feedback', (tester) async {
-      await tester.pumpWidget(feedbackWidget);
+      const widget = BetterFeedback(
+        child: MyTestApp(),
+      );
+
+      await tester.pumpWidget(widget);
       await tester.pumpAndSettle();
+
+      // feedback is closed
+      final userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
+
+      expect(userInputFields, findsNothing);
+
+      // open feedback
+      final openFeedbackButton = find.byKey(const Key('open_feedback'));
+      await tester.tap(openFeedbackButton);
+      await tester.pumpAndSettle();
+
+      expect(userInputFields, findsOneWidget);
+
+      // close feedback again
+      final closeFeedbackButton =
+          find.byKey(const Key('close_controls_column'));
+      await tester.tap(closeFeedbackButton);
+      await tester.pumpAndSettle();
+
+      expect(userInputFields, findsNothing);
+    });
+
+    testWidgets('feedback callback gets called', (tester) async {
+      String? submittedText;
+      Uint8List? submittedScreenshot;
+
+      final widget = BetterFeedback(
+        child: MyTestApp(
+          onFeedback: (text, screenshot) {
+            submittedText = text as String;
+            submittedScreenshot = screenshot;
+          },
+        ),
+      );
+      await tester.pumpWidget(widget);
+      await tester.pumpAndSettle();
+      final feedbackWidgetState =
+          tester.state<FeedbackWidgetState>(find.byType(FeedbackWidget));
+      feedbackWidgetState.screenshotController = MockScreenshotController();
+
+      // feedback is closed
+      final userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
 
       expect(userInputFields, findsNothing);
 

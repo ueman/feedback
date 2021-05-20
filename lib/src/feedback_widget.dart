@@ -21,7 +21,7 @@ class FeedbackWidget extends StatefulWidget {
     required this.drawColors,
     required this.mode,
     required this.pixelRatio,
-  })   : assert(
+  })  : assert(
           // This way, we can have a const constructor
           // ignore: prefer_is_empty
           drawColors.length > 0,

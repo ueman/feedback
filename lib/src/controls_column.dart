@@ -16,7 +16,7 @@ class ControlsColumn extends StatelessWidget {
     required this.onCloseFeedback,
     required this.onClearDrawing,
     required this.colors,
-  })   : assert(
+  })  : assert(
           colors.isNotEmpty,
           'There must be at least one color to draw in colors',
         ),

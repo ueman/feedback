@@ -1,5 +1,6 @@
 import 'package:feedback/src/feedback_mode.dart';
 import 'package:feedback/src/l18n/translation.dart';
+import 'package:feedback/src/theme/feedback_theme.dart';
 import 'package:flutter/material.dart';
 
 /// This is the Widget on the right side of the app when the feedback view
@@ -60,6 +61,8 @@ class ControlsColumn extends StatelessWidget {
               onPressed: isNavigatingActive
                   ? null
                   : () => onControlModeChanged(FeedbackMode.navigate),
+              disabledTextColor:
+                  FeedbackTheme.of(context).activeFeedbackModeColor,
             ),
           ),
           _ColumnDivider(),
@@ -72,6 +75,8 @@ class ControlsColumn extends StatelessWidget {
               onPressed: isNavigatingActive
                   ? () => onControlModeChanged(FeedbackMode.draw)
                   : null,
+              disabledTextColor:
+                  FeedbackTheme.of(context).activeFeedbackModeColor,
             ),
           ),
           IconButton(

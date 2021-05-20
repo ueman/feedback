@@ -145,6 +145,50 @@ void main() {
     });
   });
 
+  testWidgets('feedback callback gets called with custom feedback content',
+      (tester) async {
+    _TestFeedback? submittedFeedback;
+
+    final widget = BetterFeedback(
+      child: MyTestApp(
+        onFeedback: (feedback, screenshot) {
+          submittedFeedback = feedback as _TestFeedback;
+        },
+      ),
+      getFeedback: (onSubmit) => TextButton(
+        key: const Key('custom_submit_feedback_button'),
+        onPressed: () {
+          onSubmit(_TestFeedback(1, 'garbage!'));
+        },
+        child: Container(),
+      ),
+    );
+    await tester.pumpWidget(widget);
+    await tester.pumpAndSettle();
+    final feedbackWidgetState =
+        tester.state<FeedbackWidgetState>(find.byType(FeedbackWidget));
+    feedbackWidgetState.screenshotController = MockScreenshotController();
+
+    // feedback is closed
+    final userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
+
+    expect(userInputFields, findsNothing);
+
+    // open feedback
+    final openFeedbackButton = find.byKey(const Key('open_feedback'));
+    await tester.tap(openFeedbackButton);
+    await tester.pumpAndSettle();
+
+    // submit feedback
+    final submitFeedbackButton =
+        find.byKey(const Key('custom_submit_feedback_button'));
+
+    await tester.tap(submitFeedbackButton);
+    await tester.pumpAndSettle();
+
+    expect(submittedFeedback, _TestFeedback(1, 'garbage!'));
+  });
+
   test('feedback sendFeedback with high resolution', () async {
     var callbackWasCalled = false;
     final screenshotController = MockScreenshotController();
@@ -210,4 +254,20 @@ Finder getActiveColorButton() {
       return false;
     }
   });
+}
+
+class _TestFeedback {
+  _TestFeedback(this.rating, this.feedback);
+
+  int rating;
+  String feedback;
+
+  @override
+  bool operator ==(Object other) =>
+      other is _TestFeedback &&
+      rating == other.rating &&
+      feedback == other.feedback;
+
+  @override
+  int get hashCode => rating.hashCode + feedback.hashCode;
 }

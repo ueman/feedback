@@ -138,8 +138,7 @@ void main() {
           find.byKey(const Key('submit_feedback_button'));
 
       await tester.tap(submitFeedbackButton);
-      // pump for 200 milliseconds to wait for keyboard to hide on submit
-      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      await tester.pumpAndSettle();
 
       expect(submittedText, 'This app is lame, 2/10.');
       expect(submittedScreenshot, isNotNull);

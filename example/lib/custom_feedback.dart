@@ -2,17 +2,8 @@ import 'package:feedback/feedback.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-enum FeedbackType {
-  bug_report,
-  feature_request,
-}
-
-enum FeedbackRating {
-  bad,
-  neutral,
-  good,
-}
-
+/// A data type holding user feedback consisting of a feedback type, free from
+/// feedback text, and a sentiment rating.
 class CustomFeedback {
   CustomFeedback({
     this.feedbackType,
@@ -34,6 +25,23 @@ class CustomFeedback {
   }
 }
 
+/// What type of feedback the user wants to provide.
+enum FeedbackType {
+  bug_report,
+  feature_request,
+}
+
+/// A user-provided sentiment rating.
+enum FeedbackRating {
+  bad,
+  neutral,
+  good,
+}
+
+/// A form that prompts the user for the type of feedback they want to give,
+/// free form text feedback, and a sentiment rating.
+/// The submit button is disabled until the user provides the feedback type. All
+/// other fields are optional.
 class CustomFeedbackForm extends StatefulWidget {
   const CustomFeedbackForm({Key? key, required this.onSubmit})
       : super(key: key);

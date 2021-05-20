@@ -9,8 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:feedback/src/l18n/translation.dart';
 
+/// The function to be called when the user submits their feedback.
 typedef OnSubmit = void Function(Object feedback);
 
+/// A function that returns a Widget that prompts the user for feedback and
+/// calls [OnSubmit] when the user wants to submit their feedback.
 typedef GetFeedback = Widget Function(OnSubmit);
 
 /// A feedback widget that uses a custom widget and data type for
@@ -37,8 +40,9 @@ class BetterFeedback extends StatefulWidget {
   final Widget child;
 
   /// Returns a widget that prompts the user for feedback and calls the provided
-  /// submit function with their completed feedback.
-  /// Defaults to [getStringFeedback] which uses a single editable text field to
+  /// submit function with their completed feedback. Typically, this involves
+  /// some form fields and a submit button that calls [OnSubmit] when pressed.
+  /// Defaults to [StringFeedback] which uses a single editable text field to
   /// prompt for input.
   final GetFeedback? getFeedback;
 

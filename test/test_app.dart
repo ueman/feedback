@@ -32,17 +32,21 @@ class MyTestPage extends StatefulWidget {
   final OnFeedbackCallback? onFeedback;
 
   @override
-  _MyTestPageState createState() => _MyTestPageState();
+  MyTestPageState createState() => MyTestPageState();
 }
 
-class _MyTestPageState extends State<MyTestPage> {
-  int _counter = 0;
+@visibleForTesting
+class MyTestPageState extends State<MyTestPage> {
+  @visibleForTesting
+  int counter = 0;
 
   void _incrementCounter() {
     setState(() {
-      _counter++;
+      counter++;
     });
   }
+
+  void popPage() => Navigator.of(context).pop();
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +67,7 @@ class _MyTestPageState extends State<MyTestPage> {
               'You have pushed the button this many times:',
             ),
             Text(
-              '$_counter',
+              '$counter',
               style: Theme.of(context).textTheme.headline4,
             ),
             const TextField(),
@@ -74,11 +78,28 @@ class _MyTestPageState extends State<MyTestPage> {
                 BetterFeedback.of(context)!
                     .show(widget.onFeedback ?? (_, __) {});
               },
-            )
+            ),
+            TextButton(
+              key: const Key('change_page'),
+              child: const Text('change page'),
+              onPressed: () => Navigator.of(context).push<void>(
+                MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return Container(
+                      key: const Key('new_page'),
+                      child: const Text(
+                        'Hey look at me I\'m a new page!',
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        key: const Key('increment_button'),
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: const Icon(Icons.add),

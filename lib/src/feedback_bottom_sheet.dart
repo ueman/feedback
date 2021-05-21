@@ -25,7 +25,6 @@ class FeedbackBottomSheet extends StatelessWidget {
       onGenerateRoute: (_) => MaterialPageRoute<void>(
         builder: (context) => Material(
           color: FeedbackTheme.of(context).feedbackSheetColor,
-          // wrap in a scroll view to ensure the feedback form does not overflow
           child: getFeedback(onSubmit),
         ),
       ),

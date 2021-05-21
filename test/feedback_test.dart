@@ -200,6 +200,9 @@ void main() {
       final openFeedbackButton = find.byKey(const Key('open_feedback'));
       await tester.tap(openFeedbackButton);
       await tester.pumpAndSettle();
+      final userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
+
+      expect(userInputFields, findsOneWidget);
 
       // verify that we're in navigate mode
       final activeDrawingColor = getActiveColorButton();

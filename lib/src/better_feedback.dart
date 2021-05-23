@@ -1,6 +1,5 @@
 import 'package:feedback/feedback.dart';
 import 'package:feedback/src/feedback_controller.dart';
-import 'package:feedback/src/feedback_functions.dart';
 import 'package:feedback/src/feedback_widget.dart';
 import 'package:feedback/src/feedback_builder/string_feedback.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
@@ -19,6 +18,12 @@ typedef OnSubmit = void Function(
 /// calls [OnSubmit] when the user wants to submit their feedback.
 typedef FeedbackBuilder = Widget Function(BuildContext, OnSubmit);
 
+/// Function which gets called when the user submits his feedback.
+/// [feedback] is the user generated feedback. A string, by default.
+/// [screenshot] is a raw png encoded image.
+/// [OnFeedbackCallback] should cast [feedback] to the appropriate type.
+typedef OnFeedbackCallback = void Function(UserFeedback);
+
 /// A feedback widget that uses a custom widget and data type for
 /// prompting the user for their feedback. This widget should be at the top of
 /// your widget tree. Specifically, it should be above any [Navigator] widgets,
@@ -31,7 +36,7 @@ class BetterFeedback extends StatefulWidget {
     this.theme,
     this.localizationsDelegates,
     this.localeOverride,
-    this.mode = FeedbackMode.navigate,
+    this.mode = FeedbackMode.draw,
     this.pixelRatio = 3.0,
   })  : assert(
           pixelRatio > 0,
@@ -83,8 +88,15 @@ class BetterFeedback extends StatefulWidget {
   /// Call `BetterFeedback.of(context)` to get an
   /// instance of [FeedbackData] on which you can call `.show()` or `.hide()`
   /// to enable or disable the feedback view.
-  static FeedbackData? of(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<FeedbackData>();
+  static FeedbackData of(BuildContext context) {
+    final feedbackData =
+        context.dependOnInheritedWidgetOfExactType<FeedbackData>();
+    assert(
+      feedbackData != null,
+      'You need to add a $BetterFeedback widget above this context!',
+    );
+    return feedbackData!;
+  }
 
   @override
   _BetterFeedbackState createState() => _BetterFeedbackState();
@@ -163,9 +175,14 @@ class FeedbackData extends InheritedWidget {
 
   bool get isVisible => controller.isVisible;
 
-  static FeedbackController? of(BuildContext context) {
+  static FeedbackController of(BuildContext context) {
     final feedbackThemeData =
         context.dependOnInheritedWidgetOfExactType<FeedbackData>();
-    return feedbackThemeData?.controller;
+
+    assert(
+      feedbackThemeData != null,
+      'You need to add a $BetterFeedback widget above this context!',
+    );
+    return feedbackThemeData!.controller;
   }
 }

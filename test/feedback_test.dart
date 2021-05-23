@@ -37,7 +37,7 @@ void main() {
       final activeDrawingColor = getActiveColorButton();
 
       expect(userInputFields, findsOneWidget);
-      expect(activeDrawingColor, findsNothing);
+      expect(activeDrawingColor.evaluate().length, 4);
     });
 
     testWidgets('can open feedback in drawing mode', (tester) async {
@@ -68,6 +68,36 @@ void main() {
 
       expect(userInputFields, findsOneWidget);
       expect(activeDrawingColor.evaluate().length, 4);
+    });
+
+    testWidgets('can open feedback in navigation mode', (tester) async {
+      final widget = BetterFeedback(
+        mode: FeedbackMode.navigate,
+        child: Builder(
+          builder: (context) {
+            return const MyTestApp();
+          },
+        ),
+      );
+
+      await tester.pumpWidget(widget);
+      await tester.pumpAndSettle();
+
+      // feedback is closed
+      var userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
+
+      expect(userInputFields, findsNothing);
+
+      // open feedback
+      final openFeedbackButton = find.text('open feedback');
+      await tester.tap(openFeedbackButton);
+      await tester.pumpAndSettle();
+
+      userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
+      final activeDrawingColor = getActiveColorButton();
+
+      expect(userInputFields, findsOneWidget);
+      expect(activeDrawingColor, findsNothing);
     });
 
     testWidgets('can close feedback', (tester) async {
@@ -244,7 +274,7 @@ void main() {
     final screenshotController = MockScreenshotController();
     void onFeedback(UserFeedback feedback) {
       expect(feedback.text, 'Hello World!');
-      expect(feedback.screenshot?.length, 64);
+      expect(feedback.screenshot.length, 64);
       callbackWasCalled = true;
     }
 
@@ -265,7 +295,7 @@ void main() {
       UserFeedback feedback,
     ) {
       expect(feedback.text, 'Hello World!');
-      expect(feedback.screenshot?.length, 4);
+      expect(feedback.screenshot.length, 4);
       callbackWasCalled = true;
     }
 

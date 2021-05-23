@@ -1,4 +1,4 @@
-import 'package:feedback/feedback.dart';
+import 'package:feedback/src/better_feedback.dart';
 import 'package:flutter/material.dart';
 
 class FeedbackController extends ChangeNotifier {

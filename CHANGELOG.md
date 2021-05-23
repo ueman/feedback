@@ -1,7 +1,13 @@
-## [Unreleased]
+## [2.0.0-beta.0]
+
+THIS IS A BREAKING CHANGE
 
 - Current feedback mode is highlighted
 - Add ability to add custom feedback forms
+- `BetterFeedback.of()` returns an instance or throws
+- `BetterFeedback.of().show()` gives an instance of `UserFeedback`
+- Removed `consoleFeedbackFunction` and `alertFeedbackFunction`
+- Default feedback mode changed to draw
 
 ## [1.2.2]
 

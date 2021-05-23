@@ -8,7 +8,7 @@ import 'package:flutter/rendering.dart';
 class ScreenshotController {
   final GlobalKey _containerKey = GlobalKey();
 
-  Future<Uint8List?> capture({
+  Future<Uint8List> capture({
     double pixelRatio = 1,
     Duration delay = const Duration(milliseconds: 20),
   }) {
@@ -18,10 +18,11 @@ class ScreenshotController {
 
       if (renderObject is! RenderRepaintBoundary) {
         FlutterError.reportError(_noRenderObject());
+        throw Exception('Could not take screenshot');
       } else {
         final image = await renderObject.toImage(pixelRatio: pixelRatio);
         final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-        return byteData?.buffer.asUint8List();
+        return byteData!.buffer.asUint8List();
       }
     });
   }

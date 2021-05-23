@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:example/feedback_functions.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -61,7 +62,7 @@ class _MyAppState extends State<MyApp> {
         GlobalFeedbackLocalizationsDelegate(),
       ],
       localeOverride: const Locale('en'),
-      mode: FeedbackMode.navigate,
+      mode: FeedbackMode.draw,
       pixelRatio: 1,
     );
   }
@@ -91,14 +92,6 @@ class MyHomePage extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              const Text('This is the example app for the "feedback" library.'),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                child: const Text('Go to library page on pub.dev'),
-                onPressed: () {
-                  launch('https://pub.dev/packages/feedback');
-                },
-              ),
               const SizedBox(height: 10),
               const MarkdownBody(
                 data: '# How does it work?\n'
@@ -127,11 +120,11 @@ class MyHomePage extends StatelessWidget {
                   );
                 },
               ),
-              const SizedBox(height: 10),
+              const Divider(),
               ElevatedButton(
                 child: const Text('Provide feedback'),
                 onPressed: () {
-                  BetterFeedback.of(context)!.show(
+                  BetterFeedback.of(context).show(
                     (feedback) async {
                       // upload to server, share whatever
                       // for example purposes just show it to the user
@@ -148,10 +141,10 @@ class MyHomePage extends StatelessWidget {
                 TextButton(
                   child: const Text('Provide E-Mail feedback'),
                   onPressed: () {
-                    BetterFeedback.of(context)!.show((feedback) async {
+                    BetterFeedback.of(context).show((feedback) async {
                       // draft an email and send to developer
                       final screenshotFilePath =
-                          await writeImageToStorage(feedback.screenshot!);
+                          await writeImageToStorage(feedback.screenshot);
 
                       final Email email = Email(
                         body: feedback.text,
@@ -169,10 +162,10 @@ class MyHomePage extends StatelessWidget {
               ElevatedButton(
                 child: const Text('Provide feedback via platform sharing'),
                 onPressed: () {
-                  BetterFeedback.of(context)!.show(
+                  BetterFeedback.of(context).show(
                     (feedback) async {
                       final screenshotFilePath =
-                          await writeImageToStorage(feedback.screenshot!);
+                          await writeImageToStorage(feedback.screenshot);
 
                       await Share.shareFiles(
                         [screenshotFilePath],
@@ -180,6 +173,15 @@ class MyHomePage extends StatelessWidget {
                       );
                     },
                   );
+                },
+              ),
+              const Divider(),
+              const Text('This is the example app for the "feedback" library.'),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                child: const Text('Visit library page on pub.dev'),
+                onPressed: () {
+                  launch('https://pub.dev/packages/feedback');
                 },
               ),
             ],
@@ -194,7 +196,7 @@ class MyHomePage extends StatelessWidget {
             style: TextStyle(color: Colors.white)),
         onPressed: () {
           // don't toggle the feedback mode if it's currently visible
-          if (!BetterFeedback.of(context)!.isVisible) {
+          if (!BetterFeedback.of(context).isVisible) {
             toggleCustomizedFeedback();
           }
         },
@@ -226,11 +228,11 @@ Future<String> writeImageToStorage(Uint8List feedbackScreenshot) async {
 }
 
 Future<void> createGitlabIssueFromFeedback(BuildContext context) async {
-  BetterFeedback.of(context)!.show((feedback) async {
+  BetterFeedback.of(context).show((feedback) async {
     const projectId = 'your-gitlab-project-id';
     const apiToken = 'your-gitlab-api-token';
 
-    final screenshotFilePath = await writeImageToStorage(feedback.screenshot!);
+    final screenshotFilePath = await writeImageToStorage(feedback.screenshot);
 
     // Upload screenshot
     final uploadRequest = http.MultipartRequest(

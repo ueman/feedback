@@ -76,14 +76,11 @@ void main() {
 
 Provide a way to show the feedback panel by calling 
 ```dart
-BetterFeedback.of(context)?.show((String feedback, Uint8List? feedbackScreenshot) {
-  // feedback is the text which the user entered
-  // feedbackScreenshot is the PNG encoded screenshot as raw bytes
-  //
-  // See the examples below for examples of what to do with it
+BetterFeedback.of(context).show((UserFeedback feedback) {
+  // Do something with the feedback
 });
 ```
-Provide a way to hide the feedback panel by calling  `BetterFeedback.of(context)?.hide();` 
+Provide a way to hide the feedback panel by calling  `BetterFeedback.of(context).hide();` 
 
 ### Use the feedback
 
@@ -149,7 +146,6 @@ his feedback and debug his issues.
 feedback of the user. This way you know how the user got to the location shown
 in the screenshot.
 - Use it as an internal quality control tool
-
 
 ## ⚠️ Known Issues and limitations
 

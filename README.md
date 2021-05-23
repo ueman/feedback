@@ -94,12 +94,12 @@ These are a couple suggestions:
 |--------|---------|
 | Upload to a server | To upload the feedback to a server you should use for example a [MultipartRequest](https://pub.dev/documentation/http/latest/http/MultipartRequest-class.html). |
 | GitLab Issue | GitLab has a [REST API to create issues](https://docs.gitlab.com/ee/api/issues.html) |
-| Share via platform share dialog | [share on pub.dev](https://pub.dev/packages/share). Also shown in the example. |
+| Share via platform share dialog | [share_plus on pub.dev](https://pub.dev/packages/share_plus). Also shown in the example. |
 | Firebase | [Firestore](https://pub.dev/packages/cloud_firestore), [Cloud Storage](https://pub.dev/packages/firebase_storage), [Database](https://pub.dev/packages/firebase_database)
 |   Jira | Jira has a [REST API to create issues and upload files](https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-an-issue-examples) |
 | Trello | Trello has a [REST API to create issues and upload files](https://developer.atlassian.com/cloud/trello/rest/api-group-actions/) |
 | E-Mail | You can use the users email client like [in the sample app](https://github.com/ueman/feedback/blob/master/example/lib/main.dart) to send feedback to yourself using the [flutter_email_sender](https://pub.dev/packages/flutter_email_sender) plugin. |
-| Sentry | Use it as a view for [Sentry](https://sentry.io/)s [user feedback](https://docs.sentry.io/enriching-error-data/user-feedback/?platform=browser) to collect additional user information upon hitting an error. |
+
 
 If you have sample code on how to upload it to a platform, I would appreciate a pull request to the example app.
 
@@ -141,8 +141,8 @@ How the properties of `FeedbackThemeData` correspond to the view can be seen in 
 
 ## 💡 Tips, tricks and usage scenarios
 
-- You can combine this with [device_info](https://pub.dev/packages/device_info)
-and [package_info](https://pub.dev/packages/package_info) to 
+- You can combine this with [device_info_plus](https://pub.dev/packages/device_info_plus)
+and [package_info_plus](https://pub.dev/packages/package_info_plus) to 
 get additional information about the users environment to better understand
 his feedback and debug his issues. 
 - You can record the users navigation with a [NavigatorObserver](https://api.flutter.dev/flutter/widgets/NavigatorObserver-class.html) and send it as an addition to the 

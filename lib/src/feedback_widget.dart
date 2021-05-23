@@ -2,7 +2,6 @@ import 'package:feedback/feedback.dart';
 import 'package:feedback/src/better_feedback.dart';
 import 'package:feedback/src/controls_column.dart';
 import 'package:feedback/src/feedback_bottom_sheet.dart';
-import 'package:feedback/src/feedback_functions.dart';
 import 'package:feedback/src/feedback_mode.dart';
 import 'package:feedback/src/paint_on_background.dart';
 import 'package:feedback/src/painter.dart';
@@ -46,12 +45,15 @@ class FeedbackWidget extends StatefulWidget {
 @visibleForTesting
 class FeedbackWidgetState extends State<FeedbackWidget>
     with SingleTickerProviderStateMixin {
-  PainterController painterController = PainterController();
+  late PainterController painterController = create();
   ScreenshotController screenshotController = ScreenshotController();
   TextEditingController textEditingController = TextEditingController();
 
-  FeedbackMode mode = FeedbackMode.navigate;
-  AnimationController? _controller;
+  late FeedbackMode mode = widget.mode;
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 300),
+  );
 
   PainterController create() {
     final controller = PainterController();
@@ -62,22 +64,9 @@ class FeedbackWidgetState extends State<FeedbackWidget>
   }
 
   @override
-  void initState() {
-    super.initState();
-    painterController = create();
-
-    mode = widget.mode;
-
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 300),
-    );
-  }
-
-  @override
   void dispose() {
     super.dispose();
-    _controller?.dispose();
+    _controller.dispose();
   }
 
   @override
@@ -87,34 +76,33 @@ class FeedbackWidgetState extends State<FeedbackWidget>
         oldWidget.isFeedbackVisible == false) {
       // Feedback is now visible,
       // start animation to show it.
-      _controller?.forward();
+      _controller.forward();
     }
 
     if (oldWidget.isFeedbackVisible != widget.isFeedbackVisible &&
         oldWidget.isFeedbackVisible == true) {
       // Feedback is no longer visible,
       // reverse animation to hide it.
-      _controller?.reverse();
+      _controller.reverse();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    assert(_controller != null);
     final scaleAnimation = Tween<double>(begin: 1, end: 0.65)
         .chain(CurveTween(curve: Curves.easeInSine))
-        .animate(_controller!);
+        .animate(_controller);
 
     final animation = Tween<double>(begin: 0, end: 1)
         .chain(CurveTween(curve: Curves.easeInSine))
-        .animate(_controller!);
+        .animate(_controller);
 
     final controlsHorizontalAlignment = Tween<double>(begin: 1.4, end: .95)
         .chain(CurveTween(curve: Curves.easeInSine))
-        .animate(_controller!);
+        .animate(_controller);
 
     return AnimatedBuilder(
-      animation: _controller!,
+      animation: _controller,
       builder: (context, child) {
         return ColoredBox(
           color: FeedbackTheme.of(context).background,
@@ -169,7 +157,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                   },
                   onCloseFeedback: () {
                     _hideKeyboard(context);
-                    BetterFeedback.of(context)!.hide();
+                    BetterFeedback.of(context).hide();
                   },
                 ),
               ),
@@ -201,7 +189,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                         }) async {
                           await _sendFeedback(
                             context,
-                            FeedbackData.of(context)!.onFeedback!,
+                            FeedbackData.of(context).onFeedback!,
                             screenshotController,
                             feedback,
                             widget.pixelRatio,
@@ -275,7 +263,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     );
 
     // Close feedback mode
-    FeedbackData.of(context)?.hide();
+    FeedbackData.of(context).hide();
   }
 
   static void _hideKeyboard(BuildContext context) {

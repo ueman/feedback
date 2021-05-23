@@ -1,6 +1,7 @@
 ## [Unreleased]
 
 - Current feedback mode is highlighted
+- Add ability to add custom feedback forms
 
 ## [1.2.2]
 

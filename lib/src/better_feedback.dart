@@ -2,17 +2,32 @@ import 'package:feedback/feedback.dart';
 import 'package:feedback/src/feedback_controller.dart';
 import 'package:feedback/src/feedback_functions.dart';
 import 'package:feedback/src/feedback_widget.dart';
+import 'package:feedback/src/feedback_builder/string_feedback.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
 import 'package:feedback/src/utilities/feedback_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:feedback/src/l18n/translation.dart';
 
-/// This widget should be at the top of your widget tree.
+/// The function to be called when the user submits their feedback.
+typedef OnSubmit = void Function(
+  String feedback, {
+  Map<String, dynamic>? extras,
+});
+
+/// A function that returns a Widget that prompts the user for feedback and
+/// calls [OnSubmit] when the user wants to submit their feedback.
+typedef FeedbackBuilder = Widget Function(BuildContext, OnSubmit);
+
+/// A feedback widget that uses a custom widget and data type for
+/// prompting the user for their feedback. This widget should be at the top of
+/// your widget tree. Specifically, it should be above any [Navigator] widgets,
+/// including the navigator provided by [MaterialApp].
 class BetterFeedback extends StatefulWidget {
   const BetterFeedback({
     Key? key,
     required this.child,
+    this.feedbackBuilder,
     this.theme,
     this.localizationsDelegates,
     this.localeOverride,
@@ -27,7 +42,14 @@ class BetterFeedback extends StatefulWidget {
   /// The application to wrap, typically a [MaterialApp].
   final Widget child;
 
-  /// Theme wich gets used to style the feedback mode.
+  /// Returns a widget that prompts the user for feedback and calls the provided
+  /// submit function with their completed feedback. Typically, this involves
+  /// some form fields and a submit button that calls [OnSubmit] when pressed.
+  /// Defaults to [StringFeedback] which uses a single editable text field to
+  /// prompt for input.
+  final FeedbackBuilder? feedbackBuilder;
+
+  /// Theme which gets used to style the feedback mode.
   final FeedbackThemeData? theme;
 
   /// The delegates for this library's FeedbackLocalization widget.
@@ -58,8 +80,8 @@ class BetterFeedback extends StatefulWidget {
   /// for the underlying implementation.
   final double pixelRatio;
 
-  /// Call `BetterFeedback.of(context)` to get an instance of
-  /// [FeedbackData] on which you can call `.show()` or `.hide()`
+  /// Call `BetterFeedback.of(context)` to get an
+  /// instance of [FeedbackData] on which you can call `.show()` or `.hide()`
   /// to enable or disable the feedback view.
   static FeedbackData? of(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<FeedbackData>();
@@ -103,6 +125,7 @@ class _BetterFeedbackState extends State<BetterFeedback> {
                 drawColors: FeedbackTheme.of(context).drawColors,
                 mode: widget.mode,
                 pixelRatio: widget.pixelRatio,
+                getFeedback: widget.feedbackBuilder ?? simpleFeedbackBuilder,
               );
             },
           ),

@@ -1,3 +1,4 @@
+import 'package:feedback/feedback.dart';
 import 'package:feedback/src/better_feedback.dart';
 import 'package:feedback/src/controls_column.dart';
 import 'package:feedback/src/feedback_bottom_sheet.dart';
@@ -21,6 +22,7 @@ class FeedbackWidget extends StatefulWidget {
     required this.drawColors,
     required this.mode,
     required this.pixelRatio,
+    required this.getFeedback,
   })  : assert(
           // This way, we can have a const constructor
           // ignore: prefer_is_empty
@@ -34,6 +36,8 @@ class FeedbackWidget extends StatefulWidget {
   final double pixelRatio;
   final Widget child;
   final List<Color> drawColors;
+
+  final FeedbackBuilder getFeedback;
 
   @override
   FeedbackWidgetState createState() => FeedbackWidgetState();
@@ -169,7 +173,9 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                   },
                 ),
               ),
-              if (widget.isFeedbackVisible)
+              // only display if feedback is visible or this widget is still
+              // animating out
+              if (widget.isFeedbackVisible || !animation.isDismissed)
                 Positioned(
                   key: const Key('feedback_bottom_sheet'),
                   left: 0,
@@ -177,19 +183,33 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                   // especially if the keyboard is shown
                   bottom: MediaQuery.of(context).viewInsets.bottom,
                   right: 0,
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height,
-                    child: FeedbackBottomSheet(
-                      onSubmit: (context, feedback) async {
-                        await _sendFeedback(
-                          context,
-                          FeedbackData.of(context)!.onFeedback!,
-                          screenshotController,
-                          feedback,
-                          widget.pixelRatio,
-                        );
-                        painterController.clear();
-                      },
+                  height: MediaQuery.of(context).size.height *
+                      // height should be screen size minus the bottom edge of
+                      // screenshot widget:
+                      //   1 - (scaleOrigin + height*scaleFactor)
+                      (1 - (.35 / 2 + 1.65 / 2 * .65)),
+                  child: SlideTransition(
+                    position: Tween(begin: const Offset(0, 1), end: Offset.zero)
+                        .animate(animation),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 24),
+                      child: FeedbackBottomSheet(
+                        getFeedback: widget.getFeedback,
+                        onSubmit: (
+                          String feedback, {
+                          Map<String, dynamic>? extras,
+                        }) async {
+                          await _sendFeedback(
+                            context,
+                            FeedbackData.of(context)!.onFeedback!,
+                            screenshotController,
+                            feedback,
+                            widget.pixelRatio,
+                            extras: extras,
+                          );
+                          painterController.clear();
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -205,9 +225,10 @@ class FeedbackWidgetState extends State<FeedbackWidget>
   static Future<void> sendFeedback(
     OnFeedbackCallback onFeedbackSubmitted,
     ScreenshotController controller,
-    String feedbackText,
+    String feedback,
     double pixelRatio, {
     Duration delay = const Duration(milliseconds: 200),
+    Map<String, dynamic>? extras,
   }) async {
     // Wait for the keyboard to be closed, and then proceed
     // to take a screenshot
@@ -222,10 +243,11 @@ class FeedbackWidgetState extends State<FeedbackWidget>
 
         // Give it to the developer
         // to do something with it.
-        onFeedbackSubmitted(
-          feedbackText,
-          screenshot,
-        );
+        onFeedbackSubmitted(UserFeedback(
+          text: feedback,
+          screenshot: screenshot,
+          extra: extras,
+        ));
       },
     );
   }
@@ -234,10 +256,11 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     BuildContext context,
     OnFeedbackCallback onFeedbackSubmitted,
     ScreenshotController controller,
-    String feedbackText,
+    String feedback,
     double pixelRatio, {
     Duration delay = const Duration(milliseconds: 200),
     bool showKeyboard = false,
+    Map<String, dynamic>? extras,
   }) async {
     if (!showKeyboard) {
       _hideKeyboard(context);
@@ -245,9 +268,10 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     await sendFeedback(
       onFeedbackSubmitted,
       controller,
-      feedbackText,
+      feedback,
       pixelRatio,
       delay: delay,
+      extras: extras,
     );
 
     // Close feedback mode

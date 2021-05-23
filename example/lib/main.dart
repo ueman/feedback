@@ -10,13 +10,40 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'custom_feedback.dart';
+
 void main() {
-  runApp(
-    BetterFeedback(
-      child: const MyApp(),
+  runApp(const MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+bool _useCustomFeedback = false;
+
+class _MyAppState extends State<MyApp> {
+  @override
+  Widget build(BuildContext context) {
+    return BetterFeedback(
+      child: MaterialApp(
+        title: 'Feedback Demo',
+        theme: ThemeData(
+          primarySwatch: _useCustomFeedback ? Colors.green : Colors.blue,
+        ),
+        home: MyHomePage(_toggleCustomizedFeedback),
+      ),
+      // If custom feedback is not enabled, supply null and the default text
+      // feedback form will be used.
+      feedbackBuilder: _useCustomFeedback
+          ? (context, onSubmit) => CustomFeedbackForm(onSubmit: onSubmit)
+          : null,
       theme: FeedbackThemeData(
         background: Colors.grey,
         feedbackSheetColor: Colors.grey[50]!,
@@ -36,33 +63,25 @@ void main() {
       localeOverride: const Locale('en'),
       mode: FeedbackMode.navigate,
       pixelRatio: 1,
-    ),
-  );
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Feedback Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(),
     );
   }
+
+  void _toggleCustomizedFeedback() =>
+      setState(() => _useCustomFeedback = !_useCustomFeedback);
 }
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage(this.toggleCustomizedFeedback, {Key? key}) : super(key: key);
+
+  final VoidCallback toggleCustomizedFeedback;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Feedback Example'),
+        title: Text(_useCustomFeedback
+            ? '(Custom) Feedback Example'
+            : 'Feedback Example'),
       ),
       drawer: Drawer(
         child: Container(color: Colors.blue),
@@ -112,72 +131,73 @@ class MyHomePage extends StatelessWidget {
               ElevatedButton(
                 child: const Text('Provide feedback'),
                 onPressed: () {
-                  BetterFeedback.of(context)?.show(
-                    (
-                      String feedbackText,
-                      Uint8List? feedbackScreenshot,
-                    ) async {
+                  BetterFeedback.of(context)!.show(
+                    (feedback) async {
                       // upload to server, share whatever
                       // for example purposes just show it to the user
                       alertFeedbackFunction(
                         context,
-                        feedbackText,
-                        feedbackScreenshot,
+                        feedback,
                       );
                     },
                   );
                 },
               ),
+              const SizedBox(height: 10),
               if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) ...[
-                const SizedBox(height: 10),
                 TextButton(
                   child: const Text('Provide E-Mail feedback'),
                   onPressed: () {
-                    BetterFeedback.of(context)?.show(
-                      (
-                        String feedbackText,
-                        Uint8List? feedbackScreenshot,
-                      ) async {
-                        // draft an email and send to developer
-                        final screenshotFilePath =
-                            await writeImageToStorage(feedbackScreenshot!);
+                    BetterFeedback.of(context)!.show((feedback) async {
+                      // draft an email and send to developer
+                      final screenshotFilePath =
+                          await writeImageToStorage(feedback.screenshot!);
 
-                        final Email email = Email(
-                          body: feedbackText,
-                          subject: 'App Feedback',
-                          recipients: ['john.doe@flutter.dev'],
-                          attachmentPaths: [screenshotFilePath],
-                          isHTML: false,
-                        );
-                        await FlutterEmailSender.send(email);
-                      },
-                    );
+                      final Email email = Email(
+                        body: feedback.text,
+                        subject: 'App Feedback',
+                        recipients: ['john.doe@flutter.dev'],
+                        attachmentPaths: [screenshotFilePath],
+                        isHTML: false,
+                      );
+                      await FlutterEmailSender.send(email);
+                    });
                   },
                 ),
                 const SizedBox(height: 10),
-                TextButton(
-                  child: const Text('Provide feedback via platform sharing'),
-                  onPressed: () {
-                    BetterFeedback.of(context)?.show(
-                      (
-                        String feedbackText,
-                        Uint8List? feedbackScreenshot,
-                      ) async {
-                        final screenshotFilePath =
-                            await writeImageToStorage(feedbackScreenshot!);
-
-                        await Share.shareFiles(
-                          [screenshotFilePath],
-                          text: feedbackText,
-                        );
-                      },
-                    );
-                  },
-                ),
               ],
+              ElevatedButton(
+                child: const Text('Provide feedback via platform sharing'),
+                onPressed: () {
+                  BetterFeedback.of(context)!.show(
+                    (feedback) async {
+                      final screenshotFilePath =
+                          await writeImageToStorage(feedback.screenshot!);
+
+                      await Share.shareFiles(
+                        [screenshotFilePath],
+                        text: feedback.text,
+                      );
+                    },
+                  );
+                },
+              ),
             ],
           ),
         ),
+      ),
+      floatingActionButton: MaterialButton(
+        color: Theme.of(context).primaryColor,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20))),
+        child: const Text('toggle feedback mode',
+            style: TextStyle(color: Colors.white)),
+        onPressed: () {
+          // don't toggle the feedback mode if it's currently visible
+          if (!BetterFeedback.of(context)!.isVisible) {
+            toggleCustomizedFeedback();
+          }
+        },
       ),
     );
   }
@@ -206,14 +226,11 @@ Future<String> writeImageToStorage(Uint8List feedbackScreenshot) async {
 }
 
 Future<void> createGitlabIssueFromFeedback(BuildContext context) async {
-  BetterFeedback.of(context)?.show((
-    feedbackText,
-    feedbackScreenshot,
-  ) async {
+  BetterFeedback.of(context)!.show((feedback) async {
     const projectId = 'your-gitlab-project-id';
     const apiToken = 'your-gitlab-api-token';
 
-    final screenshotFilePath = await writeImageToStorage(feedbackScreenshot!);
+    final screenshotFilePath = await writeImageToStorage(feedback.screenshot!);
 
     // Upload screenshot
     final uploadRequest = http.MultipartRequest(
@@ -240,8 +257,8 @@ Future<void> createGitlabIssueFromFeedback(BuildContext context) async {
         'gitlab.com',
         '/api/v4/projects/$projectId/issues',
         <String, String>{
-          'title': feedbackText.padRight(80),
-          'description': '$feedbackText\n'
+          'title': feedback.text.padRight(80),
+          'description': '${feedback.text}\n'
               "${uploadResponseMap["markdown"] ?? "Missing image!"}",
         },
       ),

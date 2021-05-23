@@ -105,9 +105,9 @@ void main() {
 
       final widget = BetterFeedback(
         child: MyTestApp(
-          onFeedback: (text, screenshot) {
-            submittedText = text;
-            submittedScreenshot = screenshot;
+          onFeedback: (feedback) {
+            submittedText = feedback.text;
+            submittedScreenshot = feedback.screenshot;
           },
         ),
       );
@@ -143,17 +143,108 @@ void main() {
       expect(submittedText, 'This app is lame, 2/10.');
       expect(submittedScreenshot, isNotNull);
     });
+
+    testWidgets('feedback callback gets called with custom feedback content',
+        (tester) async {
+      UserFeedback? submittedFeedback;
+
+      final widget = BetterFeedback(
+        child: MyTestApp(
+          onFeedback: (feedback) {
+            submittedFeedback = feedback;
+          },
+        ),
+        feedbackBuilder: (context, onSubmit) => TextButton(
+          key: const Key('custom_submit_feedback_button'),
+          onPressed: () {
+            onSubmit('garbage!', extras: <String, dynamic>{'rating': 1});
+          },
+          child: Container(),
+        ),
+      );
+      await tester.pumpWidget(widget);
+      await tester.pumpAndSettle();
+      final feedbackWidgetState =
+          tester.state<FeedbackWidgetState>(find.byType(FeedbackWidget));
+      feedbackWidgetState.screenshotController = MockScreenshotController();
+
+      // feedback is closed
+      final userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
+
+      expect(userInputFields, findsNothing);
+
+      // open feedback
+      final openFeedbackButton = find.byKey(const Key('open_feedback'));
+      await tester.tap(openFeedbackButton);
+      await tester.pumpAndSettle();
+
+      // submit feedback
+      final submitFeedbackButton =
+          find.byKey(const Key('custom_submit_feedback_button'));
+
+      await tester.tap(submitFeedbackButton);
+      await tester.pumpAndSettle();
+
+      expect(submittedFeedback?.text, 'garbage!');
+      expect(submittedFeedback?.extra, {'rating': 1});
+    });
+
+    testWidgets('screenshot navigation works', (tester) async {
+      const widget = BetterFeedback(
+        mode: FeedbackMode.navigate,
+        child: MyTestApp(),
+      );
+      await tester.pumpWidget(widget);
+      await tester.pumpAndSettle();
+
+      // open feedback
+      final openFeedbackButton = find.byKey(const Key('open_feedback'));
+      await tester.tap(openFeedbackButton);
+      await tester.pumpAndSettle();
+      final userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
+
+      expect(userInputFields, findsOneWidget);
+
+      // verify that we're in navigate mode
+      final activeDrawingColor = getActiveColorButton();
+      expect(activeDrawingColor.evaluate().length, 0);
+
+      final testAppState =
+          tester.state<MyTestPageState>(find.byType(MyTestPage));
+      expect(testAppState.counter, 0);
+
+      final incrementButton = find.byKey(const Key('increment_button'));
+      expect(incrementButton, findsOneWidget);
+
+      await tester.tap(incrementButton);
+      await tester.tap(incrementButton);
+      await tester.pumpAndSettle();
+
+      expect(testAppState.counter, 2);
+
+      final changePage = find.byKey(const Key('change_page'));
+      expect(changePage, findsOneWidget);
+      await tester.tap(changePage);
+      await tester.pumpAndSettle();
+
+      Finder newPage = find.byKey(const Key('new_page'));
+      expect(newPage, findsOneWidget);
+
+      // ideally we should test pop behavior using the system back button but
+      // flutter testing does not support simulated back button presses
+      testAppState.popPage();
+      await tester.pumpAndSettle();
+      newPage = find.byKey(const Key('new_page'));
+      expect(newPage, findsNothing);
+    });
   });
 
   test('feedback sendFeedback with high resolution', () async {
     var callbackWasCalled = false;
     final screenshotController = MockScreenshotController();
-    void onFeedback(
-      String feedback,
-      Uint8List? feedbackScreenshot,
-    ) {
-      expect(feedback, 'Hello World!');
-      expect(feedbackScreenshot?.length, 64);
+    void onFeedback(UserFeedback feedback) {
+      expect(feedback.text, 'Hello World!');
+      expect(feedback.screenshot?.length, 64);
       callbackWasCalled = true;
     }
 
@@ -171,11 +262,10 @@ void main() {
     var callbackWasCalled = false;
     final screenshotController = MockScreenshotController();
     void onFeedback(
-      String feedback,
-      Uint8List? feedbackScreenshot,
+      UserFeedback feedback,
     ) {
-      expect(feedback, 'Hello World!');
-      expect(feedbackScreenshot?.length, 4);
+      expect(feedback.text, 'Hello World!');
+      expect(feedback.screenshot?.length, 4);
       callbackWasCalled = true;
     }
 

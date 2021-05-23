@@ -1,96 +1,33 @@
-import 'package:feedback/src/l18n/translation.dart';
+import 'package:feedback/src/better_feedback.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
 import 'package:flutter/material.dart';
 
-typedef OnSubmit = void Function(BuildContext context, String feedback);
-
 /// Shows the text input in which the user can describe his feedback.
 class FeedbackBottomSheet extends StatelessWidget {
-  const FeedbackBottomSheet({Key? key, required this.onSubmit})
-      : super(key: key);
-
-  final OnSubmit onSubmit;
-
-  @override
-  Widget build(BuildContext context) {
-    return Overlay(
-      initialEntries: [
-        OverlayEntry(
-          builder: (context) {
-            return _FeedbackBottomSheet(
-              onSubmit: onSubmit,
-            );
-          },
-        ),
-      ],
-    );
-  }
-}
-
-class _FeedbackBottomSheet extends StatefulWidget {
-  const _FeedbackBottomSheet({
+  const FeedbackBottomSheet({
     Key? key,
+    required this.getFeedback,
     required this.onSubmit,
   }) : super(key: key);
 
+  final FeedbackBuilder getFeedback;
   final OnSubmit onSubmit;
 
   @override
-  __FeedbackBottomSheetState createState() => __FeedbackBottomSheetState();
-}
-
-class __FeedbackBottomSheetState extends State<_FeedbackBottomSheet> {
-  late TextEditingController controller;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = TextEditingController();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        ColoredBox(
+    // We need to supply a navigator so that the contents of the bottom sheet
+    // have access to an overlay (overlays are used by many material widgets
+    // such as `TextField` and `DropDownButton`.
+    // Typically, the navigator would be provided by a `MaterialApp`, but
+    // `BetterFeedback` is used above `MaterialApp` in the widget tree so that
+    // the nested navigation in navigate mode works properly.
+    return Navigator(
+      onGenerateRoute: (_) => MaterialPageRoute<void>(
+        builder: (context) => Material(
           color: FeedbackTheme.of(context).feedbackSheetColor,
-          child: Padding(
-            padding: const EdgeInsets.all(30),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Text(
-                  FeedbackLocalizations.of(context).feedbackDescriptionText,
-                  maxLines: 2,
-                  style: FeedbackTheme.of(context).bottomSheetDescriptionStyle,
-                ),
-                Material(
-                  child: TextField(
-                    key: const Key('text_input_field'),
-                    maxLines: 2,
-                    minLines: 2,
-                    controller: controller,
-                    textInputAction: TextInputAction.done,
-                  ),
-                ),
-                TextButton(
-                  key: const Key('submit_feedback_button'),
-                  child: Text(
-                    FeedbackLocalizations.of(context).submitButtonText,
-                  ),
-                  onPressed: () {
-                    widget.onSubmit(context, controller.text);
-                  },
-                ),
-              ],
-            ),
-          ),
+          child: getFeedback(context, onSubmit),
         ),
-      ],
+      ),
     );
   }
 }

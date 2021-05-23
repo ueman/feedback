@@ -2,7 +2,7 @@ import 'package:feedback/feedback.dart';
 import 'package:feedback/src/feedback_controller.dart';
 import 'package:feedback/src/feedback_functions.dart';
 import 'package:feedback/src/feedback_widget.dart';
-import 'package:feedback/src/string_feedback.dart';
+import 'package:feedback/src/feedback_builder/string_feedback.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
 import 'package:feedback/src/utilities/feedback_app.dart';
 import 'package:flutter/material.dart';
@@ -10,11 +10,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:feedback/src/l18n/translation.dart';
 
 /// The function to be called when the user submits their feedback.
-typedef OnSubmit = void Function(Object feedback);
+typedef OnSubmit = void Function(
+  String feedback, {
+  Map<String, dynamic>? extras,
+});
 
 /// A function that returns a Widget that prompts the user for feedback and
 /// calls [OnSubmit] when the user wants to submit their feedback.
-typedef GetFeedback = Widget Function(OnSubmit);
+typedef FeedbackBuilder = Widget Function(BuildContext, OnSubmit);
 
 /// A feedback widget that uses a custom widget and data type for
 /// prompting the user for their feedback. This widget should be at the top of
@@ -24,7 +27,7 @@ class BetterFeedback extends StatefulWidget {
   const BetterFeedback({
     Key? key,
     required this.child,
-    this.getFeedback,
+    this.feedbackBuilder,
     this.theme,
     this.localizationsDelegates,
     this.localeOverride,
@@ -44,7 +47,7 @@ class BetterFeedback extends StatefulWidget {
   /// some form fields and a submit button that calls [OnSubmit] when pressed.
   /// Defaults to [StringFeedback] which uses a single editable text field to
   /// prompt for input.
-  final GetFeedback? getFeedback;
+  final FeedbackBuilder? feedbackBuilder;
 
   /// Theme which gets used to style the feedback mode.
   final FeedbackThemeData? theme;
@@ -122,7 +125,7 @@ class _BetterFeedbackState extends State<BetterFeedback> {
                 drawColors: FeedbackTheme.of(context).drawColors,
                 mode: widget.mode,
                 pixelRatio: widget.pixelRatio,
-                getFeedback: widget.getFeedback ?? getStringFeedback,
+                getFeedback: widget.feedbackBuilder ?? simpleFeedbackBuilder,
               );
             },
           ),

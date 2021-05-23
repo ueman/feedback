@@ -75,8 +75,7 @@ class MyTestPageState extends State<MyTestPage> {
               key: const Key('open_feedback'),
               child: const Text('open feedback'),
               onPressed: () {
-                BetterFeedback.of(context)!
-                    .show(widget.onFeedback ?? (_, __) {});
+                BetterFeedback.of(context)!.show(widget.onFeedback ?? (_) {});
               },
             ),
             TextButton(

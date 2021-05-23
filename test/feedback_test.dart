@@ -105,9 +105,9 @@ void main() {
 
       final widget = BetterFeedback(
         child: MyTestApp(
-          onFeedback: (text, screenshot) {
-            submittedText = text as String;
-            submittedScreenshot = screenshot;
+          onFeedback: (feedback) {
+            submittedText = feedback.text;
+            submittedScreenshot = feedback.screenshot;
           },
         ),
       );
@@ -146,18 +146,18 @@ void main() {
 
     testWidgets('feedback callback gets called with custom feedback content',
         (tester) async {
-      _TestFeedback? submittedFeedback;
+      UserFeedback? submittedFeedback;
 
       final widget = BetterFeedback(
         child: MyTestApp(
-          onFeedback: (feedback, screenshot) {
-            submittedFeedback = feedback as _TestFeedback;
+          onFeedback: (feedback) {
+            submittedFeedback = feedback;
           },
         ),
-        getFeedback: (onSubmit) => TextButton(
+        feedbackBuilder: (context, onSubmit) => TextButton(
           key: const Key('custom_submit_feedback_button'),
           onPressed: () {
-            onSubmit(_TestFeedback(1, 'garbage!'));
+            onSubmit('garbage!', extras: <String, dynamic>{'rating': 1});
           },
           child: Container(),
         ),
@@ -185,7 +185,8 @@ void main() {
       await tester.tap(submitFeedbackButton);
       await tester.pumpAndSettle();
 
-      expect(submittedFeedback, _TestFeedback(1, 'garbage!'));
+      expect(submittedFeedback?.text, 'garbage!');
+      expect(submittedFeedback?.extra, {'rating': 1});
     });
 
     testWidgets('screenshot navigation works', (tester) async {
@@ -241,12 +242,9 @@ void main() {
   test('feedback sendFeedback with high resolution', () async {
     var callbackWasCalled = false;
     final screenshotController = MockScreenshotController();
-    void onFeedback(
-      Object feedback,
-      Uint8List? feedbackScreenshot,
-    ) {
-      expect(feedback, 'Hello World!');
-      expect(feedbackScreenshot?.length, 64);
+    void onFeedback(UserFeedback feedback) {
+      expect(feedback.text, 'Hello World!');
+      expect(feedback.screenshot?.length, 64);
       callbackWasCalled = true;
     }
 
@@ -264,11 +262,10 @@ void main() {
     var callbackWasCalled = false;
     final screenshotController = MockScreenshotController();
     void onFeedback(
-      Object feedback,
-      Uint8List? feedbackScreenshot,
+      UserFeedback feedback,
     ) {
-      expect(feedback, 'Hello World!');
-      expect(feedbackScreenshot?.length, 4);
+      expect(feedback.text, 'Hello World!');
+      expect(feedback.screenshot?.length, 4);
       callbackWasCalled = true;
     }
 
@@ -303,20 +300,4 @@ Finder getActiveColorButton() {
       return false;
     }
   });
-}
-
-class _TestFeedback {
-  _TestFeedback(this.rating, this.feedback);
-
-  int rating;
-  String feedback;
-
-  @override
-  bool operator ==(Object other) =>
-      other is _TestFeedback &&
-      rating == other.rating &&
-      feedback == other.feedback;
-
-  @override
-  int get hashCode => rating.hashCode + feedback.hashCode;
 }

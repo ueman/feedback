@@ -23,6 +23,14 @@ class CustomFeedback {
       'feedback_text': feedbackText,
     }.toString();
   }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      if (rating != null) 'rating': rating.toString(),
+      'feedback_type': feedbackType.toString(),
+      'feedback_text': feedbackText,
+    };
+  }
 }
 
 /// What type of feedback the user wants to provide.
@@ -57,67 +65,68 @@ class _CustomFeedbackFormState extends State<CustomFeedbackForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(30),
-      child: Column(
-        children: [
-          Expanded(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: [
-                const Text('What kind of feedback do you want to give?'),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(right: 8),
-                      child: Text('*'),
+    return Column(
+      children: [
+        Expanded(
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+            children: [
+              const Text('What kind of feedback do you want to give?'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(right: 8),
+                    child: Text('*'),
+                  ),
+                  Flexible(
+                    child: DropdownButton<FeedbackType>(
+                      value: _customFeedback.feedbackType,
+                      items: FeedbackType.values
+                          .map(
+                            (type) => DropdownMenuItem<FeedbackType>(
+                              child: Text(type
+                                  .toString()
+                                  .split('.')
+                                  .last
+                                  .replaceAll('_', ' ')),
+                              value: type,
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (feedbackType) => setState(
+                          () => _customFeedback.feedbackType = feedbackType),
                     ),
-                    Flexible(
-                      child: DropdownButton<FeedbackType>(
-                        value: _customFeedback.feedbackType,
-                        items: FeedbackType.values
-                            .map(
-                              (type) => DropdownMenuItem<FeedbackType>(
-                                child: Text(type
-                                    .toString()
-                                    .split('.')
-                                    .last
-                                    .replaceAll('_', ' ')),
-                                value: type,
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (feedbackType) => setState(
-                            () => _customFeedback.feedbackType = feedbackType),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                const Text('What is your feedback?'),
-                TextField(
-                  onChanged: (newFeedback) =>
-                      _customFeedback.feedbackText = newFeedback,
-                ),
-                const SizedBox(height: 16),
-                const Text('How does this make you feel?'),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: FeedbackRating.values.map(_ratingToIcon).toList(),
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              const Text('What is your feedback?'),
+              TextField(
+                onChanged: (newFeedback) =>
+                    _customFeedback.feedbackText = newFeedback,
+              ),
+              const SizedBox(height: 16),
+              const Text('How does this make you feel?'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: FeedbackRating.values.map(_ratingToIcon).toList(),
+              ),
+            ],
           ),
-          TextButton(
-            // disable this button until the user has specified a feedback type
-            onPressed: _customFeedback.feedbackType != null
-                ? () => widget.onSubmit(_customFeedback)
-                : null,
-            child: const Text('submit'),
-          ),
-        ],
-      ),
+        ),
+        TextButton(
+          // disable this button until the user has specified a feedback type
+          onPressed: _customFeedback.feedbackType != null
+              ? () => widget.onSubmit(
+                    _customFeedback.feedbackText ?? '',
+                    extras: _customFeedback.toMap(),
+                  )
+              : null,
+          child: const Text('submit'),
+        ),
+        const SizedBox(height: 8),
+      ],
     );
   }
 

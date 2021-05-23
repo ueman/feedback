@@ -10,7 +10,7 @@ class FeedbackBottomSheet extends StatelessWidget {
     required this.onSubmit,
   }) : super(key: key);
 
-  final GetFeedback getFeedback;
+  final FeedbackBuilder getFeedback;
   final OnSubmit onSubmit;
 
   @override
@@ -25,7 +25,7 @@ class FeedbackBottomSheet extends StatelessWidget {
       onGenerateRoute: (_) => MaterialPageRoute<void>(
         builder: (context) => Material(
           color: FeedbackTheme.of(context).feedbackSheetColor,
-          child: getFeedback(onSubmit),
+          child: getFeedback(context, onSubmit),
         ),
       ),
     );

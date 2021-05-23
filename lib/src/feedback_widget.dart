@@ -1,3 +1,4 @@
+import 'package:feedback/feedback.dart';
 import 'package:feedback/src/better_feedback.dart';
 import 'package:feedback/src/controls_column.dart';
 import 'package:feedback/src/feedback_bottom_sheet.dart';
@@ -36,7 +37,7 @@ class FeedbackWidget extends StatefulWidget {
   final Widget child;
   final List<Color> drawColors;
 
-  final GetFeedback getFeedback;
+  final FeedbackBuilder getFeedback;
 
   @override
   FeedbackWidgetState createState() => FeedbackWidgetState();
@@ -194,13 +195,17 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                       padding: const EdgeInsets.only(top: 24),
                       child: FeedbackBottomSheet(
                         getFeedback: widget.getFeedback,
-                        onSubmit: (Object feedback) async {
+                        onSubmit: (
+                          String feedback, {
+                          Map<String, dynamic>? extras,
+                        }) async {
                           await _sendFeedback(
                             context,
                             FeedbackData.of(context)!.onFeedback!,
                             screenshotController,
                             feedback,
                             widget.pixelRatio,
+                            extras: extras,
                           );
                           painterController.clear();
                         },
@@ -220,9 +225,10 @@ class FeedbackWidgetState extends State<FeedbackWidget>
   static Future<void> sendFeedback(
     OnFeedbackCallback onFeedbackSubmitted,
     ScreenshotController controller,
-    Object feedback,
+    String feedback,
     double pixelRatio, {
     Duration delay = const Duration(milliseconds: 200),
+    Map<String, dynamic>? extras,
   }) async {
     // Wait for the keyboard to be closed, and then proceed
     // to take a screenshot
@@ -237,10 +243,11 @@ class FeedbackWidgetState extends State<FeedbackWidget>
 
         // Give it to the developer
         // to do something with it.
-        onFeedbackSubmitted(
-          feedback,
-          screenshot,
-        );
+        onFeedbackSubmitted(UserFeedback(
+          text: feedback,
+          screenshot: screenshot,
+          extra: extras,
+        ));
       },
     );
   }
@@ -249,10 +256,11 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     BuildContext context,
     OnFeedbackCallback onFeedbackSubmitted,
     ScreenshotController controller,
-    Object feedback,
+    String feedback,
     double pixelRatio, {
     Duration delay = const Duration(milliseconds: 200),
     bool showKeyboard = false,
+    Map<String, dynamic>? extras,
   }) async {
     if (!showKeyboard) {
       _hideKeyboard(context);
@@ -263,6 +271,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
       feedback,
       pixelRatio,
       delay: delay,
+      extras: extras,
     );
 
     // Close feedback mode

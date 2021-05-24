@@ -171,33 +171,32 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                   // especially if the keyboard is shown
                   bottom: MediaQuery.of(context).viewInsets.bottom,
                   right: 0,
-                  height: MediaQuery.of(context).size.height *
-                      // height should be screen size minus the bottom edge of
-                      // screenshot widget:
-                      //   1 - (scaleOrigin + height*scaleFactor)
-                      (1 - (.35 / 2 + 1.65 / 2 * .65)),
+                  height: MediaQuery.of(context).size.height,
                   child: SlideTransition(
                     position: Tween(begin: const Offset(0, 1), end: Offset.zero)
                         .animate(animation),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 24),
-                      child: FeedbackBottomSheet(
-                        feedbackBuilder: widget.feedbackBuilder,
-                        onSubmit: (
-                          String feedback, {
-                          Map<String, dynamic>? extras,
-                        }) async {
-                          await _sendFeedback(
-                            context,
-                            FeedbackData.of(context).onFeedback!,
-                            screenshotController,
-                            feedback,
-                            widget.pixelRatio,
-                            extras: extras,
-                          );
-                          painterController.clear();
-                        },
-                      ),
+                    child: FeedbackBottomSheet(
+                      feedbackBuilder: widget.feedbackBuilder,
+                      onSubmit: (
+                        String feedback, {
+                        Map<String, dynamic>? extras,
+                      }) async {
+                        await _sendFeedback(
+                          context,
+                          FeedbackData.of(context).onFeedback!,
+                          screenshotController,
+                          feedback,
+                          widget.pixelRatio,
+                          extras: extras,
+                        );
+                        painterController.clear();
+                      },
+                      collapsedHeight: MediaQuery.of(context).size.height *
+                              // height should be screen size minus the bottom
+                              // edge of screenshot widget:
+                              //   1 - (scaleOrigin + height*scaleFactor)
+                              (1 - (.35 / 2 + 1.65 / 2 * .65)) -
+                          24,
                     ),
                   ),
                 ),

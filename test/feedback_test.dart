@@ -184,7 +184,7 @@ void main() {
             submittedFeedback = feedback;
           },
         ),
-        feedbackBuilder: (context, onSubmit) => TextButton(
+        feedbackBuilder: (context, onSubmit, _) => TextButton(
           key: const Key('custom_submit_feedback_button'),
           onPressed: () {
             onSubmit('garbage!', extras: <String, dynamic>{'rating': 1});

@@ -5,7 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 /// Prompt the user for feedback using `StringFeedback`.
-Widget simpleFeedbackBuilder(BuildContext context, OnSubmit onSubmit) =>
+Widget simpleFeedbackBuilder(
+  BuildContext context,
+  OnSubmit onSubmit,
+  ScrollController scrollController,
+) =>
     StringFeedback(onSubmit: onSubmit);
 
 /// A form that prompts the user for feedback with a single text field.

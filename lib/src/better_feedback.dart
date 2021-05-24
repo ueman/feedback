@@ -16,7 +16,8 @@ typedef OnSubmit = void Function(
 
 /// A function that returns a Widget that prompts the user for feedback and
 /// calls [OnSubmit] when the user wants to submit their feedback.
-typedef FeedbackBuilder = Widget Function(BuildContext, OnSubmit);
+typedef FeedbackBuilder = Widget Function(
+    BuildContext, OnSubmit, ScrollController);
 
 /// Function which gets called when the user submits his feedback.
 /// [feedback] is the user generated feedback. A string, by default.

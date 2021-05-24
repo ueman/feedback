@@ -137,7 +137,8 @@ class _BetterFeedbackState extends State<BetterFeedback> {
                 drawColors: FeedbackTheme.of(context).drawColors,
                 mode: widget.mode,
                 pixelRatio: widget.pixelRatio,
-                getFeedback: widget.feedbackBuilder ?? simpleFeedbackBuilder,
+                feedbackBuilder:
+                    widget.feedbackBuilder ?? simpleFeedbackBuilder,
               );
             },
           ),

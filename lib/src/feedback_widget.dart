@@ -21,7 +21,7 @@ class FeedbackWidget extends StatefulWidget {
     required this.drawColors,
     required this.mode,
     required this.pixelRatio,
-    required this.getFeedback,
+    required this.feedbackBuilder,
   })  : assert(
           // This way, we can have a const constructor
           // ignore: prefer_is_empty
@@ -36,7 +36,7 @@ class FeedbackWidget extends StatefulWidget {
   final Widget child;
   final List<Color> drawColors;
 
-  final FeedbackBuilder getFeedback;
+  final FeedbackBuilder feedbackBuilder;
 
   @override
   FeedbackWidgetState createState() => FeedbackWidgetState();
@@ -182,7 +182,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                     child: Padding(
                       padding: const EdgeInsets.only(top: 24),
                       child: FeedbackBottomSheet(
-                        getFeedback: widget.getFeedback,
+                        feedbackBuilder: widget.feedbackBuilder,
                         onSubmit: (
                           String feedback, {
                           Map<String, dynamic>? extras,

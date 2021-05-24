@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 class FeedbackBottomSheet extends StatelessWidget {
   const FeedbackBottomSheet({
     Key? key,
-    required this.getFeedback,
+    required this.feedbackBuilder,
     required this.onSubmit,
   }) : super(key: key);
 
-  final FeedbackBuilder getFeedback;
+  final FeedbackBuilder feedbackBuilder;
   final OnSubmit onSubmit;
 
   @override
@@ -25,7 +25,7 @@ class FeedbackBottomSheet extends StatelessWidget {
       onGenerateRoute: (_) => MaterialPageRoute<void>(
         builder: (context) => Material(
           color: FeedbackTheme.of(context).feedbackSheetColor,
-          child: getFeedback(context, onSubmit),
+          child: feedbackBuilder(context, onSubmit),
         ),
       ),
     );

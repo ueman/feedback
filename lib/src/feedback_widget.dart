@@ -171,7 +171,6 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                   // especially if the keyboard is shown
                   bottom: MediaQuery.of(context).viewInsets.bottom,
                   right: 0,
-                  height: MediaQuery.of(context).size.height,
                   child: SlideTransition(
                     position: Tween(begin: const Offset(0, 1), end: Offset.zero)
                         .animate(animation),
@@ -191,12 +190,14 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                         );
                         painterController.clear();
                       },
-                      collapsedHeight: MediaQuery.of(context).size.height *
-                              // height should be screen size minus the bottom
-                              // edge of screenshot widget:
-                              //   1 - (scaleOrigin + height*scaleFactor)
-                              (1 - (.35 / 2 + 1.65 / 2 * .65)) -
-                          24,
+                      collapsedHeight: _bottomSheetHeight(
+                        context,
+                        // Values passed to `Align` in `ClipAndScale` run from
+                        // 0-2 so they need to be normalized to 0-1.
+                        scaleOrigin: .35 / 2,
+                        scaleFactor: .65,
+                        padding: 24,
+                      ),
                     ),
                   ),
                 ),
@@ -205,6 +206,20 @@ class FeedbackWidgetState extends State<FeedbackWidget>
         );
       },
     );
+  }
+
+  // Calculates the initial height of the bottom sheet given the scale origin
+  // and scale factor applied to the screenshot widget.
+  double _bottomSheetHeight(
+    BuildContext context, {
+    required double scaleOrigin,
+    required double scaleFactor,
+    required double padding,
+  }) {
+    return MediaQuery.of(context).size.height *
+            (1 - scaleOrigin) *
+            (1 - scaleFactor) -
+        padding;
   }
 
   @internal

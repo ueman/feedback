@@ -56,7 +56,7 @@ class FeedbackThemeData {
   /// Text Style of the text above of the feedback text input.
   final TextStyle bottomSheetDescriptionStyle;
 
-  /// Whether or not to expand the bottom feedback sheet when it's active.
+  /// Whether or not the bottom sheet can be expanded.
   final bool enableBottomSheetExpansion;
 }
 

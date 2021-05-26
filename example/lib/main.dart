@@ -55,7 +55,7 @@ class _MyAppState extends State<MyApp> {
           Colors.blue,
           Colors.yellow,
         ],
-        enableBottomSheetExpansion: true,
+        enableBottomSheetExpansion: _useCustomFeedback,
       ),
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,

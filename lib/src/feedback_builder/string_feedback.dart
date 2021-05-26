@@ -8,7 +8,7 @@ import 'package:flutter/cupertino.dart';
 Widget simpleFeedbackBuilder(
   BuildContext context,
   OnSubmit onSubmit,
-  ScrollController scrollController,
+  ScrollController? scrollController,
 ) =>
     StringFeedback(onSubmit: onSubmit);
 

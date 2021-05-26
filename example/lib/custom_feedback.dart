@@ -54,11 +54,11 @@ class CustomFeedbackForm extends StatefulWidget {
   const CustomFeedbackForm({
     Key? key,
     required this.onSubmit,
-    required this.controller,
+    this.controller,
   }) : super(key: key);
 
   final OnSubmit onSubmit;
-  final ScrollController controller;
+  final ScrollController? controller;
 
   @override
   _CustomFeedbackFormState createState() => _CustomFeedbackFormState();
@@ -73,7 +73,7 @@ class _CustomFeedbackFormState extends State<CustomFeedbackForm> {
       children: [
         Expanded(
           child: ListView(
-            //controller: widget.controller,
+            controller: widget.controller,
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
             children: [
               const Text('What kind of feedback do you want to give?'),

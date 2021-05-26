@@ -1,5 +1,6 @@
 import 'package:feedback/src/better_feedback.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
+import 'package:feedback/src/utilities/snappable_scrollable_sheet.dart';
 import 'package:flutter/material.dart';
 
 /// Shows the text input in which the user can describe his feedback.
@@ -35,9 +36,8 @@ class FeedbackBottomSheet extends StatelessWidget {
     }
     return SizedBox(
       height: MediaQuery.of(context).size.height,
-      child: DraggableScrollableSheet(
+      child: SnappableScrollableSheet(
         minChildSize: collapsedHeight / MediaQuery.of(context).size.height,
-        initialChildSize: collapsedHeight / MediaQuery.of(context).size.height,
         builder: (context, controller) {
           return ClipRRect(
             borderRadius: const BorderRadius.all(

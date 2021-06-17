@@ -1,4 +1,4 @@
-name: build
+name: feedback_gitlab
 
 on:
   push:

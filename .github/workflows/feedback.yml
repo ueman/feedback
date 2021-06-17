@@ -15,6 +15,9 @@ jobs:
     defaults:
       run:
         working-directory: feedback
+        
+  runs-on: ubuntu-latest
+
   check:
     # the golden images were generated on MacOS, therefore the tests must run on MacOS
     runs-on: macos-latest

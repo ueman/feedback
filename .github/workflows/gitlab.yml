@@ -2,9 +2,13 @@ name: build
 
 on:
   push:
-    branches:
-      - master
+    paths:
+      - "feedback_gitlab"
+      - ".github/workflows/gitlab.yml"
   pull_request:
+    paths:
+      - "feedback_gitlab"
+      - ".github/workflows/gitlab.yml"
 
 jobs:
   build:

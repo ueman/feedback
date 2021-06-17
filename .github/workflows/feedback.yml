@@ -2,9 +2,13 @@ name: build
 
 on:
   push:
-    branches:
-      - master
+    paths:
+      - "feedback"
+      - ".github/workflows/feedback.yml"
   pull_request:
+    paths:
+      - "feedback"
+      - ".github/workflows/feedback.yml"
 
 jobs:
   build:

@@ -6,6 +6,9 @@ on:
 
 jobs:
   build:
+    defaults:
+      run:
+        working-directory: feedback
     runs-on: ubuntu-latest
 
     steps:

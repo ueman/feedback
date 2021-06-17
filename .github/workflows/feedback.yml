@@ -11,13 +11,10 @@ on:
       - ".github/workflows/feedback.yml"
 
 jobs:
-  build:
+  check:
     defaults:
       run:
-        working-directory: feedback
-    runs-on: ubuntu-latest
-
-  check:
+        working-directory: feedback_gitlab
     # the golden images were generated on MacOS, therefore the tests must run on MacOS
     runs-on: macos-latest
     steps:

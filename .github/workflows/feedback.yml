@@ -7,6 +7,10 @@ on:
   pull_request:
 
 jobs:
+  build:
+    defaults:
+      run:
+        working-directory: feedback
   check:
     # the golden images were generated on MacOS, therefore the tests must run on MacOS
     runs-on: macos-latest

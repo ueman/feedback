@@ -1,0 +1,55 @@
+name: build
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  build:
+    defaults:
+      run:
+        working-directory: feedback_gitlab
+  check:
+    # the golden images were generated on MacOS, therefore the tests must run on MacOS
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2
+        with:
+          java-version: '12.x'
+          distribution: 'adopt'
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+      - run: flutter pub get
+      - run: flutter format -n --set-exit-if-changed .
+      - run: flutter analyze
+      - run: flutter test --coverage
+      - uses: codecov/codecov-action@v1.5.2
+
+  build:
+    needs: check
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macOS-latest, ubuntu-latest, windows-latest]
+        flutter_channel: [stable, beta]
+        include:
+          - os: macOS-latest
+            flutter_build: ios --no-codesign
+          - os: ubuntu-latest
+            flutter_build: apk
+          - os: windows-latest
+            flutter_build: apk
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: ${{ matrix.flutter_channel }}
+      - working-directory: example
+        run: flutter build ${{ matrix.flutter_build }} --debug

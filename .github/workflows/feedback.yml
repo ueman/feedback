@@ -34,9 +34,6 @@ jobs:
 
   build:
     needs: check
-    defaults:
-      run:
-        working-directory: feedback
     strategy:
       fail-fast: false
       matrix:
@@ -57,5 +54,5 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           channel: ${{ matrix.flutter_channel }}
-      - working-directory: example
-        run: flutter build ${{ matrix.flutter_build }} --debug
+      - working-directory: feedback/example
+        run: flutter build ${{ matrix.flutter_build }}

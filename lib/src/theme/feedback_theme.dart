@@ -30,6 +30,7 @@ class FeedbackThemeData {
     this.activeFeedbackModeColor = _blue,
     this.drawColors = _defaultDrawColors,
     this.bottomSheetDescriptionStyle = _defaultBottomSheetDescriptionStyle,
+    this.enableBottomSheetExpansion = false,
   }) :
         // if the user chooses to supply custom drawing colors,
         // make sure there is at least on color to draw with
@@ -54,6 +55,9 @@ class FeedbackThemeData {
 
   /// Text Style of the text above of the feedback text input.
   final TextStyle bottomSheetDescriptionStyle;
+
+  /// Whether or not the bottom sheet can be expanded.
+  final bool enableBottomSheetExpansion;
 }
 
 class FeedbackTheme extends InheritedTheme {

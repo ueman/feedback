@@ -39,58 +39,15 @@ of your app. It is like the saying "A picture is worth a thousand words" because
 a textual description can be interpreted in many ways which makes it harder to
 understand.
 
-## 🚀 Getting Started
-
-### Setup
-
-First, you will need to add `feedback` to your `pubspec.yaml`.
-The latest version is <a href="https://pub.dev/packages/feedback"><img src="https://img.shields.io/pub/v/feedback.svg" alt="pub.dev"></a>.
-
-```yaml
-dependencies:
-  flutter:
-    sdk: flutter
-  feedback: x.y.z # use the latest version found on pub.dev
-```
-
-Then, run `flutter packages get` in your terminal.
-
-### Use it
-
-Just wrap your app in a `BetterFeedback` widget.
-To show the feedback view just call `BetterFeedback.of(context).show(...);`.
-The callback gets called when the user submits his feedback. 
-
-```dart
-import 'package:feedback/feedback.dart';
-import 'package:flutter/material.dart';
-
-void main() {
-  runApp(
-    BetterFeedback(
-      child: const MyApp(),
-    ),
-  );
-}
-```
-
-Provide a way to show the feedback panel by calling 
-```dart
-BetterFeedback.of(context).show((UserFeedback feedback) {
-  // Do something with the feedback
-});
-```
-Provide a way to hide the feedback panel by calling  `BetterFeedback.of(context).hide();` 
-
-### Use the feedback
+### Plugins
 
 Depending on your use case there are wide variety of solutions.
 These are a couple suggestions:
 
-| Target |   Notes |
-|--------|---------|
-| Upload to a server | To upload the feedback to a server you should use for example a [MultipartRequest](https://pub.dev/documentation/http/latest/http/MultipartRequest-class.html). |
-| GitLab Issue | GitLab has a [REST API to create issues](https://docs.gitlab.com/ee/api/issues.html) |
+| Target                         | Notes                          |
+|--------------------------------|--------------------------------|
+| Upload to a server             | To upload the feedback to a server you should use for example a [MultipartRequest](https://pub.dev/documentation/http/latest/http/MultipartRequest-class.html). |
+| GitLab Issue                   | [feedback_gitlab](https://pub.dev/packages/feedback_gitlab) |
 | Share via platform share dialog | [share_plus on pub.dev](https://pub.dev/packages/share_plus). Also shown in the example. |
 | Firebase | [Firestore](https://pub.dev/packages/cloud_firestore), [Cloud Storage](https://pub.dev/packages/firebase_storage), [Database](https://pub.dev/packages/firebase_database)
 |   Jira | Jira has a [REST API to create issues and upload files](https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-an-issue-examples) |
@@ -100,67 +57,9 @@ These are a couple suggestions:
 
 If you have sample code on how to upload it to a platform, I would appreciate a pull request to the example app.
 
-### 🎨 Configuration & customization
-
-```dart
-import 'package:feedback/feedback.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-
-void main() {
-  runApp(
-    BetterFeedback(
-      child: const MyApp(),
-      theme: FeedbackThemeData(
-        background: Colors.grey,
-        feedbackSheetColor: Colors.grey[50]!,
-        drawColors: [
-          Colors.red,
-          Colors.green,
-          Colors.blue,
-          Colors.yellow,
-        ],
-      ),
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalFeedbackLocalizationsDelegate(),
-      ],
-      localeOverride: const Locale('en'),
-    ),
-  );
-}
-```
-You can customize the text by using custom `localizationsDelegates`.
-How the properties of `FeedbackThemeData` correspond to the view can be seen in the following image. 
-<img src="https://raw.githubusercontent.com/ueman/feedback/master/img/theme_description.png" max-height="400" alt="Theme Usages">
-
-## 💡 Tips, tricks and usage scenarios
-
-- You can combine this with [device_info_plus](https://pub.dev/packages/device_info_plus)
-and [package_info_plus](https://pub.dev/packages/package_info_plus) to 
-get additional information about the users environment to better understand
-his feedback and debug his issues. 
-- You can record the users navigation with a [NavigatorObserver](https://api.flutter.dev/flutter/widgets/NavigatorObserver-class.html) and send it as an addition to the 
-feedback of the user. This way you know how the user got to the location shown
-in the screenshot.
-- Use it as an internal quality control tool
-
-## ⚠️ Known Issues and limitations
-
-- Platform views are invisible in screenshots (like [webview](https://pub.dev/packages/webview_flutter) or [Google Maps](https://pub.dev/packages/google_maps_flutter)). For further details, see this [Flutter issue](https://github.com/flutter/flutter/issues/25306).
-- Web only works with Flutter's CanvasKit Renderer, for more information see [Flutter Web Renderer docs](https://flutter.dev/docs/development/tools/web-renderers).
-
 ## 📣  Author
 
 - Jonas Uekötter: [GitHub](https://github.com/ueman) and [Twitter](https://twitter.com/ue_man)
-
-## Issues, questions and contributing
-
-You can raise issues [here](https://github.com/ueman/feedback/issues).
-If you've got a question do not hesitate to ask it [here](https://github.com/ueman/feedback/discussions).
-Contributions are also welcome. You can do a pull request on GitHub [here](https://github.com/ueman/feedback/pulls). Please take a look at [`up for grabs`](https://github.com/ueman/feedback/issues?q=is%3Aopen+is%3Aissue+label%3Aup-for-grabs) issues first.
 
 ## Sponsoring
 

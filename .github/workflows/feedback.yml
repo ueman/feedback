@@ -1,13 +1,20 @@
-name: build
+name: feedback
 
 on:
   push:
-    branches:
-      - master
+    paths:
+      - "feedback"
+      - ".github/workflows/feedback.yml"
   pull_request:
+    paths:
+      - "feedback"
+      - ".github/workflows/feedback.yml"
 
 jobs:
   check:
+    defaults:
+      run:
+        working-directory: feedback
     # the golden images were generated on MacOS, therefore the tests must run on MacOS
     runs-on: macos-latest
     steps:
@@ -47,5 +54,5 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           channel: ${{ matrix.flutter_channel }}
-      - working-directory: example
-        run: flutter build ${{ matrix.flutter_build }} --debug
+      - working-directory: feedback/example
+        run: flutter build ${{ matrix.flutter_build }}

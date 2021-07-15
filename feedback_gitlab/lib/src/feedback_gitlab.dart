@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 
 extension BetterFeedbackX on FeedbackData {
   /// Example usage:
@@ -50,19 +51,19 @@ OnFeedbackCallback uploadToGitLab({
   final baseUrl = gitlabUrl ?? 'gitlab.com';
 
   return (UserFeedback feedback) async {
-    // Upload screenshot
-    final uploadRequest = http.MultipartRequest(
-      'POST',
-      Uri.https(
-        baseUrl,
-        '/api/v4/projects/$projectId/uploads',
-      ),
-    )
+    final uri = Uri.https(
+      baseUrl,
+      '/api/v4/projects/$projectId/uploads',
+    );
+    final uploadRequest = http.MultipartRequest('POST', uri)
+      ..headers.putIfAbsent('PRIVATE-TOKEN', () => apiToken)
+      ..fields['id'] = projectId
       ..files.add(http.MultipartFile.fromBytes(
         'file',
         feedback.screenshot,
-      ))
-      ..headers.putIfAbsent('PRIVATE-TOKEN', () => apiToken);
+        filename: 'feedback.png',
+        contentType: MediaType('image', 'png'),
+      ));
 
     final uploadResponse = await httpClient.send(uploadRequest);
 

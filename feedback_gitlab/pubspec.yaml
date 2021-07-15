@@ -1,11 +1,13 @@
 name: feedback_gitlab
-description: A new Flutter package project.
+description: A simple way to create a GitLab issues from user feedback
 version: 2.0.0
-homepage:
+homepage: https://uekoetter.dev
+repository: https://github.com/ueman/feedback
+issue_tracker: https://github.com/ueman/feedback/issues
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
-  flutter: ^2.0.0
+  flutter: '>=2.0.0'
 
 dependencies:
   flutter:
@@ -19,3 +21,4 @@ dev_dependencies:
   flutter_lints: ^1.0.3
 
 flutter:
+  uses-material-design: true

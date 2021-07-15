@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:feedback_gitlab/feedback_gitlab.dart';
 import 'package:http/http.dart';
+import 'package:http_parser/http_parser.dart';
 
 void main() {
   test('uploads', () async {
@@ -69,13 +70,18 @@ class MockClient extends BaseClient {
     expect(request.url,
         Uri.parse('https://example.org/api/v4/projects/123/uploads'));
     expect(request.headers, {'PRIVATE-TOKEN': '123'});
-    expect(request.fields.length, 0);
+    expect(request.fields['id'], '123');
     expect(request.files.length, 1);
 
     var file = request.files.first;
 
     expect(file.field, 'file');
-    expect(file.contentType.mimeType, 'application/octet-stream');
+    expect(file.contentType.mimeType, 'image/png');
+    expect(file.filename, 'feedback.png');
+    expect(
+      file.contentType.mimeType,
+      MediaType('image', 'png').mimeType,
+    );
 
     return Response(jsonEncode({'markdown': ''}), 200);
   }

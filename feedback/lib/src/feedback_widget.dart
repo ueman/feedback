@@ -208,7 +208,6 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     );
   }
 
-  @internal
   @visibleForTesting
   static Future<void> sendFeedback(
     OnFeedbackCallback onFeedbackSubmitted,

@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:feedback/feedback.dart';
 import 'package:feedback/src/feedback_widget.dart';
 import 'package:feedback/src/screenshot.dart';
@@ -124,6 +125,49 @@ void main() {
       final closeFeedbackButton =
           find.byKey(const Key('close_controls_column'));
       await tester.tap(closeFeedbackButton);
+      await tester.pumpAndSettle();
+
+      expect(userInputFields, findsNothing);
+    });
+
+    testWidgets(
+        'back button in drawing mode reverses drawings and '
+        'then leaves the feedback interface', (tester) async {
+      const widget = BetterFeedback(
+        mode: FeedbackMode.draw,
+        child: MyTestApp(),
+      );
+
+      await tester.pumpWidget(widget);
+      await tester.pumpAndSettle();
+
+      // feedback is closed
+      final userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
+
+      // open feedback
+      final openFeedbackButton = find.byKey(const Key('open_feedback'));
+      await tester.tap(openFeedbackButton);
+      await tester.pumpAndSettle();
+
+      expect(userInputFields, findsOneWidget);
+
+      // add fake step to test reversing
+      final feedbackWidgetState =
+          tester.state<FeedbackWidgetState>(find.byType(FeedbackWidget));
+
+      expect(feedbackWidgetState.painterController.getStepCount(), 0);
+      feedbackWidgetState.painterController.addMockStep();
+      expect(feedbackWidgetState.painterController.getStepCount(), 1);
+
+      // reverse step
+      final mockRouteInfo = RouteInfo();
+      expect(
+          feedbackWidgetState.backButtonIntercept(false, mockRouteInfo), true);
+      expect(feedbackWidgetState.painterController.getStepCount(), 0);
+
+      // close feedback via back button
+      expect(
+          feedbackWidgetState.backButtonIntercept(false, mockRouteInfo), true);
       await tester.pumpAndSettle();
 
       expect(userInputFields, findsNothing);
@@ -259,6 +303,12 @@ void main() {
 
       Finder newPage = find.byKey(const Key('new_page'));
       expect(newPage, findsOneWidget);
+
+      // Make sure that the interceptor doesn't leave in navigation mode
+      final feedbackWidgetState =
+          tester.state<FeedbackWidgetState>(find.byType(FeedbackWidget));
+      expect(
+          feedbackWidgetState.backButtonIntercept(false, RouteInfo()), false);
 
       // ideally we should test pop behavior using the system back button but
       // flutter testing does not support simulated back button presses

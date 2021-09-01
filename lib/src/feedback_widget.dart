@@ -10,6 +10,7 @@ import 'package:feedback/src/screenshot.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 
 typedef FeedbackButtonPress = void Function(BuildContext context);
 
@@ -45,7 +46,9 @@ class FeedbackWidget extends StatefulWidget {
 @visibleForTesting
 class FeedbackWidgetState extends State<FeedbackWidget>
     with SingleTickerProviderStateMixin {
+  @visibleForTesting
   late PainterController painterController = create();
+
   ScreenshotController screenshotController = ScreenshotController();
   TextEditingController textEditingController = TextEditingController();
 
@@ -64,9 +67,30 @@ class FeedbackWidgetState extends State<FeedbackWidget>
   }
 
   @override
+  void initState() {
+    super.initState();
+    BackButtonInterceptor.add(backButtonIntercept);
+  }
+
+  @override
   void dispose() {
     super.dispose();
     _controller.dispose();
+    BackButtonInterceptor.remove(backButtonIntercept);
+  }
+
+  @internal
+  @visibleForTesting
+  bool backButtonIntercept(bool stopDefaultButtonEvent, RouteInfo info) {
+    if (mode == FeedbackMode.draw && widget.isFeedbackVisible) {
+      if (painterController.getStepCount() > 0) {
+        painterController.undo();
+      } else {
+        BetterFeedback.of(context).hide();
+      }
+      return true;
+    }
+    return false;
   }
 
   @override

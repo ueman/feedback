@@ -1,6 +1,6 @@
 name: feedback
 description: A Flutter package for getting better feedback. It allows the user to give interactive feedback directly in the app.
-version: 2.1.0
+version: 2.1.0-beta
 homepage: https://uekoetter.dev/
 repository: https://github.com/ueman/feedback
 issue_tracker: https://github.com/ueman/feedback/issues
@@ -10,7 +10,6 @@ environment:
   flutter: '>=2.0.0'
 
 dependencies:
-  back_button_interceptor: ^5.0.1
   flutter:
     sdk: flutter
   flutter_localizations:

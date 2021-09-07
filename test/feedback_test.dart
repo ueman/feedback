@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:feedback/feedback.dart';
 import 'package:feedback/src/feedback_widget.dart';
 import 'package:feedback/src/screenshot.dart';
@@ -160,14 +159,11 @@ void main() {
       expect(feedbackWidgetState.painterController.getStepCount(), 1);
 
       // reverse step
-      final mockRouteInfo = RouteInfo();
-      expect(
-          feedbackWidgetState.backButtonIntercept(false, mockRouteInfo), true);
+      expect(feedbackWidgetState.backButtonIntercept(), true);
       expect(feedbackWidgetState.painterController.getStepCount(), 0);
 
       // close feedback via back button
-      expect(
-          feedbackWidgetState.backButtonIntercept(false, mockRouteInfo), true);
+      expect(feedbackWidgetState.backButtonIntercept(), true);
       await tester.pumpAndSettle();
 
       expect(userInputFields, findsNothing);
@@ -307,8 +303,7 @@ void main() {
       // Make sure that the interceptor doesn't leave in navigation mode
       final feedbackWidgetState =
           tester.state<FeedbackWidgetState>(find.byType(FeedbackWidget));
-      expect(
-          feedbackWidgetState.backButtonIntercept(false, RouteInfo()), false);
+      expect(feedbackWidgetState.backButtonIntercept(), false);
 
       // ideally we should test pop behavior using the system back button but
       // flutter testing does not support simulated back button presses

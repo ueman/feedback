@@ -32,37 +32,46 @@ class _StringFeedbackState extends State<StringFeedback> {
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: ListView(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-            children: <Widget>[
-              Text(
-                FeedbackLocalizations.of(context).feedbackDescriptionText,
-                maxLines: 2,
-                style: FeedbackTheme.of(context).bottomSheetDescriptionStyle,
-              ),
-              TextField(
-                key: const Key('text_input_field'),
-                maxLines: 2,
-                minLines: 2,
-                controller: controller,
-                textInputAction: TextInputAction.done,
-              ),
-            ],
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Column(
+        children: <Widget>[
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+              children: <Widget>[
+                Text(
+                  FeedbackLocalizations.of(context).feedbackDescriptionText,
+                  maxLines: 2,
+                  style: FeedbackTheme.of(context).bottomSheetDescriptionStyle,
+                ),
+                TextField(
+                  key: const Key('text_input_field'),
+                  maxLines: 2,
+                  minLines: 2,
+                  controller: controller,
+                  textInputAction: TextInputAction.done,
+                ),
+              ],
+            ),
           ),
-        ),
-        TextButton(
-          key: const Key('submit_feedback_button'),
-          child: Text(
-            FeedbackLocalizations.of(context).submitButtonText,
+          TextButton(
+            key: const Key('submit_feedback_button'),
+            child: Text(
+              FeedbackLocalizations.of(context).submitButtonText,
+            ),
+            onPressed: () => widget.onSubmit(controller.text),
           ),
-          onPressed: () => widget.onSubmit(controller.text),
-        ),
-        const SizedBox(height: 8),
-      ],
+          const SizedBox(height: 8),
+        ],
+      ),
     );
   }
 }

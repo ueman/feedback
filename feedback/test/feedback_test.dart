@@ -129,6 +129,46 @@ void main() {
       expect(userInputFields, findsNothing);
     });
 
+    testWidgets(
+        'back button in drawing mode reverses drawings and '
+        'then leaves the feedback interface', (tester) async {
+      const widget = BetterFeedback(
+        mode: FeedbackMode.draw,
+        child: MyTestApp(),
+      );
+
+      await tester.pumpWidget(widget);
+      await tester.pumpAndSettle();
+
+      // feedback is closed
+      final userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
+
+      // open feedback
+      final openFeedbackButton = find.byKey(const Key('open_feedback'));
+      await tester.tap(openFeedbackButton);
+      await tester.pumpAndSettle();
+
+      expect(userInputFields, findsOneWidget);
+
+      // add fake step to test reversing
+      final feedbackWidgetState =
+          tester.state<FeedbackWidgetState>(find.byType(FeedbackWidget));
+
+      expect(feedbackWidgetState.painterController.getStepCount(), 0);
+      feedbackWidgetState.painterController.addMockStep();
+      expect(feedbackWidgetState.painterController.getStepCount(), 1);
+
+      // reverse step
+      expect(feedbackWidgetState.backButtonIntercept(), true);
+      expect(feedbackWidgetState.painterController.getStepCount(), 0);
+
+      // close feedback via back button
+      expect(feedbackWidgetState.backButtonIntercept(), true);
+      await tester.pumpAndSettle();
+
+      expect(userInputFields, findsNothing);
+    });
+
     testWidgets('feedback callback gets called', (tester) async {
       String? submittedText;
       Uint8List? submittedScreenshot;
@@ -259,6 +299,11 @@ void main() {
 
       Finder newPage = find.byKey(const Key('new_page'));
       expect(newPage, findsOneWidget);
+
+      // Make sure that the interceptor doesn't leave in navigation mode
+      final feedbackWidgetState =
+          tester.state<FeedbackWidgetState>(find.byType(FeedbackWidget));
+      expect(feedbackWidgetState.backButtonIntercept(), false);
 
       // ideally we should test pop behavior using the system back button but
       // flutter testing does not support simulated back button presses

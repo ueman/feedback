@@ -164,4 +164,13 @@ class PainterController extends ChangeNotifier {
     _pathHistory.clear();
     notifyListeners();
   }
+
+  int getStepCount() {
+    return _pathHistory._paths.length;
+  }
+
+  @visibleForTesting
+  void addMockStep() {
+    _pathHistory._paths.add(MapEntry<Path, Paint>(Path(), Paint()));
+  }
 }

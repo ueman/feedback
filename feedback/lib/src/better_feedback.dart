@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:feedback/feedback.dart';
 import 'package:feedback/src/feedback_controller.dart';
 import 'package:feedback/src/feedback_widget.dart';
@@ -22,7 +24,7 @@ typedef FeedbackBuilder = Widget Function(BuildContext, OnSubmit);
 /// [feedback] is the user generated feedback. A string, by default.
 /// [screenshot] is a raw png encoded image.
 /// [OnFeedbackCallback] should cast [feedback] to the appropriate type.
-typedef OnFeedbackCallback = void Function(UserFeedback);
+typedef OnFeedbackCallback = FutureOr<void> Function(UserFeedback);
 
 /// A feedback widget that uses a custom widget and data type for
 /// prompting the user for their feedback. This widget should be at the top of

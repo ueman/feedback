@@ -256,7 +256,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
 
         // Give it to the developer
         // to do something with it.
-        onFeedbackSubmitted(UserFeedback(
+        await onFeedbackSubmitted(UserFeedback(
           text: feedback,
           screenshot: screenshot,
           extra: extras,

@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   feedback: ^2.0.0
-  sentry: ^6.0.0-0
+  sentry: ^6.0.0
 
 dev_dependencies:
   flutter_test:

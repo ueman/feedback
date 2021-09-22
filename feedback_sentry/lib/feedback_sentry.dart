@@ -14,6 +14,8 @@ extension SentryFeedback on FeedbackData {
 @visibleForTesting
 OnFeedbackCallback sendToSentry({
   Hub? hub,
+  String? name,
+  String? email,
 }) {
   final realHub = hub ?? HubAdapter();
 
@@ -27,6 +29,8 @@ OnFeedbackCallback sendToSentry({
     });
     await realHub.captureUserFeedback(SentryUserFeedback(
       eventId: id,
+      email: email,
+      name: name,
       comments: feedback.text + '\n${feedback.extra.toString()}',
     ));
   };

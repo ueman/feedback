@@ -12,7 +12,7 @@ void main() {
       await setGoldenImageSurfaceSize(tester);
 
       final controller = ScreenshotController();
-      final widget = Screenshot(child: Example(), controller: controller);
+      final widget = Screenshot(child: const Example(), controller: controller);
 
       Uint8List? screenshot;
       await tester.runAsync(() async {
@@ -28,6 +28,8 @@ void main() {
 }
 
 class Example extends StatelessWidget {
+  const Example({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(

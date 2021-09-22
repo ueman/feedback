@@ -13,9 +13,7 @@ class Painter extends StatefulWidget {
 class _PainterState extends State<Painter> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
+    return SizedBox.expand(
       child: GestureDetector(
         onPanStart: _onPanStart,
         onPanUpdate: _onPanUpdate,

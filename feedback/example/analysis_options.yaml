@@ -5,7 +5,7 @@ analyzer:
     implicit-casts: false
     implicit-dynamic: false
   language:
-    strict-raw-types: true
+    strict-raw-types: false
   errors:
     missing_required_param: error
     missing_return: error

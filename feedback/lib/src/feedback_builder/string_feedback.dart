@@ -26,6 +26,12 @@ class _StringFeedbackState extends State<StringFeedback> {
   late TextEditingController controller;
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     controller = TextEditingController();
@@ -50,6 +56,9 @@ class _StringFeedbackState extends State<StringFeedback> {
                 minLines: 2,
                 controller: controller,
                 textInputAction: TextInputAction.done,
+                onChanged: (_) {
+                  //print(_);
+                },
               ),
             ],
           ),

@@ -56,10 +56,10 @@ class _MyAppState extends State<MyApp> {
         ],
       ),
       localizationsDelegates: const [
+        GlobalFeedbackLocalizationsDelegate(),
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
-        GlobalFeedbackLocalizationsDelegate(),
       ],
       localeOverride: const Locale('en'),
       mode: FeedbackMode.draw,

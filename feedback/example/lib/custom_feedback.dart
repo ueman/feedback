@@ -35,8 +35,8 @@ class CustomFeedback {
 
 /// What type of feedback the user wants to provide.
 enum FeedbackType {
-  bug_report,
-  feature_request,
+  bugReport,
+  featureRequest,
 }
 
 /// A user-provided sentiment rating.
@@ -145,7 +145,7 @@ class _CustomFeedbackFormState extends State<CustomFeedbackForm> {
         break;
     }
     return IconButton(
-      color: isSelected ? Theme.of(context).accentColor : Colors.grey,
+      color: isSelected ? Theme.of(context).colorScheme.secondary : Colors.grey,
       onPressed: () => setState(() => _customFeedback.rating = rating),
       icon: Icon(icon),
       iconSize: 36,

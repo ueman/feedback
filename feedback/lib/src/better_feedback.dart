@@ -63,7 +63,7 @@ class BetterFeedback extends StatefulWidget {
   /// [CupertinoLocalizations]
   /// [WidgetsLocalizations]
   /// an instance of [LocalizationsDelegate]<[FeedbackLocalizations]>
-  final List<LocalizationsDelegate>? localizationsDelegates;
+  final List<LocalizationsDelegate<dynamic>>? localizationsDelegates;
 
   /// Can be used to set the locale.
   /// If it is not set, the platform default locale is used.

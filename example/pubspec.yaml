@@ -21,7 +21,7 @@ dependencies:
   flutter_markdown: ^0.6.2
   http: ^0.13.0
   path_provider: ^2.0.0
-  share_plus: ^2.1.2
+  share_plus: ^3.0.0
   url_launcher: ^6.0.4
 
 dev_dependencies:

@@ -5,11 +5,11 @@ on:
     branches:
       - master
     paths:
-      - "feedback_gitlab"
+      - "feedback_gitlab/**"
       - ".github/workflows/gitlab.yml"
   pull_request:
     paths:
-      - "feedback_gitlab"
+      - "feedback_gitlab/**"
       - ".github/workflows/gitlab.yml"
 
 jobs:

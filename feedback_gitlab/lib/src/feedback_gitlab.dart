@@ -31,7 +31,7 @@ extension BetterFeedbackX on FeedbackData {
     String? gitlabUrl,
     http.Client? client,
   }) {
-    this.show(uploadToGitLab(
+    show(uploadToGitLab(
       projectId: projectId,
       apiToken: apiToken,
       gitlabUrl: gitlabUrl,

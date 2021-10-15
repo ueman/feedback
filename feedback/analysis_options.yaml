@@ -1,0 +1,19 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  strong-mode:
+    implicit-casts: false
+    implicit-dynamic: false
+  language:
+    strict-raw-types: true
+  errors:
+    missing_required_param: error
+    missing_return: error
+    todo: ignore
+    sdk_version_async_exported_from_core: ignore
+  exclude:
+
+# https://dart-lang.github.io/linter/lints/
+linter:
+  rules:
+    - prefer_final_locals

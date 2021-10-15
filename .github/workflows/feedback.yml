@@ -30,7 +30,7 @@ jobs:
       - run: flutter format -n --set-exit-if-changed .
       - run: flutter analyze
       - run: flutter test --coverage
-      - uses: codecov/codecov-action@v2.0.3
+      - uses: codecov/codecov-action@v2.1.0
 
   build:
     needs: check

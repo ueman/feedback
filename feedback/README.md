@@ -23,7 +23,7 @@ directly in the app, by annotating a screenshot of the current page, as well as 
 
 ## Demo
 
-An interactive web example is available here: <a href="https://flutter-feedback.netlify.app/"><img src="https://img.shields.io/badge/Try-Flutter%20Web%20demo-blue" alt="Online demo"></a>. It also contains a small tutorial on how to use this library.
+An interactive web example is available here: <a href="https://ueman.github.io/feedback/"><img src="https://img.shields.io/badge/Try-Flutter%20Web%20demo-blue" alt="Online demo"></a>. It also contains a small tutorial on how to use this library.
 
 ## Motivation
 

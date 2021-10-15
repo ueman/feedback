@@ -152,41 +152,42 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                   ),
                 ),
               ),
-              Align(
-                alignment: Alignment(
-                  controlsHorizontalAlignment.value,
-                  -0.7,
-                ),
-                child: ControlsColumn(
-                  mode: mode,
-                  activeColor: painterController.drawColor,
-                  colors: widget.drawColors,
-                  onColorChanged: (color) {
-                    setState(() {
-                      painterController.drawColor = color;
-                    });
-                    _hideKeyboard(context);
-                  },
-                  onUndo: () {
-                    painterController.undo();
-                    _hideKeyboard(context);
-                  },
-                  onClearDrawing: () {
-                    painterController.clear();
-                    _hideKeyboard(context);
-                  },
-                  onControlModeChanged: (mode) {
-                    setState(() {
-                      this.mode = mode;
+              if (widget.isFeedbackVisible)
+                Align(
+                  alignment: Alignment(
+                    controlsHorizontalAlignment.value,
+                    -0.7,
+                  ),
+                  child: ControlsColumn(
+                    mode: mode,
+                    activeColor: painterController.drawColor,
+                    colors: widget.drawColors,
+                    onColorChanged: (color) {
+                      setState(() {
+                        painterController.drawColor = color;
+                      });
                       _hideKeyboard(context);
-                    });
-                  },
-                  onCloseFeedback: () {
-                    _hideKeyboard(context);
-                    BetterFeedback.of(context).hide();
-                  },
+                    },
+                    onUndo: () {
+                      painterController.undo();
+                      _hideKeyboard(context);
+                    },
+                    onClearDrawing: () {
+                      painterController.clear();
+                      _hideKeyboard(context);
+                    },
+                    onControlModeChanged: (mode) {
+                      setState(() {
+                        this.mode = mode;
+                        _hideKeyboard(context);
+                      });
+                    },
+                    onCloseFeedback: () {
+                      _hideKeyboard(context);
+                      BetterFeedback.of(context).hide();
+                    },
+                  ),
                 ),
-              ),
               // only display if feedback is visible or this widget is still
               // animating out
               if (widget.isFeedbackVisible || !animation.isDismissed)

@@ -46,6 +46,13 @@ body:
   validations:
     required: true
 
+- type: input
+  attributes:
+    label: Flutter version
+    description: Which Flutter version are you using?
+  validations:
+    required: true
+
 - type: dropdown
   attributes:
     label: Platform
@@ -58,13 +65,6 @@ body:
     - Linux
     - macOS
     - Windows
-  validations:
-    required: true
-
-- type: input
-  attributes:
-    label: Flutter channel
-    description: Which Flutter version are you using?
   validations:
     required: true
 

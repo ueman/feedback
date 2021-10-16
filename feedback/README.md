@@ -14,6 +14,10 @@
 
 ---
 
+💰 Using this library in a commercial product? Consider [becoming a sponsor](https://github.com/ueman#sponsor-me).
+
+---
+
 A Flutter package for obtaining better feedback. It allows the user to provide interactive feedback 
 directly in the app, by annotating a screenshot of the current page, as well as by adding text.
 
@@ -53,7 +57,7 @@ dependencies:
   feedback: x.y.z # use the latest version found on pub.dev
 ```
 
-Then, run `flutter packages get` in your terminal.
+Then, run `flutter pub get` in your terminal.
 
 ### Use it
 
@@ -80,23 +84,28 @@ BetterFeedback.of(context).show((UserFeedback feedback) {
   // Do something with the feedback
 });
 ```
-Provide a way to hide the feedback panel by calling  `BetterFeedback.of(context).hide();` 
+Provide a way to hide the feedback panel by calling `BetterFeedback.of(context).hide();` 
 
 ### Use the feedback
 
 Depending on your use case there are wide variety of solutions.
 These are a couple suggestions:
 
-| Target |   Notes |
-|--------|---------|
-| Upload to a server | To upload the feedback to a server you should use for example a [MultipartRequest](https://pub.dev/documentation/http/latest/http/MultipartRequest-class.html). |
-| GitLab Issue | GitLab has a [REST API to create issues](https://docs.gitlab.com/ee/api/issues.html) |
+
+| Plugin                         | Package                          |
+|--------------------------------|--------------------------------|
+| GitLab Issue                   | [feedback_gitlab](https://pub.dev/packages/feedback_gitlab) |
+| Sentry User Feedback           | [feedback_sentry](https://pub.dev/packages/feedback_sentry) |
+
+
+| Target                         | Notes                          |
+|--------------------------------|--------------------------------|
+| Upload to a server             | To upload the feedback to a server you should use for example a [MultipartRequest](https://pub.dev/documentation/http/latest/http/MultipartRequest-class.html). |
 | Share via platform share dialog | [share_plus on pub.dev](https://pub.dev/packages/share_plus). Also shown in the example. |
 | Firebase | [Firestore](https://pub.dev/packages/cloud_firestore), [Cloud Storage](https://pub.dev/packages/firebase_storage), [Database](https://pub.dev/packages/firebase_database)
 |   Jira | Jira has a [REST API to create issues and upload files](https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-an-issue-examples) |
 | Trello | Trello has a [REST API to create issues and upload files](https://developer.atlassian.com/cloud/trello/rest/api-group-actions/) |
 | E-Mail | You can use the users email client like [in the sample app](https://github.com/ueman/feedback/blob/master/example/lib/main.dart) to send feedback to yourself using the [flutter_email_sender](https://pub.dev/packages/flutter_email_sender) plugin. |
-
 
 If you have sample code on how to upload it to a platform, I would appreciate a pull request to the example app.
 
@@ -150,18 +159,14 @@ in the screenshot.
 ## ⚠️ Known Issues and limitations
 
 - Platform views are invisible in screenshots (like [webview](https://pub.dev/packages/webview_flutter) or [Google Maps](https://pub.dev/packages/google_maps_flutter)). For further details, see this [Flutter issue](https://github.com/flutter/flutter/issues/25306).
-- Web only works with Flutter's CanvasKit Renderer, for more information see [Flutter Web Renderer docs](https://flutter.dev/docs/development/tools/web-renderers).
+- Web only works with Flutter's CanvasKit Renderer. For more information on how to use it, see [Flutter Web Renderer docs](https://flutter.dev/docs/development/tools/web-renderers).
 
-## 📣  Author
+## 📣 Maintainer
 
-- Jonas Uekötter: [GitHub](https://github.com/ueman) and [Twitter](https://twitter.com/ue_man)
+Hey, I'm Jonas Uekötter. I created this awesome software. Visit my [GitHub profile](https://github.com/ueman) and follow me on [Twitter](https://twitter.com/ue_man). If you like this, please leave a like or star it on GitHub.
 
 ## Issues, questions and contributing
 
 You can raise issues [here](https://github.com/ueman/feedback/issues).
 If you've got a question do not hesitate to ask it [here](https://github.com/ueman/feedback/discussions).
 Contributions are also welcome. You can do a pull request on GitHub [here](https://github.com/ueman/feedback/pulls). Please take a look at [`up for grabs`](https://github.com/ueman/feedback/issues?q=is%3Aopen+is%3Aissue+label%3Aup-for-grabs) issues first.
-
-## Sponsoring
-
-I'm working on my packages on my free-time, but I don't have as much time as I would. If this package or any other package I created is helping you, please consider to [sponsor](https://github.com/ueman#sponsor-me) me. By doing so, I will prioritize your issues or your pull-requests before the others.

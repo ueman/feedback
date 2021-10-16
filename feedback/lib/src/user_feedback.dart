@@ -12,11 +12,11 @@ class UserFeedback {
   /// The user's written feedback
   final String text;
 
-  /// A raw png encoded screenshot of the app. Hopefully annotated by helpful
+  /// A raw png encoded screenshot of the app. Probably annotated with helpful
   /// drawings by the user.
   final Uint8List screenshot;
 
   /// Additional information.
-  /// For use by custom [BetterFeedback.feedbackBuilder].
+  /// For use by a custom [BetterFeedback.feedbackBuilder].
   final Map<String, dynamic>? extra;
 }

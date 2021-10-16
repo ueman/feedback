@@ -14,6 +14,10 @@
 
 ---
 
+💰 Using this library in a commercial product? Consider [becoming a sponsor](https://github.com/ueman#sponsor-me).
+
+---
+
 A Flutter package for obtaining better feedback. It allows the user to provide interactive feedback 
 directly in the app, by annotating a screenshot of the current page, as well as by adding text.
 
@@ -23,7 +27,7 @@ directly in the app, by annotating a screenshot of the current page, as well as 
 
 ## Demo
 
-An interactive web example is available here: <a href="https://flutter-feedback.netlify.app/"><img src="https://img.shields.io/badge/Try-Flutter%20Web%20demo-blue" alt="Online demo"></a>. It also contains a small tutorial on how to use this library.
+An interactive web example is available here: <a href="https://ueman.github.io/feedback/"><img src="https://img.shields.io/badge/Try-Flutter%20Web%20demo-blue" alt="Online demo"></a>. It also contains a small tutorial on how to use this library.
 
 ## Motivation
 
@@ -44,10 +48,15 @@ understand.
 Depending on your use case there are wide variety of solutions.
 These are a couple suggestions:
 
+| Plugin                         | Package                          |
+|--------------------------------|--------------------------------|
+| GitLab Issue                   | [feedback_gitlab](https://pub.dev/packages/feedback_gitlab) |
+| Sentry User Feedback           | [feedback_sentry](https://pub.dev/packages/feedback_sentry) |
+
+
 | Target                         | Notes                          |
 |--------------------------------|--------------------------------|
 | Upload to a server             | To upload the feedback to a server you should use for example a [MultipartRequest](https://pub.dev/documentation/http/latest/http/MultipartRequest-class.html). |
-| GitLab Issue                   | [feedback_gitlab](https://pub.dev/packages/feedback_gitlab) |
 | Share via platform share dialog | [share_plus on pub.dev](https://pub.dev/packages/share_plus). Also shown in the example. |
 | Firebase | [Firestore](https://pub.dev/packages/cloud_firestore), [Cloud Storage](https://pub.dev/packages/firebase_storage), [Database](https://pub.dev/packages/firebase_database)
 |   Jira | Jira has a [REST API to create issues and upload files](https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-an-issue-examples) |
@@ -57,10 +66,6 @@ These are a couple suggestions:
 
 If you have sample code on how to upload it to a platform, I would appreciate a pull request to the example app.
 
-## 📣  Author
+## 📣  Maintainer
 
-- Jonas Uekötter: [GitHub](https://github.com/ueman) and [Twitter](https://twitter.com/ue_man)
-
-## Sponsoring
-
-I'm working on my packages on my free-time, but I don't have as much time as I would. If this package or any other package I created is helping you, please consider to [sponsor](https://github.com/ueman#sponsor-me) me. By doing so, I will prioritize your issues or your pull-requests before the others.
+Hey, I'm Jonas Uekötter. I created this awesome software. Visit my [GitHub profile](https://github.com/ueman) and follow me on [Twitter](https://twitter.com/ue_man). If you like this, please leave a like or star it on GitHub.

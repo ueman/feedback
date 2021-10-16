@@ -5,11 +5,11 @@ on:
     branches:
       - master
     paths:
-      - "feedback_sentry"
+      - "feedback_sentry/**"
       - ".github/workflows/sentry.yml"
   pull_request:
     paths:
-      - "feedback_sentry"
+      - "feedback_sentry/**"
       - ".github/workflows/sentry.yml"
 
 jobs:

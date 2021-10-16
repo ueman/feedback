@@ -90,8 +90,5 @@ body:
 - type: textarea
   attributes:
     label: Output of `flutter doctor -v`
-    placeholder: |
-      - Step 1
-      - Step 2
-      - Step 3
+    description: The input is automatically formatted as shell output
     render: shell

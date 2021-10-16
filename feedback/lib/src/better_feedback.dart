@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:feedback/src/l18n/translation.dart';
 
-/// The function to be called when the user submits their feedback.
+/// The function to be called when the user submits his feedback.
 typedef OnSubmit = void Function(
   String feedback, {
   Map<String, dynamic>? extras,
@@ -27,9 +27,18 @@ typedef FeedbackBuilder = Widget Function(BuildContext, OnSubmit);
 typedef OnFeedbackCallback = FutureOr<void> Function(UserFeedback);
 
 /// A feedback widget that uses a custom widget and data type for
-/// prompting the user for their feedback. This widget should be at the top of
+/// prompting the user for their feedback. This widget should be the root of
 /// your widget tree. Specifically, it should be above any [Navigator] widgets,
 /// including the navigator provided by [MaterialApp].
+///
+/// For example like this
+/// ```dart
+/// BetterFeedback(
+///   child: MaterialApp(
+///   title: 'App',
+///   home: MyHomePage(),
+/// );
+/// ```
 class BetterFeedback extends StatefulWidget {
   const BetterFeedback({
     Key? key,
@@ -56,7 +65,7 @@ class BetterFeedback extends StatefulWidget {
   /// prompt for input.
   final FeedbackBuilder? feedbackBuilder;
 
-  /// Theme which gets used to style the feedback mode.
+  /// The Theme, which gets used to style the feedback ui.
   final FeedbackThemeData? theme;
 
   /// The delegates for this library's FeedbackLocalization widget.
@@ -84,12 +93,18 @@ class BetterFeedback extends StatefulWidget {
   /// The default is a pixel ration of 3 and a value below 1 is not recommended.
   ///
   /// See [RenderRepaintBoundary](https://api.flutter.dev/flutter/rendering/RenderRepaintBoundary/toImage.html)
-  /// for the underlying implementation.
+  /// for information on the underlying implementation.
   final double pixelRatio;
 
   /// Call `BetterFeedback.of(context)` to get an
   /// instance of [FeedbackData] on which you can call `.show()` or `.hide()`
   /// to enable or disable the feedback view.
+  ///
+  /// For example:
+  /// ```dart
+  /// BetterFeedback.of(context).show(...);
+  /// BetterFeedback.of(context).hide(...);
+  /// ```
   static FeedbackData of(BuildContext context) {
     final feedbackData =
         context.dependOnInheritedWidgetOfExactType<FeedbackData>();

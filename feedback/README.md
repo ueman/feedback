@@ -91,19 +91,54 @@ Provide a way to hide the feedback panel by calling `BetterFeedback.of(context).
 Depending on your use case there are wide variety of solutions.
 These are a couple suggestions:
 
+#### GitLab plugin
 
-| Plugin                         | Package                          |
-|--------------------------------|--------------------------------|
-| GitLab Issue                   | [feedback_gitlab](https://pub.dev/packages/feedback_gitlab) |
-| Sentry User Feedback           | [feedback_sentry](https://pub.dev/packages/feedback_sentry) |
+The [feedback_gitlab](https://pub.dev/packages/feedback_gitlab) plugin creates 
+an issue on [GitLab](https://about.gitlab.com/) for each feedback submitted by the users.
 
+Just use it as shown in the following example. It openes the feedback ui and
+after the user has submitted his feedback, it gets automatically uploaded 
+to GitLab.
+
+```dart
+import 'package:feedback_gitlab/feedback_gitlab.dart';
+
+BetterFeedback.of(context).showAndUploadToGitLab(
+    projectId: 'project-Id', // Required, use your GitLab project id
+    apiToken: 'api-token', // Required, use your GitLab API token
+    gitlabUrl: 'gitlab.org', // Optional, defaults to 'gitlab.com'
+);
+```
+The API token needs access to `read_api` and `write_repository`.
+See [GitLabs docs](https://docs.gitlab.com/ee/user/project/settings/project_access_tokens.html#limiting-scopes-of-a-project-access-token)
+for more information on API tokens.
+
+
+#### Sentry plugin
+The [feedback_sentry](https://pub.dev/packages/feedback_sentry) submits the 
+feedback to Sentry as Sentry User Feedback. It works with [sentry](https://pub.dev/packages/sentry) and [sentry_flutter](https://pub.dev/packages/sentry_flutter). 
+
+Just use it as shown in the following example. It openes the feedback ui and
+after the user has submitted his feedback, it gets automatically uploaded 
+to Sentry.
+
+```dart
+import 'package:feedback_sentry/feedback_sentry.dart';
+
+BetterFeedback.of(context).showAndUploadToSentry(
+    name: 'Foo Bar', // optional
+    email: 'foo_bar@example.com', // optional
+);
+```
+
+#### Other use cases
 
 | Target                         | Notes                          |
 |--------------------------------|--------------------------------|
 | Upload to a server             | To upload the feedback to a server you should use for example a [MultipartRequest](https://pub.dev/documentation/http/latest/http/MultipartRequest-class.html). |
 | Share via platform share dialog | [share_plus on pub.dev](https://pub.dev/packages/share_plus). Also shown in the example. |
 | Firebase | [Firestore](https://pub.dev/packages/cloud_firestore), [Cloud Storage](https://pub.dev/packages/firebase_storage), [Database](https://pub.dev/packages/firebase_database)
-|   Jira | Jira has a [REST API to create issues and upload files](https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-an-issue-examples) |
+| Jira | Jira has a [REST API to create issues and upload files](https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-an-issue-examples) |
 | Trello | Trello has a [REST API to create issues and upload files](https://developer.atlassian.com/cloud/trello/rest/api-group-actions/) |
 | E-Mail | You can use the users email client like [in the sample app](https://github.com/ueman/feedback/blob/master/example/lib/main.dart) to send feedback to yourself using the [flutter_email_sender](https://pub.dev/packages/flutter_email_sender) plugin. |
 

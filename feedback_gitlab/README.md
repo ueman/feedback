@@ -14,7 +14,7 @@ dependencies:
   feedback_gitlab: x.y.z # use the latest version found on pub.dev
 ```
 
-Then, run `flutter packages get` in your terminal.
+Then, run `flutter pub get` in your terminal.
 
 ### Use it
 

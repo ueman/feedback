@@ -1,6 +1,7 @@
 ## [2.1.0]
 
 - The back button now [intelligently](https://github.com/ueman/feedback/issues/116) reverses drawings and closes the drawing mode
+- OnFeedbackCallback accepts a FutureOr<void>. Previously it just accepted void callbacks.
 
 ## [2.0.0]
 

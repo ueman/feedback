@@ -1,7 +1,7 @@
 name: feedback_sentry
 description: A simple way to to send user feedback with images to Sentry.io
 version: 2.0.0
-homepage:
+homepage: https://uekoetter.dev/
 
 environment:
   sdk: ">=2.12.0 <3.0.0"

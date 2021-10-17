@@ -1,6 +1,6 @@
 name: feedback_gitlab
 description: A simple way to create a GitLab issues from user feedback
-version: 2.0.0
+version: 2.0.0+1
 homepage: https://uekoetter.dev
 repository: https://github.com/ueman/feedback
 issue_tracker: https://github.com/ueman/feedback/issues

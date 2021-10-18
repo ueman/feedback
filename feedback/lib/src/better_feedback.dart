@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:feedback/feedback.dart';
+import 'package:feedback/src/debug.dart';
 import 'package:feedback/src/feedback_controller.dart';
+import 'package:feedback/src/feedback_data.dart';
 import 'package:feedback/src/feedback_widget.dart';
 import 'package:feedback/src/feedback_builder/string_feedback.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
@@ -39,7 +41,9 @@ typedef OnFeedbackCallback = FutureOr<void> Function(UserFeedback);
 ///   home: MyHomePage(),
 /// );
 /// ```
+///
 class BetterFeedback extends StatefulWidget {
+  /// Creates a [BetterFeedback]
   const BetterFeedback({
     Key? key,
     required this.child,
@@ -105,14 +109,14 @@ class BetterFeedback extends StatefulWidget {
   /// BetterFeedback.of(context).show(...);
   /// BetterFeedback.of(context).hide(...);
   /// ```
-  static FeedbackData of(BuildContext context) {
+  static FeedbackController of(BuildContext context) {
     final feedbackData =
         context.dependOnInheritedWidgetOfExactType<FeedbackData>();
     assert(
       feedbackData != null,
       'You need to add a $BetterFeedback widget above this context!',
     );
-    return feedbackData!;
+    return feedbackData!.controller;
   }
 
   @override
@@ -168,39 +172,5 @@ class _BetterFeedbackState extends State<BetterFeedback> {
     setState(() {
       feedbackVisible = controller.isVisible;
     });
-  }
-}
-
-class FeedbackData extends InheritedWidget {
-  const FeedbackData({
-    Key? key,
-    required Widget child,
-    required this.controller,
-  }) : super(key: key, child: child);
-
-  final FeedbackController controller;
-
-  @override
-  bool updateShouldNotify(FeedbackData oldWidget) {
-    return oldWidget.controller != controller;
-  }
-
-  /// Shows the feedback view
-  void show(OnFeedbackCallback callback) => controller.show(callback);
-
-  /// Hides the feedback view
-  void hide() => controller.hide();
-
-  bool get isVisible => controller.isVisible;
-
-  static FeedbackController of(BuildContext context) {
-    final feedbackThemeData =
-        context.dependOnInheritedWidgetOfExactType<FeedbackData>();
-
-    assert(
-      feedbackThemeData != null,
-      'You need to add a $BetterFeedback widget above this context!',
-    );
-    return feedbackThemeData!.controller;
   }
 }

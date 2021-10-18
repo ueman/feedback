@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+/// Provides localizations for this library
 class FeedbackLocalization extends StatelessWidget {
+  /// Creates a [FeedbackLocalization].
   const FeedbackLocalization({
     Key? key,
     required this.child,

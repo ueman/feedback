@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 /// This is the Widget on the right side of the app when the feedback view
 /// is active.
 class ControlsColumn extends StatelessWidget {
+  /// Creates a [ControlsColumn].
   ControlsColumn({
     Key? key,
     required this.mode,

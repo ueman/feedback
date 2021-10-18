@@ -212,7 +212,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                         }) async {
                           await _sendFeedback(
                             context,
-                            FeedbackData.of(context).onFeedback!,
+                            BetterFeedback.of(context).onFeedback!,
                             screenshotController,
                             feedback,
                             widget.pixelRatio,
@@ -285,7 +285,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     );
 
     // Close feedback mode
-    FeedbackData.of(context).hide();
+    BetterFeedback.of(context).hide();
   }
 
   static void _hideKeyboard(BuildContext context) {

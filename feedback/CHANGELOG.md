@@ -1,3 +1,8 @@
+## [2.2.0]
+
+- `BetterFeedback.of()` now returns a `FeebdackController` instead of `FeedbackData`. This should be non-breaking change for most users.
+- Improve documentation
+
 ## [2.1.0]
 
 - The back button now [intelligently](https://github.com/ueman/feedback/issues/116) reverses drawings and closes the drawing mode

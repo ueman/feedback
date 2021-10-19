@@ -3,6 +3,7 @@ import 'package:feedback/src/better_feedback.dart';
 
 /// Container for the feedback of the user.
 class UserFeedback {
+  /// Creates an [UserFeedback]
   UserFeedback({
     required this.text,
     required this.screenshot,

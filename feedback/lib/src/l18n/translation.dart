@@ -1,22 +1,54 @@
+import 'package:feedback/src/debug.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import '../better_feedback.dart';
 
+/// This class must be extended by all custom translations.
 abstract class FeedbackLocalizations {
+  /// Creates a [FeedbackLocalizations].
   const FeedbackLocalizations();
 
+  /// Text of the button, which the user taps or clicks to submit his feedback.
+  ///
+  /// Remarks:
+  /// - This can be ommited when providing a custom
+  ///   [BetterFeedback.feedbackBuilder].
   String get submitButtonText;
+
+  /// Text above the text field, in which the user can write his feedback.
+  /// This should be some sort of question or an encouragement in order to get
+  /// better feedback.
+  ///
+  /// Remarks:
+  /// - This can be ommited when providing a custom
+  ///   [BetterFeedback.feedbackBuilder].
   String get feedbackDescriptionText;
+
+  /// Name of the navigation tab in feedback menu.
+  /// If the user taps or clicks the button with this text,
+  /// the navigation mode is selected.
   String get navigate;
+
+  /// Name of the draw tab in feedback menu.
+  /// If the user taps or clicks the button with this text,
+  /// the drawing mode is selected.
   String get draw;
 
+  /// This method is used to obtain a localized instance of
+  /// [FeedbackLocalizations].
   static FeedbackLocalizations of(BuildContext context) {
+    debugCheckHasFeedbackLocalizations(context);
     return Localizations.of<FeedbackLocalizations>(
-        context, FeedbackLocalizations)!;
+      context,
+      FeedbackLocalizations,
+    )!;
   }
 }
 
+/// Default german localization
 class DeFeedbackLocalizations extends FeedbackLocalizations {
+  /// Creates a [DeFeedbackLocalizations].
   const DeFeedbackLocalizations();
 
   @override
@@ -30,22 +62,12 @@ class DeFeedbackLocalizations extends FeedbackLocalizations {
 
   @override
   String get navigate => 'Navigieren';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const DeFeedbackLocalizations(),
-    );
-  }
 }
 
+/// Default english localization
 class EnFeedbackLocalizations extends FeedbackLocalizations {
+  /// Creates a [EnFeedbackLocalizations].
   const EnFeedbackLocalizations();
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const EnFeedbackLocalizations(),
-    );
-  }
 
   @override
   String get submitButtonText => 'Submit';
@@ -60,14 +82,10 @@ class EnFeedbackLocalizations extends FeedbackLocalizations {
   String get navigate => 'Navigate';
 }
 
+/// Default french localization
 class FrFeedbackLocalizations extends FeedbackLocalizations {
+  /// Creates a [FrFeedbackLocalizations].
   const FrFeedbackLocalizations();
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const FrFeedbackLocalizations(),
-    );
-  }
 
   @override
   String get submitButtonText => 'Envoyer';
@@ -82,10 +100,14 @@ class FrFeedbackLocalizations extends FeedbackLocalizations {
   String get navigate => 'Naviguer';
 }
 
+/// This is a localization delegate, which includes all of the localizations
+/// already present in this library.
 class GlobalFeedbackLocalizationsDelegate
     extends LocalizationsDelegate<FeedbackLocalizations> {
+  /// Creates a [GlobalFeedbackLocalizationsDelegate].
   const GlobalFeedbackLocalizationsDelegate();
 
+  /// Returns the default instance of a [GlobalFeedbackLocalizationsDelegate].
   static const LocalizationsDelegate<FeedbackLocalizations> delegate =
       GlobalFeedbackLocalizationsDelegate();
 
@@ -102,8 +124,8 @@ class GlobalFeedbackLocalizationsDelegate
       return true;
     }
     debugPrint(
-      'The locale $locale is not supported,'
-      ' falling back to englisch translations',
+      'The locale $locale is not supported, '
+      'falling back to englisch translations',
     );
     return true;
   }
@@ -116,7 +138,7 @@ class GlobalFeedbackLocalizationsDelegate
       return _supportedLocales[languageLocale]!;
     }
     // The default is english
-    return EnFeedbackLocalizations.load(locale);
+    return const EnFeedbackLocalizations();
   }
 
   @override
@@ -124,31 +146,4 @@ class GlobalFeedbackLocalizationsDelegate
 
   @override
   String toString() => 'DefaultFeedbackLocalizations.delegate(en_EN)';
-}
-
-bool debugCheckHasFeedbackLocalizations(BuildContext context) {
-  assert(() {
-    if (Localizations.of<FeedbackLocalizations>(
-          context,
-          FeedbackLocalizations,
-        ) ==
-        null) {
-      throw FlutterError.fromParts(<DiagnosticsNode>[
-        ErrorSummary('No FeedbackLocalizations found.'),
-        ErrorDescription(
-          '${context.widget.runtimeType} widgets require FeedbackLocalizations '
-          'to be provided by a Localizations widget ancestor.',
-        ),
-        ErrorDescription(
-          'Localizations are used to generate many different messages, labels, '
-          'and abbreviations which are used by the feedback library.',
-        ),
-        ...context.describeMissingAncestor(
-          expectedAncestorType: FeedbackLocalizations,
-        )
-      ]);
-    }
-    return true;
-  }());
-  return true;
 }

@@ -24,6 +24,7 @@ const _defaultBottomSheetDescriptionStyle = TextStyle(
 /// See the following image to get a better understanding of the properties.
 /// ![Theme](https://raw.githubusercontent.com/ueman/feedback/master/img/theme_description.png "Theme")
 class FeedbackThemeData {
+  /// Creates a [FeedbackThemeData].
   FeedbackThemeData({
     this.background = Colors.grey,
     this.feedbackSheetColor = _lightGrey,
@@ -56,6 +57,7 @@ class FeedbackThemeData {
   final TextStyle bottomSheetDescriptionStyle;
 }
 
+/// Provides an instance of [FeedbackThemeData] for all descendants.
 class FeedbackTheme extends InheritedTheme {
   /// Creates a feedback theme that controls the color, opacity, and size of
   /// descendant widgets.
@@ -67,6 +69,8 @@ class FeedbackTheme extends InheritedTheme {
     required Widget child,
   }) : super(key: key, child: child);
 
+  /// This [FeedbackThemeData] can be obtained by calling
+  /// `FeedbackTheme.of(context)`.
   final FeedbackThemeData data;
 
   /// The data from the closest instance of this class that encloses the given

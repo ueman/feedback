@@ -5,7 +5,9 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
-extension BetterFeedbackX on FeedbackData {
+/// This is an extension to make it easier to call
+/// [showAndUploadToGitLab].
+extension BetterFeedbackX on FeedbackController {
   /// Example usage:
   /// ```dart
   /// import 'package:feedback_gitlab/feedback_gitlab.dart';
@@ -40,6 +42,8 @@ extension BetterFeedbackX on FeedbackData {
   }
 }
 
+/// See [BetterFeedbackX.showAndUploadToGitLab].
+/// This is just [visibleForTesting].
 @visibleForTesting
 OnFeedbackCallback uploadToGitLab({
   required String projectId,

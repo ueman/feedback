@@ -30,5 +30,4 @@ jobs:
       - run: flutter pub get
       - run: flutter format -n --set-exit-if-changed .
       - run: flutter analyze
-      - run: flutter test --coverage
-      - uses: codecov/codecov-action@v1.5.2
+      - run: flutter test

@@ -1,4 +1,4 @@
-## [2.2.0+2]
+## [2.2.0+3]
 
 * Use correct license text
 

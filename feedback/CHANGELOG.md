@@ -1,3 +1,7 @@
+## [2.2.0+1]
+
+* Use correct license text
+
 ## [2.2.0]
 
 - `BetterFeedback.of()` now returns a `FeebdackController` instead of `FeedbackData`. This should be non-breaking change for most users.

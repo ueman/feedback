@@ -3,7 +3,8 @@ import 'package:feedback/src/better_feedback.dart';
 
 /// Container for the feedback of the user.
 class UserFeedback {
-  /// Creates an [UserFeedback]
+  /// Creates an [UserFeedback].
+  /// Typically never used by a user of this library.
   UserFeedback({
     required this.text,
     required this.screenshot,
@@ -17,7 +18,8 @@ class UserFeedback {
   /// drawings by the user.
   final Uint8List screenshot;
 
-  /// Additional information.
-  /// For use by a custom [BetterFeedback.feedbackBuilder].
+  /// This can contain additional information. By default this is always empty.
+  /// When using a custom [BetterFeedback.feedbackBuilder] this can be used
+  /// to supply additional information.
   final Map<String, dynamic>? extra;
 }

@@ -1,3 +1,7 @@
+## [2.2.0+4]
+
+* Improve documentation
+
 ## [2.2.0+3]
 
 * Use correct license text

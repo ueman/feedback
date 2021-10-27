@@ -13,7 +13,7 @@ class FeedbackController extends ChangeNotifier {
 
   /// Open the feedback ui.
   /// After the user submitted his feedback [onFeedback] is called.
-  /// If the user aborts the process of giving feedback [onFeedback] is
+  /// If the user aborts the process of giving feedback, [onFeedback] is
   /// not called.
   void show(OnFeedbackCallback onFeedback) {
     _isVisible = true;
@@ -22,7 +22,7 @@ class FeedbackController extends ChangeNotifier {
   }
 
   /// Hides the feedback ui.
-  /// Typically this does not need to be called by the user of this library
+  /// Typically, this does not need to be called by the user of this library
   void hide() {
     _isVisible = false;
     notifyListeners();

@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:feedback/src/better_feedback.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
 import 'package:flutter/material.dart';

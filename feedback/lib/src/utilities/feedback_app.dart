@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:feedback/src/l18n/localization.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
 import 'package:feedback/src/utilities/media_query_from_window.dart';

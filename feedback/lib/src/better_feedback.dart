@@ -43,7 +43,15 @@ typedef OnFeedbackCallback = FutureOr<void> Function(UserFeedback);
 /// ```
 ///
 class BetterFeedback extends StatefulWidget {
-  /// Creates a [BetterFeedback]
+  /// Creates a [BetterFeedback].
+  ///
+  /// /// ```dart
+  /// BetterFeedback(
+  ///   child: MaterialApp(
+  ///   title: 'App',
+  ///   home: MyHomePage(),
+  /// );
+  /// ```
   const BetterFeedback({
     Key? key,
     required this.child,

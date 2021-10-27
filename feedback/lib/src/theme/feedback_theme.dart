@@ -25,6 +25,7 @@ const _defaultBottomSheetDescriptionStyle = TextStyle(
 /// ![Theme](https://raw.githubusercontent.com/ueman/feedback/master/img/theme_description.png "Theme")
 class FeedbackThemeData {
   /// Creates a [FeedbackThemeData].
+  /// ![Theme](https://raw.githubusercontent.com/ueman/feedback/master/img/theme_description.png "Theme")
   FeedbackThemeData({
     this.background = Colors.grey,
     this.feedbackSheetColor = _lightGrey,

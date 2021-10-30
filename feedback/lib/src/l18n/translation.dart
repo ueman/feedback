@@ -125,7 +125,7 @@ class GlobalFeedbackLocalizationsDelegate
     }
     debugPrint(
       'The locale $locale is not supported, '
-      'falling back to englisch translations',
+      'falling back to english translations',
     );
     return true;
   }

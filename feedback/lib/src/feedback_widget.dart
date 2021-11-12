@@ -100,6 +100,8 @@ class FeedbackWidgetState extends State<FeedbackWidget>
   @override
   void didUpdateWidget(FeedbackWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
+    // update feedback mode with the initial value
+    mode = widget.mode;
     if (oldWidget.isFeedbackVisible != widget.isFeedbackVisible &&
         oldWidget.isFeedbackVisible == false) {
       // Feedback is now visible,

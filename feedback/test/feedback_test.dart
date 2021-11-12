@@ -314,6 +314,44 @@ void main() {
     });
   });
 
+  testWidgets(
+      'check if the initial mode persists after re-open the feedback widget',
+      (tester) async {
+    const widget = BetterFeedback(
+      mode: FeedbackMode.navigate,
+      child: MyTestApp(),
+    );
+
+    await tester.pumpWidget(widget);
+    await tester.pumpAndSettle();
+
+    final feedbackWidgetState =
+        tester.state<FeedbackWidgetState>(find.byType(FeedbackWidget));
+
+    expect(feedbackWidgetState.mode, FeedbackMode.navigate);
+
+    // open feedback
+    final openFeedbackButton = find.byKey(const Key('open_feedback'));
+    await tester.tap(openFeedbackButton);
+    await tester.pumpAndSettle();
+
+    // change the mode to `draw` mode
+    final drawButton = find.byKey(const ValueKey<String>('draw_button'));
+    await tester.tap(drawButton);
+
+    expect(feedbackWidgetState.mode, FeedbackMode.draw);
+
+    // close feedback
+    feedbackWidgetState.backButtonIntercept();
+
+    // open feedback
+    await tester.tap(openFeedbackButton);
+    await tester.pumpAndSettle();
+
+    // verify the initial mode
+    expect(feedbackWidgetState.mode, FeedbackMode.navigate);
+  });
+
   test('feedback sendFeedback with high resolution', () async {
     var callbackWasCalled = false;
     final screenshotController = MockScreenshotController();

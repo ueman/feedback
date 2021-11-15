@@ -69,3 +69,9 @@ If you have sample code on how to upload it to a platform, I would appreciate a 
 ## 📣  Maintainer
 
 Hey, I'm Jonas Uekötter. I created this awesome software. Visit my [GitHub profile](https://github.com/ueman) and follow me on [Twitter](https://twitter.com/ue_man). If you like this, please leave a like or star it on GitHub.
+
+## Contributors
+
+<a href="https://github.com/ueman/feedback/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=ueman/feedback" />
+</a>

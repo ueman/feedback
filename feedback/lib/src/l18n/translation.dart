@@ -100,6 +100,24 @@ class FrFeedbackLocalizations extends FeedbackLocalizations {
   String get navigate => 'Naviguer';
 }
 
+/// Default arabic localization
+class ArFeedbackLocalizations extends FeedbackLocalizations {
+  /// Creates a [ArFeedbackLocalizations].
+  const ArFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'إرسال';
+
+  @override
+  String get feedbackDescriptionText => 'ما هي مشكلتك؟';
+
+  @override
+  String get draw => 'ارسم';
+
+  @override
+  String get navigate => 'إنتقال';
+}
+
 /// This is a localization delegate, which includes all of the localizations
 /// already present in this library.
 class GlobalFeedbackLocalizationsDelegate
@@ -115,6 +133,7 @@ class GlobalFeedbackLocalizationsDelegate
     const Locale('en'): const EnFeedbackLocalizations(),
     const Locale('de'): const DeFeedbackLocalizations(),
     const Locale('fr'): const FrFeedbackLocalizations(),
+    const Locale('ar'): const ArFeedbackLocalizations(),
   };
 
   @override

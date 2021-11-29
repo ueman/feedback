@@ -1,4 +1,4 @@
-## [vNext]
+## [2.2.1]
 
 * The feedback ui always opens in the configured mode [#137](https://github.com/ueman/feedback/pull/137)
 * Added support for arabic language [#140](https://github.com/ueman/feedback/pull/140)

@@ -1,5 +1,4 @@
 import 'package:feedback/feedback.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 /// A data type holding user feedback consisting of a feedback type, free from

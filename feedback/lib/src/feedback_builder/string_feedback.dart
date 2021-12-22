@@ -2,7 +2,6 @@ import 'package:feedback/src/better_feedback.dart';
 import 'package:feedback/src/l18n/translation.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 
 /// Prompt the user for feedback using `StringFeedback`.
 Widget simpleFeedbackBuilder(BuildContext context, OnSubmit onSubmit) =>

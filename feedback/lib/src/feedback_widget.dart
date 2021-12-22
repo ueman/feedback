@@ -1,10 +1,8 @@
 // ignore_for_file: public_member_api_docs
 
 import 'package:feedback/feedback.dart';
-import 'package:feedback/src/better_feedback.dart';
 import 'package:feedback/src/controls_column.dart';
 import 'package:feedback/src/feedback_bottom_sheet.dart';
-import 'package:feedback/src/feedback_mode.dart';
 import 'package:feedback/src/paint_on_background.dart';
 import 'package:feedback/src/painter.dart';
 import 'package:feedback/src/scale_and_clip.dart';

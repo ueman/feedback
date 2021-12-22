@@ -12,6 +12,10 @@
   <a href="https://pub.dev/packages/feedback/score"><img src="https://badges.bar/feedback/pub%20points" alt="pub points"></a>
 </p>
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/ueman/feedback/master/img/ff.png" height="100" alt="Flutter Favorite" />
+</p>
+
 ---
 
 💰 Using this library in a commercial product? Consider [becoming a sponsor](https://github.com/ueman#sponsor-me).

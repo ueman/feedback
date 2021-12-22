@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:feedback/feedback.dart';
 import 'package:feedback/src/debug.dart';
-import 'package:feedback/src/feedback_controller.dart';
 import 'package:feedback/src/feedback_data.dart';
 import 'package:feedback/src/feedback_widget.dart';
 import 'package:feedback/src/feedback_builder/string_feedback.dart';
@@ -10,7 +9,6 @@ import 'package:feedback/src/theme/feedback_theme.dart';
 import 'package:feedback/src/utilities/feedback_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:feedback/src/l18n/translation.dart';
 
 /// The function to be called when the user submits his feedback.
 typedef OnSubmit = void Function(

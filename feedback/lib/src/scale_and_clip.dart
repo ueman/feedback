@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs
 import 'package:flutter/material.dart';
 
+import 'feedback_widget.dart';
+
 class ScaleAndClip extends StatelessWidget {
   const ScaleAndClip({
     Key? key,

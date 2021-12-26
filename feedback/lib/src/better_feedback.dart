@@ -18,6 +18,10 @@ typedef OnSubmit = void Function(
 
 /// A function that returns a Widget that prompts the user for feedback and
 /// calls [OnSubmit] when the user wants to submit their feedback.
+///
+/// The `ScrollController` argument should be passed into any scrollable
+/// children to make the feedback sheet expand when scrolled.
+/// See: [FeedbackThemeData.sheetIsDraggable] and [DraggableScrollableSheet].
 typedef FeedbackBuilder = Widget Function(BuildContext, OnSubmit);
 
 /// Function which gets called when the user submits his feedback.

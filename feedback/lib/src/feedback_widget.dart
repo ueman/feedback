@@ -14,6 +14,11 @@ import 'package:meta/meta.dart';
 
 typedef FeedbackButtonPress = void Function(BuildContext context);
 
+
+// See alignment.dart.
+const kScaleOrigin = Alignment(-.3, -.65);
+const kScaleFactor = .65;
+
 class FeedbackWidget extends StatefulWidget {
   const FeedbackWidget({
     Key? key,

@@ -208,7 +208,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                     // Allow the screenshot to overflow to the full screen size and
                     // then scale it down to meet it's parent's constraints.
                     maxWidth: query.size.width,
-                    maxHeight: query.size.height,
+                    maxHeight: query.size.height + query.viewInsets.bottom,
                     child: Center(
                       child: ScaleAndClip(
                         progress: animation.value,

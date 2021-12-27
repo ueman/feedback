@@ -49,7 +49,7 @@ class FeedbackWidget extends StatefulWidget {
 class FeedbackWidgetState extends State<FeedbackWidget>
     with SingleTickerProviderStateMixin {
   // Padding to put around the interactive screenshot preview.
-  final double padding = 4;
+  final double padding = 8;
 
   // Fraction of the screen to be taken up by the bottom sheet.
   final double sheetFraction = 1 / 5;

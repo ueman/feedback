@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs
 
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:feedback/feedback.dart';
 import 'package:feedback/src/controls_column.dart';
@@ -237,7 +238,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
             delegate: _FeedbackLayoutDelegate(
               query: query,
               sheetFraction: sheetFraction,
-              progress: animation.value,
+              animationProgress: animation.value,
             ),
           );
         },
@@ -315,12 +316,12 @@ class _FeedbackLayoutDelegate extends MultiChildLayoutDelegate {
   _FeedbackLayoutDelegate({
     required this.query,
     required this.sheetFraction,
-    required this.progress,
+    required this.animationProgress,
   });
 
   MediaQueryData query;
   double sheetFraction;
-  double progress;
+  double animationProgress;
 
   double get safeAreaHeight => query.padding.top;
 
@@ -342,7 +343,7 @@ class _FeedbackLayoutDelegate extends MultiChildLayoutDelegate {
     positionChild(
       _controlsColumnId,
       Offset(
-        size.width - progress * controlsSize.width,
+        size.width - animationProgress * controlsSize.width,
         query.padding.top,
       ),
     );
@@ -352,14 +353,14 @@ class _FeedbackLayoutDelegate extends MultiChildLayoutDelegate {
       _screenshotId,
       BoxConstraints.tight(
         Size(
-          size.width - progress * (controlsSize.width),
-          size.height - progress * (size.height - screenshotHeight),
+          size.width - animationProgress * (controlsSize.width),
+          size.height - animationProgress * (size.height - screenshotHeight),
         ),
       ),
     );
     positionChild(
       _screenshotId,
-      Offset(0, progress * safeAreaHeight),
+      Offset(0, animationProgress * safeAreaHeight),
     );
 
     // Lay out sheet.
@@ -372,13 +373,13 @@ class _FeedbackLayoutDelegate extends MultiChildLayoutDelegate {
         ),
       ),
     ).height;
-    positionChild(_sheetId, Offset(0, size.height - progress * sheetHeight));
+    positionChild(_sheetId, Offset(0, size.height - animationProgress * sheetHeight));
   }
 
   @override
   bool shouldRelayout(covariant _FeedbackLayoutDelegate oldDelegate) {
     return query != oldDelegate.query ||
         sheetFraction != oldDelegate.sheetFraction ||
-        progress != oldDelegate.progress;
+        animationProgress != oldDelegate.animationProgress;
   }
 }

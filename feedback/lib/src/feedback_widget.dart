@@ -49,7 +49,7 @@ class FeedbackWidget extends StatefulWidget {
 class FeedbackWidgetState extends State<FeedbackWidget>
     with SingleTickerProviderStateMixin {
   // Padding to put around the interactive screenshot preview.
-  final double padding = 8;
+  final double padding = 4;
 
   // Fraction of the screen to be taken up by the bottom sheet.
   final double sheetFraction = 1 / 5;
@@ -151,34 +151,66 @@ class FeedbackWidgetState extends State<FeedbackWidget>
             children: [
               LayoutId(
                 id: _controlsColumnId,
-                child: ControlsColumn(
-                  mode: mode,
-                  activeColor: painterController.drawColor,
-                  colors: widget.drawColors,
-                  onColorChanged: (color) {
-                    setState(() {
-                      painterController.drawColor = color;
-                    });
-                    _hideKeyboard(context);
-                  },
-                  onUndo: () {
-                    painterController.undo();
-                    _hideKeyboard(context);
-                  },
-                  onClearDrawing: () {
-                    painterController.clear();
-                    _hideKeyboard(context);
-                  },
-                  onControlModeChanged: (mode) {
-                    setState(() {
-                      this.mode = mode;
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: padding,
+                    right: padding,
+                  ),
+                  child: ControlsColumn(
+                    mode: mode,
+                    activeColor: painterController.drawColor,
+                    colors: widget.drawColors,
+                    onColorChanged: (color) {
+                      setState(() {
+                        painterController.drawColor = color;
+                      });
                       _hideKeyboard(context);
-                    });
-                  },
-                  onCloseFeedback: () {
-                    _hideKeyboard(context);
-                    BetterFeedback.of(context).hide();
-                  },
+                    },
+                    onUndo: () {
+                      painterController.undo();
+                      _hideKeyboard(context);
+                    },
+                    onClearDrawing: () {
+                      painterController.clear();
+                      _hideKeyboard(context);
+                    },
+                    onControlModeChanged: (mode) {
+                      setState(() {
+                        this.mode = mode;
+                        _hideKeyboard(context);
+                      });
+                    },
+                    onCloseFeedback: () {
+                      _hideKeyboard(context);
+                      BetterFeedback.of(context).hide();
+                    },
+                  ),
+                ),
+              ),
+              LayoutId(
+                id: _screenshotId,
+                child: Padding(
+                  padding: EdgeInsets.all(padding),
+                  child: LayoutBuilder(builder: (context, constraints) {
+                    return OverflowBox(
+                      // Allow the screenshot to overflow to the full screen size and
+                      // then scale it down to meet it's parent's constraints.
+                      maxWidth: query.size.width,
+                      maxHeight: query.size.height + query.viewInsets.bottom,
+                      child: Center(
+                        child: ScaleAndClip(
+                          progress: animation.value,
+                          // Scale to the lesser of the two dimensions to maintain the
+                          // aspect ratio.
+                          scaleFactor: min(
+                            constraints.maxWidth / query.size.width,
+                            constraints.maxHeight / query.size.height,
+                          ),
+                          child: screenshotChild!,
+                        ),
+                      ),
+                    );
+                  }),
                 ),
               ),
               LayoutId(
@@ -201,34 +233,10 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                   },
                 ),
               ),
-              LayoutId(
-                id: _screenshotId,
-                child: LayoutBuilder(builder: (context, constraints) {
-                  return OverflowBox(
-                    // Allow the screenshot to overflow to the full screen size and
-                    // then scale it down to meet it's parent's constraints.
-                    maxWidth: query.size.width,
-                    maxHeight: query.size.height + query.viewInsets.bottom,
-                    child: Center(
-                      child: ScaleAndClip(
-                        progress: animation.value,
-                        // Scale to the lesser of the two dimensions to maintain the
-                        // aspect ratio.
-                        scaleFactor: min(
-                          constraints.maxWidth / query.size.width,
-                          constraints.maxHeight / query.size.height,
-                        ),
-                        child: screenshotChild!,
-                      ),
-                    ),
-                  );
-                }),
-              ),
             ],
             delegate: _FeedbackLayoutDelegate(
               query: query,
               sheetFraction: sheetFraction,
-              padding: padding,
               progress: animation.value,
             ),
           );
@@ -307,13 +315,11 @@ class _FeedbackLayoutDelegate extends MultiChildLayoutDelegate {
   _FeedbackLayoutDelegate({
     required this.query,
     required this.sheetFraction,
-    required this.padding,
     required this.progress,
   });
 
   MediaQueryData query;
   double sheetFraction;
-  double padding;
   double progress;
 
   double get safeAreaHeight => query.padding.top;
@@ -330,34 +336,33 @@ class _FeedbackLayoutDelegate extends MultiChildLayoutDelegate {
 
   @override
   void performLayout(Size size) {
-    // Layout the controls.
+    // Lay out the controls.
     final Size controlsSize =
         layoutChild(_controlsColumnId, BoxConstraints.loose(size));
     positionChild(
       _controlsColumnId,
       Offset(
-        size.width - progress * (controlsSize.width + padding),
-        query.padding.top + padding,
+        size.width - progress * controlsSize.width,
+        query.padding.top,
       ),
     );
 
-    // Layout screenshot preview.
+    // Lay out screenshot preview.
     layoutChild(
       _screenshotId,
       BoxConstraints.tight(
         Size(
-          size.width - progress * (controlsSize.width + 2 * padding),
-          size.height -
-              progress * (size.height - screenshotHeight + 2 * padding),
+          size.width - progress * (controlsSize.width),
+          size.height - progress * (size.height - screenshotHeight),
         ),
       ),
     );
     positionChild(
       _screenshotId,
-      Offset(0, progress * (safeAreaHeight + padding)),
+      Offset(0, progress * safeAreaHeight),
     );
 
-    // Layout sheet.
+    // Lay out sheet.
     final double sheetHeight = layoutChild(
       _sheetId,
       BoxConstraints.tight(
@@ -374,7 +379,6 @@ class _FeedbackLayoutDelegate extends MultiChildLayoutDelegate {
   bool shouldRelayout(covariant _FeedbackLayoutDelegate oldDelegate) {
     return query != oldDelegate.query ||
         sheetFraction != oldDelegate.sheetFraction ||
-        padding != oldDelegate.padding ||
         progress != oldDelegate.progress;
   }
 }

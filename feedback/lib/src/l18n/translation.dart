@@ -1,4 +1,5 @@
 import 'package:feedback/src/debug.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../better_feedback.dart';
@@ -149,14 +150,15 @@ class GlobalFeedbackLocalizationsDelegate
   }
 
   @override
-  Future<FeedbackLocalizations> load(Locale locale) async {
+  Future<FeedbackLocalizations> load(Locale locale) {
     final languageLocale = Locale(locale.languageCode);
     // We only support language codes for now
     if (_supportedLocales.containsKey(languageLocale)) {
-      return _supportedLocales[languageLocale]!;
+      return SynchronousFuture<FeedbackLocalizations>(
+          _supportedLocales[languageLocale]!);
     }
     // The default is english
-    return const EnFeedbackLocalizations();
+    return SynchronousFuture(const EnFeedbackLocalizations());
   }
 
   @override

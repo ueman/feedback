@@ -154,10 +154,11 @@ class GlobalFeedbackLocalizationsDelegate
     final languageLocale = Locale(locale.languageCode);
     // We only support language codes for now
     if (_supportedLocales.containsKey(languageLocale)) {
-      return SynchronusFuture(_supportedLocales[languageLocale]!);
+      return SynchronousFuture<FeedbackLocalizations>(
+          _supportedLocales[languageLocale]!);
     }
     // The default is english
-    return SynchronusFuture(const EnFeedbackLocalizations());
+    return SynchronousFuture(const EnFeedbackLocalizations());
   }
 
   @override

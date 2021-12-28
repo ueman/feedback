@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs
 
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:feedback/feedback.dart';
 import 'package:feedback/src/controls_column.dart';
@@ -107,6 +106,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
   @override
   void didUpdateWidget(FeedbackWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
+    print(MediaQuery.of(context).viewInsets.bottom);
     // update feedback mode with the initial value
     mode = widget.mode;
     if (oldWidget.isFeedbackVisible != widget.isFeedbackVisible &&
@@ -127,11 +127,9 @@ class FeedbackWidgetState extends State<FeedbackWidget>
   @override
   Widget build(BuildContext context) {
     final MediaQueryData query = MediaQuery.of(context);
-
     final animation = Tween<double>(begin: 0, end: 1)
         .chain(CurveTween(curve: Curves.easeInSine))
         .animate(_controller);
-
     return ColoredBox(
       color: FeedbackTheme.of(context).background,
       child: AnimatedBuilder(
@@ -153,10 +151,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
               LayoutId(
                 id: _controlsColumnId,
                 child: Padding(
-                  padding: EdgeInsets.only(
-                    top: padding,
-                    right: padding,
-                  ),
+                  padding: EdgeInsets.only(left: padding),
                   child: ControlsColumn(
                     mode: mode,
                     activeColor: painterController.drawColor,
@@ -191,24 +186,23 @@ class FeedbackWidgetState extends State<FeedbackWidget>
               LayoutId(
                 id: _screenshotId,
                 child: Padding(
-                  padding: EdgeInsets.all(padding),
+                  padding: EdgeInsets.symmetric(horizontal: padding),
                   child: LayoutBuilder(builder: (context, constraints) {
                     return OverflowBox(
                       // Allow the screenshot to overflow to the full screen size and
                       // then scale it down to meet it's parent's constraints.
                       maxWidth: query.size.width,
-                      maxHeight: query.size.height + query.viewInsets.bottom,
-                      child: Center(
-                        child: ScaleAndClip(
-                          progress: animation.value,
-                          // Scale to the lesser of the two dimensions to maintain the
-                          // aspect ratio.
-                          scaleFactor: min(
-                            constraints.maxWidth / query.size.width,
-                            constraints.maxHeight / query.size.height,
-                          ),
-                          child: screenshotChild!,
-                        ),
+                      maxHeight: query.size.height,
+                      child: ScaleAndClip(
+                        progress: animation.value,
+                        // Scale down to fit the constraints.
+                        // `_FeedbackLayoutDelegate` ensures that the
+                        // constraints are the same aspect ratio as the
+                        // query size.
+                        scaleFactor: constraints.maxWidth / query.size.width,
+                        child: LayoutBuilder(builder: (context, constraints) {
+                          return screenshotChild!;
+                        }),
                       ),
                     );
                   }),
@@ -327,7 +321,7 @@ class _FeedbackLayoutDelegate extends MultiChildLayoutDelegate {
 
   double get keyboardHeight => query.viewInsets.bottom;
 
-  double get screenHeight => query.size.height + keyboardHeight;
+  double get screenHeight => query.size.height;
 
   // Fraction of screen height taken up by the screenshot preview.
   double get screenshotFraction =>
@@ -340,27 +334,42 @@ class _FeedbackLayoutDelegate extends MultiChildLayoutDelegate {
     // Lay out the controls.
     final Size controlsSize =
         layoutChild(_controlsColumnId, BoxConstraints.loose(size));
-    positionChild(
-      _controlsColumnId,
-      Offset(
-        size.width - animationProgress * controlsSize.width,
-        query.padding.top,
+
+    // Lay out screenshot preview, clipping the bounds to the correct aspect
+    // ratio.
+    final Size screenShotSize = layoutChild(
+      _screenshotId,
+      BoxConstraints.tight(
+        // This clips our available space to the aspect ratio of the screenshot
+        // preview.
+        applyBoxFit(
+          BoxFit.scaleDown,
+          query.size,
+          Size(
+            size.width - animationProgress * (controlsSize.width),
+            size.height - animationProgress * (size.height - screenshotHeight),
+          ),
+        ).destination,
       ),
     );
 
-    // Lay out screenshot preview.
-    layoutChild(
+    // Lay out screenshot and controls centered together.
+    final double remainingWidth =
+        query.size.width - screenShotSize.width - controlsSize.width;
+    positionChild(
       _screenshotId,
-      BoxConstraints.tight(
-        Size(
-          size.width - animationProgress * (controlsSize.width),
-          size.height - animationProgress * (size.height - screenshotHeight),
-        ),
+      Offset(
+        animationProgress * remainingWidth / 2,
+        animationProgress * safeAreaHeight,
       ),
     );
     positionChild(
-      _screenshotId,
-      Offset(0, animationProgress * safeAreaHeight),
+      _controlsColumnId,
+      Offset(
+        size.width -
+            animationProgress * (controlsSize.width + remainingWidth / 2),
+        safeAreaHeight + (screenshotHeight - controlsSize.height) / 2,
+      ),
     );
 
     // Lay out sheet.
@@ -373,7 +382,13 @@ class _FeedbackLayoutDelegate extends MultiChildLayoutDelegate {
         ),
       ),
     ).height;
-    positionChild(_sheetId, Offset(0, size.height - animationProgress * sheetHeight));
+    positionChild(
+        _sheetId,
+        Offset(
+          0,
+          size.height -
+              animationProgress * (sheetHeight + query.viewInsets.bottom),
+        ));
   }
 
   @override

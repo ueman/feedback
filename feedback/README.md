@@ -63,6 +63,9 @@ dependencies:
 
 Then, run `flutter pub get` in your terminal.
 
+> If you're using Flutter for Web, you have to build the project with `flutter build web --web-renderer canvaskit`.
+> For more information on the CanvasKit renderer please look into [Flutters documentation](https://flutter.dev/docs/development/tools/web-renderers).
+
 ### Use it
 
 Just wrap your app in a `BetterFeedback` widget.

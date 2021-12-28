@@ -49,9 +49,6 @@ class FeedbackWidgetState extends State<FeedbackWidget>
   // Padding to put around the interactive screenshot preview.
   final double padding = 8;
 
-  // Fraction of the screen to be taken up by the bottom sheet.
-  final double sheetFraction = .25;
-
   final BackButtonInterceptor _interceptor = BackButtonInterceptor();
 
   @visibleForTesting
@@ -228,7 +225,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
             ],
             delegate: _FeedbackLayoutDelegate(
               query: query,
-              sheetFraction: sheetFraction,
+              sheetFraction: FeedbackTheme.of(context).feedbackSheetHeight,
               animationProgress: animation.value,
             ),
           );

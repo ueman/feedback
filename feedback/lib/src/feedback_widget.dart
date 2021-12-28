@@ -1,7 +1,5 @@
 // ignore_for_file: public_member_api_docs
 
-import 'dart:math';
-
 import 'package:feedback/feedback.dart';
 import 'package:feedback/src/controls_column.dart';
 import 'package:feedback/src/feedback_bottom_sheet.dart';
@@ -52,7 +50,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
   final double padding = 8;
 
   // Fraction of the screen to be taken up by the bottom sheet.
-  final double sheetFraction = 1 / 5;
+  final double sheetFraction = .25;
 
   final BackButtonInterceptor _interceptor = BackButtonInterceptor();
 
@@ -106,7 +104,6 @@ class FeedbackWidgetState extends State<FeedbackWidget>
   @override
   void didUpdateWidget(FeedbackWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    print(MediaQuery.of(context).viewInsets.bottom);
     // update feedback mode with the initial value
     mode = widget.mode;
     if (oldWidget.isFeedbackVisible != widget.isFeedbackVisible &&
@@ -313,9 +310,9 @@ class _FeedbackLayoutDelegate extends MultiChildLayoutDelegate {
     required this.animationProgress,
   });
 
-  MediaQueryData query;
-  double sheetFraction;
-  double animationProgress;
+  final MediaQueryData query;
+  final double sheetFraction;
+  final double animationProgress;
 
   double get safeAreaHeight => query.padding.top;
 
@@ -332,8 +329,12 @@ class _FeedbackLayoutDelegate extends MultiChildLayoutDelegate {
   @override
   void performLayout(Size size) {
     // Lay out the controls.
-    final Size controlsSize =
-        layoutChild(_controlsColumnId, BoxConstraints.loose(size));
+    final Size controlsSize = layoutChild(
+      _controlsColumnId,
+      BoxConstraints.loose(
+        Size(size.width, screenshotHeight),
+      ),
+    );
 
     // Lay out screenshot preview, clipping the bounds to the correct aspect
     // ratio.
@@ -353,7 +354,7 @@ class _FeedbackLayoutDelegate extends MultiChildLayoutDelegate {
       ),
     );
 
-    // Lay out screenshot and controls centered together.
+    // Position the screenshot and controls centered together.
     final double remainingWidth =
         query.size.width - screenShotSize.width - controlsSize.width;
     positionChild(

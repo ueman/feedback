@@ -42,8 +42,9 @@ class _MyAppState extends State<MyApp> {
       ),
       // If custom feedback is not enabled, supply null and the default text
       // feedback form will be used.
-      feedbackBuilder: _useCustomFeedback
-          ? (context, onSubmit) => CustomFeedbackForm(onSubmit: onSubmit)
+      feedbackSheetBuilder: _useCustomFeedback
+          ? (context, onSubmit, controller) =>
+              CustomFeedbackForm(onSubmit: onSubmit)
           : null,
       theme: FeedbackThemeData(
         background: Colors.grey,
@@ -54,6 +55,7 @@ class _MyAppState extends State<MyApp> {
           Colors.blue,
           Colors.yellow,
         ],
+        sheetIsDraggable: false,
       ),
       localizationsDelegates: const [
         GlobalFeedbackLocalizationsDelegate(),

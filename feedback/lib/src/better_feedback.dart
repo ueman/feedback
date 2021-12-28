@@ -19,10 +19,18 @@ typedef OnSubmit = void Function(
 /// A function that returns a Widget that prompts the user for feedback and
 /// calls [OnSubmit] when the user wants to submit their feedback.
 ///
-/// The `ScrollController` argument should be passed into any scrollable
-/// children to make the feedback sheet expand when scrolled.
+/// A non-null controller is provided if the sheet is set to draggable in the
+/// feedback theme.
+/// If the sheet is draggable, the non null controller should be passed into a
+/// scrollable widget to make the feedback sheet expand when the widget is
+/// scrolled. Typically, this will be a `ListView` or `SingleChildScrollView`
+/// wrapping the feedback sheet's content.
 /// See: [FeedbackThemeData.sheetIsDraggable] and [DraggableScrollableSheet].
-typedef FeedbackBuilder = Widget Function(BuildContext, OnSubmit);
+typedef FeedbackSheetBuilder = Widget Function(
+  BuildContext,
+  OnSubmit,
+  ScrollController?,
+);
 
 /// Function which gets called when the user submits his feedback.
 /// [feedback] is the user generated feedback. A string, by default.
@@ -57,7 +65,7 @@ class BetterFeedback extends StatefulWidget {
   const BetterFeedback({
     Key? key,
     required this.child,
-    this.feedbackBuilder,
+    this.feedbackSheetBuilder,
     this.theme,
     this.localizationsDelegates,
     this.localeOverride,
@@ -77,7 +85,7 @@ class BetterFeedback extends StatefulWidget {
   /// some form fields and a submit button that calls [OnSubmit] when pressed.
   /// Defaults to [StringFeedback] which uses a single editable text field to
   /// prompt for input.
-  final FeedbackBuilder? feedbackBuilder;
+  final FeedbackSheetBuilder? feedbackSheetBuilder;
 
   /// The Theme, which gets used to style the feedback ui.
   final FeedbackThemeData? theme;
@@ -136,8 +144,6 @@ class BetterFeedback extends StatefulWidget {
 class _BetterFeedbackState extends State<BetterFeedback> {
   FeedbackController controller = FeedbackController();
 
-  bool feedbackVisible = false;
-
   @override
   void initState() {
     super.initState();
@@ -164,12 +170,12 @@ class _BetterFeedbackState extends State<BetterFeedback> {
               assert(debugCheckHasFeedbackLocalizations(context));
               return FeedbackWidget(
                 child: widget.child,
-                isFeedbackVisible: feedbackVisible,
+                isFeedbackVisible: controller.isVisible,
                 drawColors: FeedbackTheme.of(context).drawColors,
                 mode: widget.mode,
                 pixelRatio: widget.pixelRatio,
-                feedbackBuilder:
-                    widget.feedbackBuilder ?? simpleFeedbackBuilder,
+                feedbackSheetBuilder:
+                    widget.feedbackSheetBuilder ?? simpleFeedbackSheetBuilder,
               );
             },
           ),
@@ -179,8 +185,6 @@ class _BetterFeedbackState extends State<BetterFeedback> {
   }
 
   void onUpdateOfController() {
-    setState(() {
-      feedbackVisible = controller.isVisible;
-    });
+    setState(() {});
   }
 }

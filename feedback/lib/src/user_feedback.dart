@@ -19,7 +19,7 @@ class UserFeedback {
   final Uint8List screenshot;
 
   /// This can contain additional information. By default this is always empty.
-  /// When using a custom [BetterFeedback.feedbackBuilder] this can be used
+  /// When using a custom [BetterFeedback.feedbackSheetBuilder] this can be used
   /// to supply additional information.
   final Map<String, dynamic>? extra;
 }

@@ -14,7 +14,6 @@ import 'package:meta/meta.dart';
 
 typedef FeedbackButtonPress = void Function(BuildContext context);
 
-
 // See alignment.dart.
 const kScaleOrigin = Alignment(-.3, -.65);
 const kScaleFactor = .65;
@@ -27,7 +26,7 @@ class FeedbackWidget extends StatefulWidget {
     required this.drawColors,
     required this.mode,
     required this.pixelRatio,
-    required this.feedbackBuilder,
+    required this.feedbackSheetBuilder,
   })  : assert(
           // This way, we can have a const constructor
           // ignore: prefer_is_empty
@@ -42,7 +41,7 @@ class FeedbackWidget extends StatefulWidget {
   final Widget child;
   final List<Color> drawColors;
 
-  final FeedbackBuilder feedbackBuilder;
+  final FeedbackSheetBuilder feedbackSheetBuilder;
 
   @override
   FeedbackWidgetState createState() => FeedbackWidgetState();
@@ -129,7 +128,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     final animation = Tween<double>(begin: 0, end: 1)
         .chain(CurveTween(curve: Curves.easeInSine))
         .animate(_controller);
-    return ColoredBox(
+    return Material(
       color: FeedbackTheme.of(context).background,
       child: AnimatedBuilder(
         animation: _controller,
@@ -210,7 +209,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
               LayoutId(
                 id: _sheetId,
                 child: FeedbackBottomSheet(
-                  feedbackBuilder: widget.feedbackBuilder,
+                  feedbackSheetBuilder: widget.feedbackSheetBuilder,
                   onSubmit: (
                     String feedback, {
                     Map<String, dynamic>? extras,
@@ -378,24 +377,26 @@ class _FeedbackLayoutDelegate extends MultiChildLayoutDelegate {
     // Lay out sheet.
     final double sheetHeight = layoutChild(
       _sheetId,
-      BoxConstraints.tight(
+      BoxConstraints.loose(
         Size(
           size.width,
-          sheetFraction * screenHeight,
+          size.height - query.viewInsets.bottom,
         ),
       ),
     ).height;
     positionChild(
-        _sheetId,
-        Offset(
-          0,
-          size.height -
-              animationProgress * (sheetHeight + query.viewInsets.bottom),
-        ));
+      _sheetId,
+      Offset(
+        0,
+        size.height -
+            animationProgress * (sheetHeight + query.viewInsets.bottom),
+      ),
+    );
   }
 
   @override
   bool shouldRelayout(covariant _FeedbackLayoutDelegate oldDelegate) {
+    return true;
     return query != oldDelegate.query ||
         sheetFraction != oldDelegate.sheetFraction ||
         animationProgress != oldDelegate.animationProgress;

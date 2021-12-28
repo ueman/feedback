@@ -2,20 +2,18 @@
 
 import 'package:feedback/src/better_feedback.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 
-import 'feedback_widget.dart';
+import 'package:flutter/material.dart';
 
 /// Shows the text input in which the user can describe his feedback.
 class FeedbackBottomSheet extends StatelessWidget {
   const FeedbackBottomSheet({
     Key? key,
-    required this.feedbackBuilder,
+    required this.feedbackSheetBuilder,
     required this.onSubmit,
   }) : super(key: key);
 
-  final FeedbackBuilder feedbackBuilder;
+  final FeedbackSheetBuilder feedbackSheetBuilder;
   final OnSubmit onSubmit;
 
   @override
@@ -26,20 +24,30 @@ class FeedbackBottomSheet extends StatelessWidget {
     // provided by `MaterialApp`, but `BetterFeedback` is above `MaterialApp` in
     // the widget tree.
     return Overlay(
+      key: UniqueKey(),
       initialEntries: [
         OverlayEntry(
           builder: (context) {
+            print(feedbackSheetBuilder);
             if (FeedbackTheme.of(context).sheetIsDraggable) {
-              return _DraggableSheetProgressTracker(
-                builder: (sheetProgress) {
-                  return _DraggableFeedbackSheet(
-                    sheetProgress: sheetProgress,
-                    child: feedbackBuilder(context, onSubmit),
-                  );
-                },
+              return _DraggableFeedbackSheet(
+                feedbackSheetBuilder: feedbackSheetBuilder,
+                onSubmit: onSubmit,
               );
             }
-            return feedbackBuilder(context, onSubmit);
+            return Align(
+              alignment: Alignment.bottomCenter,
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height *
+                    FeedbackTheme.of(context).feedbackSheetHeight,
+                child: Material(
+                  color: FeedbackTheme.of(context).feedbackSheetColor,
+                  // Pass a null scroll controller because the sheet is not drag
+                  // enabled.
+                  child: feedbackSheetBuilder(context, onSubmit, null),
+                ),
+              ),
+            );
           },
         ),
       ],
@@ -47,36 +55,40 @@ class FeedbackBottomSheet extends StatelessWidget {
   }
 }
 
-class _DraggableFeedbackSheet extends StatelessWidget {
-  const _DraggableFeedbackSheet({
+// This widget needs to be stateful so that `sheetProgress` persists across
+// rebuilds.
+// TODO(caseycrogers): replace `sheetProgress` with a direct reference to
+//   `DraggableScrollableController` when the latter makes it into production.
+//   See: https://github.com/flutter/flutter/pull/92440.
+class _DraggableFeedbackSheet extends StatefulWidget {
+  _DraggableFeedbackSheet({
     Key? key,
-    required this.sheetProgress,
-    required this.child,
+    required this.feedbackSheetBuilder,
+    required this.onSubmit,
   }) : super(key: key);
 
-  final ValueListenable<double> sheetProgress;
-  final Widget child;
+  final FeedbackSheetBuilder feedbackSheetBuilder;
+  final OnSubmit onSubmit;
+
+  @override
+  State<_DraggableFeedbackSheet> createState() =>
+      _DraggableFeedbackSheetState();
+}
+
+class _DraggableFeedbackSheetState extends State<_DraggableFeedbackSheet> {
+  final ValueNotifier<double> sheetProgress = ValueNotifier(0);
 
   double get animationProgress => Curves.easeIn.transform(sheetProgress.value);
 
   @override
   Widget build(BuildContext context) {
     final FeedbackThemeData feedbackTheme = FeedbackTheme.of(context);
-    // We need to convert form `Alignment`'s uses -1 to 1 scale to
-    // `DraggableScrollableSheet`'s 0 to 1 scale.
-    final double scaleOriginY = (kScaleOrigin.y + 1) / 2;
-    final double safeArea = MediaQuery.of(context).padding.top;
-    final double screenHeight = MediaQuery.of(context).size.height +
-        MediaQuery.of(context).viewInsets.bottom;
-    print(scaleOriginY);
-    print(scaleOriginY);
-    print(scaleOriginY);
-    print(scaleOriginY);
-    //   1 - (scaleOriginY + (1-scaleOriginY)*scaleFactor) - ((padding + safeArea)/screenHeight)
-    final double collapsedHeight = 1 -
-        (scaleOriginY +
-            (1 - scaleOriginY) * kScaleFactor +
-            (safeArea / screenHeight));
+    final MediaQueryData query = MediaQuery.of(context);
+    // We need to recalculate the collapsed height to account for the safe area
+    // at the top and the keyboard (if present).
+    final double collapsedHeight = feedbackTheme.feedbackSheetHeight *
+        query.size.height /
+        (query.size.height - query.padding.top - query.viewInsets.bottom);
     return Column(
       children: [
         ValueListenableBuilder<void>(
@@ -94,9 +106,15 @@ class _DraggableFeedbackSheet extends StatelessWidget {
           },
         ),
         Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: NotificationListener<DraggableScrollableNotification>(
+            onNotification: (notification) {
+              // Convert the extent into a fraction representing progress
+              // between min and max.
+              sheetProgress.value =
+                  (notification.extent - notification.minExtent) /
+                      (notification.maxExtent - notification.minExtent);
+              return false;
+            },
             child: DraggableScrollableSheet(
               snap: true,
               minChildSize: collapsedHeight,
@@ -115,26 +133,21 @@ class _DraggableFeedbackSheet extends StatelessWidget {
                   child: Material(
                     color: FeedbackTheme.of(context).feedbackSheetColor,
                     // A `ListView` makes the content here disappear.
-                    child: Column(
-                      children: [
-                        SingleChildScrollView(
-                          physics: const ClampingScrollPhysics(),
-                          controller: controller,
-                          child: const SizedBox(
-                            height: 20,
-                            child: Center(child: _DragHandle()),
-                          ),
-                        ),
-                        Expanded(
-                          child: NotificationListener<ScrollNotification>(
-                            onNotification: (notification) {
-                              //controller.jumpTo(notification.metrics.pixels);
-                              return false;
-                            },
-                            child: child,
-                          ),
-                        ),
-                      ],
+                    child: NotificationListener<ScrollUpdateNotification>(
+                      onNotification: (notification) {
+                        if (notification.dragDetails != null) {
+                          (controller.position
+                                  as ScrollPositionWithSingleContext)
+                              .applyUserOffset(
+                                  notification.dragDetails!.delta.dy);
+                        }
+                        return false;
+                      },
+                      child: widget.feedbackSheetBuilder(
+                        context,
+                        widget.onSubmit,
+                        controller,
+                      ),
                     ),
                   ),
                 );
@@ -143,43 +156,6 @@ class _DraggableFeedbackSheet extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _DraggableSheetProgressTracker extends StatelessWidget {
-  _DraggableSheetProgressTracker({Key? key, required this.builder})
-      : super(key: key);
-
-  final Widget Function(ValueListenable<double>) builder;
-
-  final ValueNotifier<double> _sheetProgress = ValueNotifier(0);
-
-  @override
-  Widget build(BuildContext context) {
-    return NotificationListener<DraggableScrollableNotification>(
-      onNotification: (notification) {
-        _sheetProgress.value = (notification.extent - notification.minExtent) /
-            (notification.maxExtent - notification.minExtent);
-        return false;
-      },
-      child: builder(_sheetProgress),
-    );
-  }
-}
-
-class _DragHandle extends StatelessWidget {
-  const _DragHandle({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 5,
-      width: 30,
-      decoration: BoxDecoration(
-        color: Colors.black26,
-        borderRadius: BorderRadius.circular(5),
-      ),
     );
   }
 }

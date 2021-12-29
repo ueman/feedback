@@ -42,7 +42,7 @@ class _MyAppState extends State<MyApp> {
       ),
       // If custom feedback is not enabled, supply null and the default text
       // feedback form will be used.
-      feedbackSheetBuilder: _useCustomFeedback
+      feedbackBuilder: _useCustomFeedback
           ? (context, onSubmit, scrollController) => CustomFeedbackForm(
                 onSubmit: onSubmit,
                 scrollController: scrollController,

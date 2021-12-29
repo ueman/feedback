@@ -26,7 +26,7 @@ typedef OnSubmit = void Function(
 /// scrolled. Typically, this will be a `ListView` or `SingleChildScrollView`
 /// wrapping the feedback sheet's content.
 /// See: [FeedbackThemeData.sheetIsDraggable] and [DraggableScrollableSheet].
-typedef FeedbackSheetBuilder = Widget Function(
+typedef FeedbackBuilder = Widget Function(
   BuildContext,
   OnSubmit,
   ScrollController?,
@@ -40,11 +40,10 @@ typedef FeedbackSheetBuilder = Widget Function(
 /// It should be placed in a stack over the sheet's scrollable element so that
 /// users can click and drag on it-the drag handle ignores pointers so the drag
 /// will pass through to the scrollable beneath.
-///
-/// TODO(caseycrogers): Replace this with a pre-built drag handle above the
-///   builder function once `DraggableScrollableController` is available in
-///   production.
-///   See: https://github.com/flutter/flutter/pull/92440.
+// TODO(caseycrogers): Replace this with a pre-built drag handle above the
+//   builder function once `DraggableScrollableController` is available in
+//   production.
+//   See: https://github.com/flutter/flutter/pull/92440.
 class FeedbackSheetDragHandle extends StatelessWidget {
   /// Create a drag handle.
   const FeedbackSheetDragHandle({Key? key}) : super(key: key);
@@ -95,7 +94,7 @@ class BetterFeedback extends StatefulWidget {
   const BetterFeedback({
     Key? key,
     required this.child,
-    this.feedbackSheetBuilder,
+    this.feedbackBuilder,
     this.theme,
     this.localizationsDelegates,
     this.localeOverride,
@@ -115,7 +114,7 @@ class BetterFeedback extends StatefulWidget {
   /// some form fields and a submit button that calls [OnSubmit] when pressed.
   /// Defaults to [StringFeedback] which uses a single editable text field to
   /// prompt for input.
-  final FeedbackSheetBuilder? feedbackSheetBuilder;
+  final FeedbackBuilder? feedbackBuilder;
 
   /// The Theme, which gets used to style the feedback ui.
   final FeedbackThemeData? theme;
@@ -204,8 +203,8 @@ class _BetterFeedbackState extends State<BetterFeedback> {
                 drawColors: FeedbackTheme.of(context).drawColors,
                 mode: widget.mode,
                 pixelRatio: widget.pixelRatio,
-                feedbackSheetBuilder:
-                    widget.feedbackSheetBuilder ?? simpleFeedbackSheetBuilder,
+                feedbackBuilder:
+                    widget.feedbackBuilder ?? simpleFeedbackBuilder,
               );
             },
           ),

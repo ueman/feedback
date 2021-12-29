@@ -12,7 +12,7 @@ abstract class FeedbackLocalizations {
   ///
   /// Remarks:
   /// - This can be ommited when providing a custom
-  ///   [BetterFeedback.feedbackSheetBuilder].
+  ///   [BetterFeedback.feedbackBuilder].
   String get submitButtonText;
 
   /// Text above the text field, in which the user can write his feedback.
@@ -21,7 +21,7 @@ abstract class FeedbackLocalizations {
   ///
   /// Remarks:
   /// - This can be ommited when providing a custom
-  ///   [BetterFeedback.feedbackSheetBuilder].
+  ///   [BetterFeedback.feedbackBuilder].
   String get feedbackDescriptionText;
 
   /// Name of the navigation tab in feedback menu.

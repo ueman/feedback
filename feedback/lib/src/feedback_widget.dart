@@ -27,7 +27,7 @@ class FeedbackWidget extends StatefulWidget {
     required this.drawColors,
     required this.mode,
     required this.pixelRatio,
-    required this.feedbackSheetBuilder,
+    required this.feedbackBuilder,
   })  : assert(
           // This way, we can have a const constructor
           // ignore: prefer_is_empty
@@ -42,7 +42,7 @@ class FeedbackWidget extends StatefulWidget {
   final Widget child;
   final List<Color> drawColors;
 
-  final FeedbackSheetBuilder feedbackSheetBuilder;
+  final FeedbackBuilder feedbackBuilder;
 
   @override
   FeedbackWidgetState createState() => FeedbackWidgetState();
@@ -56,11 +56,11 @@ class FeedbackWidgetState extends State<FeedbackWidget>
 
   final BackButtonInterceptor _interceptor = BackButtonInterceptor();
 
-  /// We use a ValueNotifier instead of just a double and `SetState` because
-  /// rebuilding the feedback sheet mid-drag cancels the drag.
-  /// TODO(caseycrogers): replace `sheetProgress` with a direct reference to
-  ///   `DraggableScrollableController` when the latter gets into production.
-  ///   See: https://github.com/flutter/flutter/pull/92440.
+  // We use a ValueNotifier instead of just a double and `SetState` because
+  // rebuilding the feedback sheet mid-drag cancels the drag.
+  // TODO(caseycrogers): replace `sheetProgress` with a direct reference to
+  //   `DraggableScrollableController` when the latter gets into production.
+  //   See: https://github.com/flutter/flutter/pull/92440.
   ValueNotifier<double> sheetProgress = ValueNotifier(0);
 
   @visibleForTesting
@@ -248,7 +248,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                             return false;
                           },
                           child: FeedbackBottomSheet(
-                            feedbackSheetBuilder: widget.feedbackSheetBuilder,
+                            feedbackBuilder: widget.feedbackBuilder,
                             onSubmit: (
                               String feedback, {
                               Map<String, dynamic>? extras,

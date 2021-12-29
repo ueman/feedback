@@ -9,25 +9,20 @@ import 'package:flutter/material.dart';
 class FeedbackBottomSheet extends StatelessWidget {
   const FeedbackBottomSheet({
     Key? key,
-    required this.feedbackSheetBuilder,
+    required this.feedbackBuilder,
     required this.onSubmit,
     required this.sheetProgress,
   }) : super(key: key);
 
-  final FeedbackSheetBuilder feedbackSheetBuilder;
+  final FeedbackBuilder feedbackBuilder;
   final OnSubmit onSubmit;
   final ValueNotifier<double> sheetProgress;
 
   @override
   Widget build(BuildContext context) {
-    // We need to supply an navigator so that the contents of the bottom sheet
-    // have access to it. Overlays are used by many material widgets
-    // such as `TextField` and `DropDownButton`. Typically, this would be
-    // provided by `MaterialApp`, but `BetterFeedback` is above `MaterialApp` in
-    // the widget tree.
     if (FeedbackTheme.of(context).sheetIsDraggable) {
       return _DraggableFeedbackSheet(
-        feedbackSheetBuilder: feedbackSheetBuilder,
+        feedbackBuilder: feedbackBuilder,
         onSubmit: onSubmit,
         sheetProgress: sheetProgress,
       );
@@ -41,7 +36,7 @@ class FeedbackBottomSheet extends StatelessWidget {
           color: FeedbackTheme.of(context).feedbackSheetColor,
           // Pass a null scroll controller because the sheet is not drag
           // enabled.
-          child: feedbackSheetBuilder(context, onSubmit, null),
+          child: feedbackBuilder(context, onSubmit, null),
         ),
       ),
     );
@@ -51,12 +46,12 @@ class FeedbackBottomSheet extends StatelessWidget {
 class _DraggableFeedbackSheet extends StatelessWidget {
   const _DraggableFeedbackSheet({
     Key? key,
-    required this.feedbackSheetBuilder,
+    required this.feedbackBuilder,
     required this.onSubmit,
     required this.sheetProgress,
   }) : super(key: key);
 
-  final FeedbackSheetBuilder feedbackSheetBuilder;
+  final FeedbackBuilder feedbackBuilder;
   final OnSubmit onSubmit;
   final ValueNotifier<double> sheetProgress;
 
@@ -123,7 +118,7 @@ class _DraggableFeedbackSheet extends StatelessWidget {
                         }
                         return false;
                       },
-                      child: feedbackSheetBuilder(
+                      child: feedbackBuilder(
                         context,
                         onSubmit,
                         scrollController,

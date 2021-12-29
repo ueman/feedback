@@ -4,7 +4,7 @@ import 'package:feedback/src/theme/feedback_theme.dart';
 import 'package:flutter/material.dart';
 
 /// Prompt the user for feedback using `StringFeedback`.
-Widget simpleFeedbackSheetBuilder(
+Widget simpleFeedbackBuilder(
   BuildContext context,
   OnSubmit onSubmit,
   ScrollController? scrollController,

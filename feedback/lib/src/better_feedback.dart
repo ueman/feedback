@@ -32,6 +32,36 @@ typedef FeedbackSheetBuilder = Widget Function(
   ScrollController?,
 );
 
+/// A drag handle to be placed at the top of a draggable feedback sheet.
+///
+/// This is a purely visual element that communicates to users that the sheet
+/// can be dragged to expand it.
+///
+/// It should be placed in a stack over the sheet's scrollable element so that
+/// users can click and drag on it-the drag handle ignores pointers so the drag
+/// will pass through to the scrollable beneath.
+///
+/// TODO(caseycrogers): Replace this with a pre-built drag handle above the
+///   builder function once `DraggableScrollableController` is available in
+///   production.
+///   See: https://github.com/flutter/flutter/pull/92440.
+class FeedbackSheetDragHandle extends StatelessWidget {
+  /// Create a drag handle.
+  const FeedbackSheetDragHandle({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 5,
+      width: 30,
+      decoration: BoxDecoration(
+        color: Colors.black26,
+        borderRadius: BorderRadius.circular(5),
+      ),
+    );
+  }
+}
+
 /// Function which gets called when the user submits his feedback.
 /// [feedback] is the user generated feedback. A string, by default.
 /// [screenshot] is a raw png encoded image.

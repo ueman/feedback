@@ -11,74 +11,54 @@ class FeedbackBottomSheet extends StatelessWidget {
     Key? key,
     required this.feedbackSheetBuilder,
     required this.onSubmit,
+    required this.sheetProgress,
   }) : super(key: key);
 
   final FeedbackSheetBuilder feedbackSheetBuilder;
   final OnSubmit onSubmit;
+  final ValueNotifier<double> sheetProgress;
 
   @override
   Widget build(BuildContext context) {
-    // We need to supply an overlay so that the contents of the bottom sheet
+    // We need to supply an navigator so that the contents of the bottom sheet
     // have access to it. Overlays are used by many material widgets
     // such as `TextField` and `DropDownButton`. Typically, this would be
     // provided by `MaterialApp`, but `BetterFeedback` is above `MaterialApp` in
     // the widget tree.
-    return Overlay(
-      key: UniqueKey(),
-      initialEntries: [
-        OverlayEntry(
-          builder: (context) {
-            print(feedbackSheetBuilder);
-            if (FeedbackTheme.of(context).sheetIsDraggable) {
-              return _DraggableFeedbackSheet(
-                feedbackSheetBuilder: feedbackSheetBuilder,
-                onSubmit: onSubmit,
-              );
-            }
-            return Align(
-              alignment: Alignment.bottomCenter,
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height *
-                    FeedbackTheme.of(context).feedbackSheetHeight,
-                child: Material(
-                  color: FeedbackTheme.of(context).feedbackSheetColor,
-                  // Pass a null scroll controller because the sheet is not drag
-                  // enabled.
-                  child: feedbackSheetBuilder(context, onSubmit, null),
-                ),
-              ),
-            );
-          },
+    if (FeedbackTheme.of(context).sheetIsDraggable) {
+      return _DraggableFeedbackSheet(
+        feedbackSheetBuilder: feedbackSheetBuilder,
+        onSubmit: onSubmit,
+        sheetProgress: sheetProgress,
+      );
+    }
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height *
+            FeedbackTheme.of(context).feedbackSheetHeight,
+        child: Material(
+          color: FeedbackTheme.of(context).feedbackSheetColor,
+          // Pass a null scroll controller because the sheet is not drag
+          // enabled.
+          child: feedbackSheetBuilder(context, onSubmit, null),
         ),
-      ],
+      ),
     );
   }
 }
 
-// This widget needs to be stateful so that `sheetProgress` persists across
-// rebuilds.
-// TODO(caseycrogers): replace `sheetProgress` with a direct reference to
-//   `DraggableScrollableController` when the latter makes it into production.
-//   See: https://github.com/flutter/flutter/pull/92440.
-class _DraggableFeedbackSheet extends StatefulWidget {
-  _DraggableFeedbackSheet({
+class _DraggableFeedbackSheet extends StatelessWidget {
+  const _DraggableFeedbackSheet({
     Key? key,
     required this.feedbackSheetBuilder,
     required this.onSubmit,
+    required this.sheetProgress,
   }) : super(key: key);
 
   final FeedbackSheetBuilder feedbackSheetBuilder;
   final OnSubmit onSubmit;
-
-  @override
-  State<_DraggableFeedbackSheet> createState() =>
-      _DraggableFeedbackSheetState();
-}
-
-class _DraggableFeedbackSheetState extends State<_DraggableFeedbackSheet> {
-  final ValueNotifier<double> sheetProgress = ValueNotifier(0);
-
-  double get animationProgress => Curves.easeIn.transform(sheetProgress.value);
+  final ValueNotifier<double> sheetProgress;
 
   @override
   Widget build(BuildContext context) {
@@ -95,12 +75,12 @@ class _DraggableFeedbackSheetState extends State<_DraggableFeedbackSheet> {
           valueListenable: sheetProgress,
           child: Container(
             height: MediaQuery.of(context).padding.top,
-            color: feedbackTheme.feedbackSheetColor,
+            color: FeedbackTheme.of(context).feedbackSheetColor,
           ),
           builder: (context, _, child) {
             return Opacity(
               // Use the curved progress value
-              opacity: animationProgress,
+              opacity: sheetProgress.value,
               child: child,
             );
           },
@@ -119,13 +99,13 @@ class _DraggableFeedbackSheetState extends State<_DraggableFeedbackSheet> {
               snap: true,
               minChildSize: collapsedHeight,
               initialChildSize: collapsedHeight,
-              builder: (context, controller) {
+              builder: (context, scrollController) {
                 return ValueListenableBuilder<void>(
                   valueListenable: sheetProgress,
                   builder: (context, _, child) {
                     return ClipRRect(
                       borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(20 * (1 - animationProgress)),
+                        top: Radius.circular(20 * (1 - sheetProgress.value)),
                       ),
                       child: child,
                     );
@@ -136,17 +116,17 @@ class _DraggableFeedbackSheetState extends State<_DraggableFeedbackSheet> {
                     child: NotificationListener<ScrollUpdateNotification>(
                       onNotification: (notification) {
                         if (notification.dragDetails != null) {
-                          (controller.position
+                          (scrollController.position
                                   as ScrollPositionWithSingleContext)
                               .applyUserOffset(
                                   notification.dragDetails!.delta.dy);
                         }
                         return false;
                       },
-                      child: widget.feedbackSheetBuilder(
+                      child: feedbackSheetBuilder(
                         context,
-                        widget.onSubmit,
-                        controller,
+                        onSubmit,
+                        scrollController,
                       ),
                     ),
                   ),

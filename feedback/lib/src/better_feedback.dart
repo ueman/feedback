@@ -7,6 +7,7 @@ import 'package:feedback/src/feedback_widget.dart';
 import 'package:feedback/src/feedback_builder/string_feedback.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
 import 'package:feedback/src/utilities/feedback_app.dart';
+import 'package:feedback/src/utilities/renderer/renderer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -137,6 +138,7 @@ class _BetterFeedbackState extends State<BetterFeedback> {
   @override
   void initState() {
     super.initState();
+    printRendererErrorMessageIfNecessary();
     controller.addListener(onUpdateOfController);
   }
 

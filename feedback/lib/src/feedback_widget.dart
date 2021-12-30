@@ -143,6 +143,33 @@ class FeedbackWidgetState extends State<FeedbackWidget>
           return CustomMultiChildLayout(
             children: [
               LayoutId(
+                id: _screenshotId,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: padding),
+                  child: LayoutBuilder(builder: (context, constraints) {
+                    return OverflowBox(
+                      // Allow the screenshot to overflow to the full screen size and
+                      // then scale it down to meet it's parent's constraints.
+                      maxWidth: query.size.width,
+                      maxHeight: query.size.height,
+                      child: ScaleAndClip(
+                        progress: animation.value,
+                        // Scale down to fit the constraints.
+                        // `_FeedbackLayoutDelegate` ensures that the
+                        // constraints are the same aspect ratio as the
+                        // query size.
+                        scaleFactor: constraints.maxWidth / query.size.width,
+                        child: LayoutBuilder(builder: (context, constraints) {
+                          return screenshotChild!;
+                        }),
+                      ),
+                    );
+                  }),
+                ),
+              ),
+              // Only show the feedback widgets if the animation is running or
+              // completed.
+              if (!animation.isDismissed) LayoutId(
                 id: _controlsColumnId,
                 child: Padding(
                   padding: EdgeInsets.only(left: padding),
@@ -177,34 +204,10 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                   ),
                 ),
               ),
-              LayoutId(
-                id: _screenshotId,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: padding),
-                  child: LayoutBuilder(builder: (context, constraints) {
-                    return OverflowBox(
-                      // Allow the screenshot to overflow to the full screen size and
-                      // then scale it down to meet it's parent's constraints.
-                      maxWidth: query.size.width,
-                      maxHeight: query.size.height,
-                      child: ScaleAndClip(
-                        progress: animation.value,
-                        // Scale down to fit the constraints.
-                        // `_FeedbackLayoutDelegate` ensures that the
-                        // constraints are the same aspect ratio as the
-                        // query size.
-                        scaleFactor: constraints.maxWidth / query.size.width,
-                        child: LayoutBuilder(builder: (context, constraints) {
-                          return screenshotChild!;
-                        }),
-                      ),
-                    );
-                  }),
-                ),
-              ),
-              LayoutId(
+              if (!animation.isDismissed) LayoutId(
                 id: _sheetId,
                 child: FeedbackBottomSheet(
+                  key: const Key('feedback_bottom_sheet'),
                   feedbackBuilder: widget.feedbackBuilder,
                   onSubmit: (
                     String feedback, {
@@ -224,6 +227,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
               ),
             ],
             delegate: _FeedbackLayoutDelegate(
+              displayFeedback: !animation.isDismissed,
               query: query,
               sheetFraction: FeedbackTheme.of(context).feedbackSheetHeight,
               animationProgress: animation.value,
@@ -256,11 +260,13 @@ class FeedbackWidgetState extends State<FeedbackWidget>
 
         // Give it to the developer
         // to do something with it.
-        await onFeedbackSubmitted(UserFeedback(
-          text: feedback,
-          screenshot: screenshot,
-          extra: extras,
-        ));
+        await onFeedbackSubmitted(
+          UserFeedback(
+            text: feedback,
+            screenshot: screenshot,
+            extra: extras,
+          ),
+        );
       },
     );
   }
@@ -302,11 +308,13 @@ const _sheetId = 'sheet_id';
 
 class _FeedbackLayoutDelegate extends MultiChildLayoutDelegate {
   _FeedbackLayoutDelegate({
+    required this.displayFeedback,
     required this.query,
     required this.sheetFraction,
     required this.animationProgress,
   });
 
+  final bool displayFeedback;
   final MediaQueryData query;
   final double sheetFraction;
   final double animationProgress;
@@ -325,6 +333,10 @@ class _FeedbackLayoutDelegate extends MultiChildLayoutDelegate {
 
   @override
   void performLayout(Size size) {
+    if (!displayFeedback) {
+      layoutChild(_screenshotId, BoxConstraints.tight(size));
+      return;
+    }
     // Lay out the controls.
     final Size controlsSize = layoutChild(
       _controlsColumnId,

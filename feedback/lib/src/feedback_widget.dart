@@ -135,9 +135,6 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     final animation = Tween<double>(begin: 0, end: 1)
         .chain(CurveTween(curve: Curves.easeInSine))
         .animate(_controller);
-    if (animation.isDismissed) {
-      return widget.child;
-    }
     // We need to supply a navigator because `TextField` and other widgets that
     // could be used in the bottom feedback sheet require a navigator.
     // The navigator needs to be above the custom layout instead of just around
@@ -166,7 +163,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                 builder: (context, screenshotChild) {
                   return CustomMultiChildLayout(
                     children: [
-                      LayoutId(
+                  if (!animation.isDismissed) LayoutId(
                         id: _controlsColumnId,
                         child: Padding(
                           padding: EdgeInsets.only(left: padding),
@@ -236,7 +233,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                           ),
                         ),
                       ),
-                      LayoutId(
+    if (!animation.isDismissed) LayoutId(
                         id: _sheetId,
                         child: NotificationListener<
                             DraggableScrollableNotification>(
@@ -269,6 +266,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                       ),
                     ],
                     delegate: _FeedbackLayoutDelegate(
+                      displayFeedback: !animation.isDismissed,
                       query: MediaQuery.of(context),
                       sheetFraction:
                           FeedbackTheme.of(context).feedbackSheetHeight,
@@ -306,11 +304,13 @@ class FeedbackWidgetState extends State<FeedbackWidget>
 
         // Give it to the developer
         // to do something with it.
-        await onFeedbackSubmitted(UserFeedback(
-          text: feedback,
-          screenshot: screenshot,
-          extra: extras,
-        ));
+        await onFeedbackSubmitted(
+          UserFeedback(
+            text: feedback,
+            screenshot: screenshot,
+            extra: extras,
+          ),
+        );
       },
     );
   }
@@ -352,11 +352,13 @@ const _sheetId = 'sheet_id';
 
 class _FeedbackLayoutDelegate extends MultiChildLayoutDelegate {
   _FeedbackLayoutDelegate({
+    required this.displayFeedback,
     required this.query,
     required this.sheetFraction,
     required this.animationProgress,
   });
 
+  final bool displayFeedback;
   final MediaQueryData query;
   final double sheetFraction;
   final double animationProgress;
@@ -375,6 +377,10 @@ class _FeedbackLayoutDelegate extends MultiChildLayoutDelegate {
 
   @override
   void performLayout(Size size) {
+    if (!displayFeedback) {
+      layoutChild(_screenshotId, BoxConstraints.tight(size));
+      return;
+    }
     // Lay out the controls.
     final Size controlsSize = layoutChild(
       _controlsColumnId,

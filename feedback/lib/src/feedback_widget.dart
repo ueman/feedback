@@ -171,6 +171,11 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                           padding: EdgeInsets.symmetric(horizontal: padding),
                           child: ScaleAndFade(
                             progress: sheetProgress,
+                            minScale: .7,
+                            // If opacity reaches zero, flutter will stop
+                            // drawing the child widget which breaks the
+                            // screenshot.
+                            minOpacity: .01,
                             child:
                                 LayoutBuilder(builder: (context, constraints) {
                               return OverflowBox(
@@ -204,6 +209,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                             padding: EdgeInsets.only(left: padding),
                             child: ScaleAndFade(
                               progress: sheetProgress,
+                              minScale: .7,
                               child: ControlsColumn(
                                 mode: mode,
                                 activeColor: painterController.drawColor,
@@ -293,7 +299,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     ScreenshotController controller,
     String feedback,
     double pixelRatio, {
-    Duration delay = const Duration(milliseconds: 200),
+    Duration delay = const Duration(milliseconds: 2000),
     Map<String, dynamic>? extras,
   }) async {
     // Wait for the keyboard to be closed, and then proceed

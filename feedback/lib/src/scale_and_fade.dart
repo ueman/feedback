@@ -6,21 +6,29 @@ class ScaleAndFade extends StatelessWidget {
   const ScaleAndFade({
     required this.progress,
     required this.child,
+    this.minOpacity = 0,
+    this.maxOpacity = 1,
+    this.minScale = 0,
+    this.maxScale = 1,
     Key? key,
   }) : super(key: key);
 
   final ValueListenable<double> progress;
   final Widget child;
+  final double minOpacity;
+  final double maxOpacity;
+  final double minScale;
+  final double maxScale;
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<double>(
       valueListenable: progress,
-      builder: (context, value, child) {
+      builder: (context, currProgress, child) {
         return Opacity(
-          opacity: 1 - value,
+          opacity: maxOpacity - currProgress*(maxOpacity - minOpacity),
           child: Transform.scale(
-            scale: 1 - .03 * value,
+            scale: maxScale - currProgress*(maxScale - minScale),
             child: child,
           ),
         );

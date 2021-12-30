@@ -96,7 +96,6 @@ class _DraggableFeedbackSheetState extends State<_DraggableFeedbackSheet> {
               return false;
             },
             child: DraggableScrollableSheet(
-              snap: true,
               minChildSize: collapsedHeight,
               initialChildSize: collapsedHeight,
               builder: (context, scrollController) {

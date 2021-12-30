@@ -46,6 +46,8 @@ abstract class FeedbackLocalizations {
   }
 }
 
+// coverage:ignore-start
+
 /// Default german localization
 class DeFeedbackLocalizations extends FeedbackLocalizations {
   /// Creates a [DeFeedbackLocalizations].
@@ -117,6 +119,8 @@ class ArFeedbackLocalizations extends FeedbackLocalizations {
   @override
   String get navigate => 'إنتقال';
 }
+
+// coverage:ignore-end
 
 /// This is a localization delegate, which includes all of the localizations
 /// already present in this library.

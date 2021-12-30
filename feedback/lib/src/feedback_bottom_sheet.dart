@@ -86,52 +86,32 @@ class _DraggableFeedbackSheetState extends State<_DraggableFeedbackSheet> {
           },
         ),
         Expanded(
-          child: NotificationListener<DraggableScrollableNotification>(
-            onNotification: (notification) {
-              // Convert the extent into a fraction representing progress
-              // between min and max.
-              widget.sheetProgress.value =
-                  (notification.extent - notification.minExtent) /
-                      (notification.maxExtent - notification.minExtent);
-              return false;
-            },
-            child: DraggableScrollableSheet(
-              minChildSize: collapsedHeight,
-              initialChildSize: collapsedHeight,
-              builder: (context, scrollController) {
-                return ValueListenableBuilder<void>(
-                  valueListenable: widget.sheetProgress,
-                  builder: (context, _, child) {
-                    return ClipRRect(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(20 * (1 - widget.sheetProgress.value)),
-                      ),
-                      child: child,
-                    );
-                  },
-                  child: Material(
-                    color: FeedbackTheme.of(context).feedbackSheetColor,
-                    // A `ListView` makes the content here disappear.
-                    child: NotificationListener<ScrollUpdateNotification>(
-                      onNotification: (notification) {
-                        if (notification.dragDetails != null) {
-                          (scrollController.position
-                                  as ScrollPositionWithSingleContext)
-                              .applyUserOffset(
-                                  notification.dragDetails!.delta.dy);
-                        }
-                        return false;
-                      },
-                      child: widget.feedbackBuilder(
-                        context,
-                        widget.onSubmit,
-                        scrollController,
-                      ),
+          child: DraggableScrollableSheet(
+            snap: true,
+            minChildSize: collapsedHeight,
+            initialChildSize: collapsedHeight,
+            builder: (context, scrollController) {
+              return ValueListenableBuilder<void>(
+                valueListenable: widget.sheetProgress,
+                builder: (context, _, child) {
+                  return ClipRRect(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(20 * (1 - widget.sheetProgress.value)),
                     ),
+                    child: child,
+                  );
+                },
+                child: Material(
+                  color: FeedbackTheme.of(context).feedbackSheetColor,
+                  // A `ListView` makes the content here disappear.
+                  child: widget.feedbackBuilder(
+                    context,
+                    widget.onSubmit,
+                    scrollController,
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
         ),
       ],

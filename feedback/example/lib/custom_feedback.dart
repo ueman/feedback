@@ -74,15 +74,12 @@ class _CustomFeedbackFormState extends State<CustomFeedbackForm> {
           child: Stack(
             children: [
               if (widget.scrollController != null)
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 7.5),
-                  alignment: Alignment.topCenter,
-                  child: const FeedbackSheetDragHandle(),
-                ),
+                const FeedbackSheetDragHandle(),
               ListView(
                 controller: widget.scrollController,
                 // Pad the top by 20 to match the corner radius if drag enabled.
-                padding: EdgeInsets.fromLTRB(16, widget.scrollController != null ? 20 : 16, 16, 0),
+                padding: EdgeInsets.fromLTRB(
+                    16, widget.scrollController != null ? 20 : 16, 16, 0),
                 children: [
                   const Text('What kind of feedback do you want to give?'),
                   Row(

@@ -50,12 +50,20 @@ class FeedbackSheetDragHandle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 5,
-      width: 30,
-      decoration: BoxDecoration(
-        color: Colors.black26,
-        borderRadius: BorderRadius.circular(5),
+    return IgnorePointer(
+      child: Container(
+        height: 20,
+        padding: const EdgeInsets.symmetric(vertical: 7.5),
+        alignment: Alignment.center,
+        color: FeedbackTheme.of(context).feedbackSheetColor,
+        child: Container(
+          height: 5,
+          width: 30,
+          decoration: BoxDecoration(
+            color: Colors.black26,
+            borderRadius: BorderRadius.circular(5),
+          ),
+        ),
       ),
     );
   }

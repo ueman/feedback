@@ -58,12 +58,6 @@ class _StringFeedbackState extends State<StringFeedback> {
         Expanded(
           child: Stack(
             children: [
-              if (widget.scrollController != null)
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 7.5),
-                  alignment: Alignment.topCenter,
-                  child: const FeedbackSheetDragHandle(),
-                ),
               ListView(
                 controller: widget.scrollController,
                 // Pad the top by 20 to match the corner radius if drag enabled.
@@ -87,6 +81,8 @@ class _StringFeedbackState extends State<StringFeedback> {
                   ),
                 ],
               ),
+              if (widget.scrollController != null)
+                const FeedbackSheetDragHandle(),
             ],
           ),
         ),

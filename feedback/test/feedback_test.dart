@@ -224,13 +224,18 @@ void main() {
             submittedFeedback = feedback;
           },
         ),
-        feedbackBuilder: (context, onSubmit, controller) => TextButton(
-          key: const Key('custom_submit_feedback_button'),
-          onPressed: () {
-            onSubmit('garbage!', extras: <String, dynamic>{'rating': 1});
-          },
-          child: Container(),
-        ),
+        feedbackBuilder: (context, onSubmit, controller) {
+          return SingleChildScrollView(
+            controller: controller,
+            child: TextButton(
+              key: const Key('custom_submit_feedback_button'),
+              onPressed: () {
+                onSubmit('garbage!', extras: <String, dynamic>{'rating': 1});
+              },
+              child: Container(),
+            ),
+          );
+        },
       );
       await tester.pumpWidget(widget);
       await tester.pumpAndSettle();

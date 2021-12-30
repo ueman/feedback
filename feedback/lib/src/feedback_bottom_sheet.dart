@@ -43,7 +43,7 @@ class FeedbackBottomSheet extends StatelessWidget {
   }
 }
 
-class _DraggableFeedbackSheet extends StatelessWidget {
+class _DraggableFeedbackSheet extends StatefulWidget {
   const _DraggableFeedbackSheet({
     Key? key,
     required this.feedbackBuilder,
@@ -56,6 +56,11 @@ class _DraggableFeedbackSheet extends StatelessWidget {
   final ValueNotifier<double> sheetProgress;
 
   @override
+  State<_DraggableFeedbackSheet> createState() => _DraggableFeedbackSheetState();
+}
+
+class _DraggableFeedbackSheetState extends State<_DraggableFeedbackSheet> {
+  @override
   Widget build(BuildContext context) {
     final FeedbackThemeData feedbackTheme = FeedbackTheme.of(context);
     final MediaQueryData query = MediaQuery.of(context);
@@ -67,7 +72,7 @@ class _DraggableFeedbackSheet extends StatelessWidget {
     return Column(
       children: [
         ValueListenableBuilder<void>(
-          valueListenable: sheetProgress,
+          valueListenable: widget.sheetProgress,
           child: Container(
             height: MediaQuery.of(context).padding.top,
             color: FeedbackTheme.of(context).feedbackSheetColor,
@@ -75,7 +80,7 @@ class _DraggableFeedbackSheet extends StatelessWidget {
           builder: (context, _, child) {
             return Opacity(
               // Use the curved progress value
-              opacity: sheetProgress.value,
+              opacity: widget.sheetProgress.value,
               child: child,
             );
           },
@@ -85,7 +90,7 @@ class _DraggableFeedbackSheet extends StatelessWidget {
             onNotification: (notification) {
               // Convert the extent into a fraction representing progress
               // between min and max.
-              sheetProgress.value =
+              widget.sheetProgress.value =
                   (notification.extent - notification.minExtent) /
                       (notification.maxExtent - notification.minExtent);
               return false;
@@ -96,11 +101,11 @@ class _DraggableFeedbackSheet extends StatelessWidget {
               initialChildSize: collapsedHeight,
               builder: (context, scrollController) {
                 return ValueListenableBuilder<void>(
-                  valueListenable: sheetProgress,
+                  valueListenable: widget.sheetProgress,
                   builder: (context, _, child) {
                     return ClipRRect(
                       borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(20 * (1 - sheetProgress.value)),
+                        top: Radius.circular(20 * (1 - widget.sheetProgress.value)),
                       ),
                       child: child,
                     );
@@ -118,9 +123,9 @@ class _DraggableFeedbackSheet extends StatelessWidget {
                         }
                         return false;
                       },
-                      child: feedbackBuilder(
+                      child: widget.feedbackBuilder(
                         context,
-                        onSubmit,
+                        widget.onSubmit,
                         scrollController,
                       ),
                     ),

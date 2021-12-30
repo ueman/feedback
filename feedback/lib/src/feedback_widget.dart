@@ -127,6 +127,8 @@ class FeedbackWidgetState extends State<FeedbackWidget>
       // Feedback is no longer visible,
       // reverse animation to hide it.
       _controller.reverse();
+      // Reset the sheet progress so the fade is no longer applied.
+      sheetProgress.value = 0;
     }
   }
 
@@ -163,44 +165,6 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                 builder: (context, screenshotChild) {
                   return CustomMultiChildLayout(
                     children: [
-                  if (!animation.isDismissed) LayoutId(
-                        id: _controlsColumnId,
-                        child: Padding(
-                          padding: EdgeInsets.only(left: padding),
-                          child: ScaleAndFade(
-                            progress: sheetProgress,
-                            child: ControlsColumn(
-                              mode: mode,
-                              activeColor: painterController.drawColor,
-                              colors: widget.drawColors,
-                              onColorChanged: (color) {
-                                setState(() {
-                                  painterController.drawColor = color;
-                                });
-                                _hideKeyboard(context);
-                              },
-                              onUndo: () {
-                                painterController.undo();
-                                _hideKeyboard(context);
-                              },
-                              onClearDrawing: () {
-                                painterController.clear();
-                                _hideKeyboard(context);
-                              },
-                              onControlModeChanged: (mode) {
-                                setState(() {
-                                  this.mode = mode;
-                                  _hideKeyboard(context);
-                                });
-                              },
-                              onCloseFeedback: () {
-                                _hideKeyboard(context);
-                                BetterFeedback.of(context).hide();
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
                       LayoutId(
                         id: _screenshotId,
                         child: Padding(
@@ -233,37 +197,78 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                           ),
                         ),
                       ),
-    if (!animation.isDismissed) LayoutId(
-                        id: _sheetId,
-                        child: NotificationListener<
-                            DraggableScrollableNotification>(
-                          onNotification: (notification) {
-                            sheetProgress.value =
-                                (notification.extent - notification.minExtent) /
-                                    (notification.maxExtent -
-                                        notification.minExtent);
-                            return false;
-                          },
-                          child: FeedbackBottomSheet(
-                            feedbackBuilder: widget.feedbackBuilder,
-                            onSubmit: (
-                              String feedback, {
-                              Map<String, dynamic>? extras,
-                            }) async {
-                              await _sendFeedback(
-                                context,
-                                BetterFeedback.of(context).onFeedback!,
-                                screenshotController,
-                                feedback,
-                                widget.pixelRatio,
-                                extras: extras,
-                              );
-                              painterController.clear();
-                            },
-                            sheetProgress: sheetProgress,
+                      if (!animation.isDismissed)
+                        LayoutId(
+                          id: _controlsColumnId,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: padding),
+                            child: ScaleAndFade(
+                              progress: sheetProgress,
+                              child: ControlsColumn(
+                                mode: mode,
+                                activeColor: painterController.drawColor,
+                                colors: widget.drawColors,
+                                onColorChanged: (color) {
+                                  setState(() {
+                                    painterController.drawColor = color;
+                                  });
+                                  _hideKeyboard(context);
+                                },
+                                onUndo: () {
+                                  painterController.undo();
+                                  _hideKeyboard(context);
+                                },
+                                onClearDrawing: () {
+                                  painterController.clear();
+                                  _hideKeyboard(context);
+                                },
+                                onControlModeChanged: (mode) {
+                                  setState(() {
+                                    this.mode = mode;
+                                    _hideKeyboard(context);
+                                  });
+                                },
+                                onCloseFeedback: () {
+                                  _hideKeyboard(context);
+                                  BetterFeedback.of(context).hide();
+                                },
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                      if (!animation.isDismissed)
+                        LayoutId(
+                          id: _sheetId,
+                          child: NotificationListener<
+                              DraggableScrollableNotification>(
+                            onNotification: (notification) {
+                              sheetProgress.value = (notification.extent -
+                                      notification.minExtent) /
+                                  (notification.maxExtent -
+                                      notification.minExtent);
+                              return false;
+                            },
+                            child: FeedbackBottomSheet(
+                              key: const Key('feedback_bottom_sheet'),
+                              feedbackBuilder: widget.feedbackBuilder,
+                              onSubmit: (
+                                String feedback, {
+                                Map<String, dynamic>? extras,
+                              }) async {
+                                await _sendFeedback(
+                                  context,
+                                  BetterFeedback.of(context).onFeedback!,
+                                  screenshotController,
+                                  feedback,
+                                  widget.pixelRatio,
+                                  extras: extras,
+                                );
+                                painterController.clear();
+                              },
+                              sheetProgress: sheetProgress,
+                            ),
+                          ),
+                        ),
                     ],
                     delegate: _FeedbackLayoutDelegate(
                       displayFeedback: !animation.isDismissed,

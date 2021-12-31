@@ -5,26 +5,22 @@ class ScaleAndClip extends StatelessWidget {
   const ScaleAndClip({
     Key? key,
     required this.child,
-    required this.scale,
-    required this.alignmentProgress,
+    required this.scaleFactor,
+    required this.progress,
   }) : super(key: key);
 
   final Widget child;
-  final double scale;
-  final double alignmentProgress;
+  final double scaleFactor;
+  final double progress;
 
   @override
   Widget build(BuildContext context) {
     return Transform.scale(
-      alignment: Alignment(
-        -0.3 * alignmentProgress,
-        -0.65 * alignmentProgress,
-      ),
-      scale: scale,
+      scale: 1 - progress * (1 - scaleFactor),
       child: ClipRRect(
         borderRadius: BorderRadius.all(
           Radius.circular(
-            20 * alignmentProgress,
+            20 * progress,
           ),
         ),
         child: child,

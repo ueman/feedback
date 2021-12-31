@@ -19,7 +19,56 @@ typedef OnSubmit = void Function(
 
 /// A function that returns a Widget that prompts the user for feedback and
 /// calls [OnSubmit] when the user wants to submit their feedback.
-typedef FeedbackBuilder = Widget Function(BuildContext, OnSubmit);
+///
+/// A non-null controller is provided if the sheet is set to draggable in the
+/// feedback theme.
+/// If the sheet is draggable, the non null controller should be passed into a
+/// scrollable widget to make the feedback sheet expand when the widget is
+/// scrolled. Typically, this will be a `ListView` or `SingleChildScrollView`
+/// wrapping the feedback sheet's content.
+/// See: [FeedbackThemeData.sheetIsDraggable] and [DraggableScrollableSheet].
+typedef FeedbackBuilder = Widget Function(
+  BuildContext,
+  OnSubmit,
+  ScrollController?,
+);
+
+/// A drag handle to be placed at the top of a draggable feedback sheet.
+///
+/// This is a purely visual element that communicates to users that the sheet
+/// can be dragged to expand it.
+///
+/// It should be placed in a stack over the sheet's scrollable element so that
+/// users can click and drag on it-the drag handle ignores pointers so the drag
+/// will pass through to the scrollable beneath.
+// TODO(caseycrogers): Replace this with a pre-built drag handle above the
+//   builder function once `DraggableScrollableController` is available in
+//   production.
+//   See: https://github.com/flutter/flutter/pull/92440.
+class FeedbackSheetDragHandle extends StatelessWidget {
+  /// Create a drag handle.
+  const FeedbackSheetDragHandle({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return IgnorePointer(
+      child: Container(
+        height: 20,
+        padding: const EdgeInsets.symmetric(vertical: 7.5),
+        alignment: Alignment.center,
+        color: FeedbackTheme.of(context).feedbackSheetColor,
+        child: Container(
+          height: 5,
+          width: 30,
+          decoration: BoxDecoration(
+            color: Colors.black26,
+            borderRadius: BorderRadius.circular(5),
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 /// Function which gets called when the user submits his feedback.
 /// [feedback] is the user generated feedback. A string, by default.
@@ -133,8 +182,6 @@ class BetterFeedback extends StatefulWidget {
 class _BetterFeedbackState extends State<BetterFeedback> {
   FeedbackController controller = FeedbackController();
 
-  bool feedbackVisible = false;
-
   @override
   void initState() {
     super.initState();
@@ -162,7 +209,7 @@ class _BetterFeedbackState extends State<BetterFeedback> {
               assert(debugCheckHasFeedbackLocalizations(context));
               return FeedbackWidget(
                 child: widget.child,
-                isFeedbackVisible: feedbackVisible,
+                isFeedbackVisible: controller.isVisible,
                 drawColors: FeedbackTheme.of(context).drawColors,
                 mode: widget.mode,
                 pixelRatio: widget.pixelRatio,
@@ -177,8 +224,6 @@ class _BetterFeedbackState extends State<BetterFeedback> {
   }
 
   void onUpdateOfController() {
-    setState(() {
-      feedbackVisible = controller.isVisible;
-    });
+    setState(() {});
   }
 }

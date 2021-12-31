@@ -27,9 +27,11 @@ class FeedbackThemeData {
   FeedbackThemeData({
     this.background = Colors.grey,
     this.feedbackSheetColor = _lightGrey,
+    this.feedbackSheetHeight = .25,
     this.activeFeedbackModeColor = _blue,
     this.drawColors = _defaultDrawColors,
     this.bottomSheetDescriptionStyle = _defaultBottomSheetDescriptionStyle,
+    this.sheetIsDraggable = true,
   }) :
         // if the user chooses to supply custom drawing colors,
         // make sure there is at least on color to draw with
@@ -42,9 +44,14 @@ class FeedbackThemeData {
   /// The background of the feedback view.
   final Color background;
 
-  /// The background color of the bottomsheet in which the user can input
+  /// The background color of the bottom sheet in which the user can input
   /// his feedback and thoughts.
   final Color feedbackSheetColor;
+
+  /// The height of the bottom sheet as a fraction of the screen height.
+  ///
+  /// Values between .2 and .3 are usually ideal.
+  final double feedbackSheetHeight;
 
   /// The color to highlight the currently selected feedback mode.
   final Color activeFeedbackModeColor;
@@ -54,6 +61,13 @@ class FeedbackThemeData {
 
   /// Text Style of the text above of the feedback text input.
   final TextStyle bottomSheetDescriptionStyle;
+
+  /// Whether or not the bottom sheet is draggable.
+  ///
+  /// If this is set to true, the user feedback form will be wrapped in a
+  /// [DraggableScrollableSheet] that will expand when the user drags upward on
+  /// it. This is useful for large feedback forms.
+  final bool sheetIsDraggable;
 }
 
 /// Provides an instance of [FeedbackThemeData] for all descendants.

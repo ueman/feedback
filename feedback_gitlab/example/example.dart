@@ -2,7 +2,7 @@ import 'package:feedback_gitlab/feedback_gitlab.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const BetterFeedback(feedbackBuilder: MyApp()));
+  runApp(const BetterFeedback(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

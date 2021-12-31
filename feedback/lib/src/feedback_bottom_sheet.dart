@@ -56,7 +56,8 @@ class _DraggableFeedbackSheet extends StatefulWidget {
   final ValueNotifier<double> sheetProgress;
 
   @override
-  State<_DraggableFeedbackSheet> createState() => _DraggableFeedbackSheetState();
+  State<_DraggableFeedbackSheet> createState() =>
+      _DraggableFeedbackSheetState();
 }
 
 class _DraggableFeedbackSheetState extends State<_DraggableFeedbackSheet> {
@@ -96,7 +97,8 @@ class _DraggableFeedbackSheetState extends State<_DraggableFeedbackSheet> {
                 builder: (context, _, child) {
                   return ClipRRect(
                     borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(20 * (1 - widget.sheetProgress.value)),
+                      top: Radius.circular(
+                          20 * (1 - widget.sheetProgress.value)),
                     ),
                     child: child,
                   );

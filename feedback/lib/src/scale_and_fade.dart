@@ -26,9 +26,9 @@ class ScaleAndFade extends StatelessWidget {
       valueListenable: progress,
       builder: (context, currProgress, child) {
         return Opacity(
-          opacity: maxOpacity - currProgress*(maxOpacity - minOpacity),
+          opacity: maxOpacity - currProgress * (maxOpacity - minOpacity),
           child: Transform.scale(
-            scale: maxScale - currProgress*(maxScale - minScale),
+            scale: maxScale - currProgress * (maxScale - minScale),
             child: child,
           ),
         );

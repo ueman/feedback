@@ -61,7 +61,8 @@ class _StringFeedbackState extends State<StringFeedback> {
               ListView(
                 controller: widget.scrollController,
                 // Pad the top by 20 to match the corner radius if drag enabled.
-                padding: EdgeInsets.fromLTRB(16, widget.scrollController != null ? 20 : 16, 16, 0),
+                padding: EdgeInsets.fromLTRB(
+                    16, widget.scrollController != null ? 20 : 16, 16, 0),
                 children: <Widget>[
                   Text(
                     FeedbackLocalizations.of(context).feedbackDescriptionText,

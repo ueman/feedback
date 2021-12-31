@@ -4,13 +4,9 @@ import 'package:feedback/src/screenshot.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'test_utils/utils.dart';
-
 void main() {
   group('screenshot test', () {
     testWidgets('take screenshot', (tester) async {
-      await setGoldenImageSurfaceSize(tester);
-
       final controller = ScreenshotController();
       final widget = Screenshot(child: const Example(), controller: controller);
 

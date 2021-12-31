@@ -178,20 +178,21 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                             minOpacity: .01,
                             child:
                                 LayoutBuilder(builder: (context, constraints) {
+                              final size = MediaQuery.of(context).size;
                               return OverflowBox(
                                 // Allow the screenshot to overflow to the full
                                 // screen size and then scale it down to meet
                                 // it's parent's constraints.
-                                maxWidth: MediaQuery.of(context).size.width,
-                                maxHeight: MediaQuery.of(context).size.height,
+                                maxWidth: size.width,
+                                maxHeight: size.height,
                                 child: ScaleAndClip(
                                   progress: animation.value,
                                   // Scale down to fit the constraints.
                                   // `_FeedbackLayoutDelegate` ensures that the
                                   // constraints are the same aspect ratio as
                                   // the query size.
-                                  scaleFactor: constraints.maxWidth /
-                                      MediaQuery.of(context).size.width,
+                                  scaleFactor:
+                                      constraints.maxWidth / size.width,
                                   child: LayoutBuilder(
                                       builder: (context, constraints) {
                                     return screenshotChild!;

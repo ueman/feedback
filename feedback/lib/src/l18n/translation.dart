@@ -120,6 +120,42 @@ class ArFeedbackLocalizations extends FeedbackLocalizations {
   String get navigate => 'إنتقال';
 }
 
+/// Default russian localization
+class RuFeedbackLocalizations extends FeedbackLocalizations {
+  /// Creates a [RuFeedbackLocalizations].
+  const RuFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'Отправить';
+
+  @override
+  String get feedbackDescriptionText => 'Опишите проблему';
+
+  @override
+  String get draw => 'Рисование';
+
+  @override
+  String get navigate => 'Навигация';
+}
+
+/// Default ukrainian localization
+class UkFeedbackLocalizations extends FeedbackLocalizations {
+  /// Creates a [UkFeedbackLocalizations].
+  const UkFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'Відправити';
+
+  @override
+  String get feedbackDescriptionText => 'Опишіть проблему';
+
+  @override
+  String get draw => 'Малювання';
+
+  @override
+  String get navigate => 'Навігація';
+}
+
 // coverage:ignore-end
 
 /// This is a localization delegate, which includes all of the localizations
@@ -138,6 +174,8 @@ class GlobalFeedbackLocalizationsDelegate
     const Locale('de'): const DeFeedbackLocalizations(),
     const Locale('fr'): const FrFeedbackLocalizations(),
     const Locale('ar'): const ArFeedbackLocalizations(),
+    const Locale('ru'): const RuFeedbackLocalizations(),
+    const Locale('uk'): const UkFeedbackLocalizations(),
   };
 
   @override

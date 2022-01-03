@@ -195,7 +195,6 @@ class GlobalFeedbackLocalizationsDelegate
     const Locale('ru'): const RuFeedbackLocalizations(),
     const Locale('uk'): const UkFeedbackLocalizations(),
     const Locale('tr'): const TrFeedbackLocalizations(),
-
   };
 
   @override

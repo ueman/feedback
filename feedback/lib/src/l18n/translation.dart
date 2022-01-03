@@ -158,7 +158,7 @@ class UkFeedbackLocalizations extends FeedbackLocalizations {
 
 /// Default turkish localization
 class TrFeedbackLocalizations extends FeedbackLocalizations {
-  /// Creates a [UkFeedbackLocalizations].
+  /// Creates a [TrFeedbackLocalizations].
   const TrFeedbackLocalizations();
 
   @override

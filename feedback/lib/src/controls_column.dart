@@ -39,16 +39,16 @@ class ControlsColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     final isNavigatingActive = FeedbackMode.navigate == mode;
     return Card(
+      margin: EdgeInsets.zero,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
           Radius.circular(24),
         ),
       ),
       clipBehavior: Clip.antiAlias,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: Wrap(
+        direction: Axis.vertical,
+        crossAxisAlignment: WrapCrossAlignment.center,
         children: <Widget>[
           IconButton(
             key: const ValueKey<String>('close_controls_column'),

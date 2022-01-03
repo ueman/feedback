@@ -3,13 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'test_app.dart';
-import 'test_utils/utils.dart';
 
 void main() {
   group('Golden Image Test', () {
     testWidgets(' closed feedback', (tester) async {
-      await setGoldenImageSurfaceSize(tester);
-
       const widget = BetterFeedback(
         child: MyTestApp(),
       );
@@ -21,8 +18,6 @@ void main() {
     });
 
     testWidgets(' open feedback', (tester) async {
-      await setGoldenImageSurfaceSize(tester);
-
       const widget = BetterFeedback(
         child: MyTestApp(),
       );

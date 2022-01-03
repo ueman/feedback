@@ -1,4 +1,5 @@
 import 'package:feedback/src/debug.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../better_feedback.dart';
@@ -44,6 +45,8 @@ abstract class FeedbackLocalizations {
     )!;
   }
 }
+
+// coverage:ignore-start
 
 /// Default german localization
 class DeFeedbackLocalizations extends FeedbackLocalizations {
@@ -117,6 +120,80 @@ class ArFeedbackLocalizations extends FeedbackLocalizations {
   String get navigate => 'إنتقال';
 }
 
+/// Default russian localization
+class RuFeedbackLocalizations extends FeedbackLocalizations {
+  /// Creates a [RuFeedbackLocalizations].
+  const RuFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'Отправить';
+
+  @override
+  String get feedbackDescriptionText => 'Опишите проблему';
+
+  @override
+  String get draw => 'Рисование';
+
+  @override
+  String get navigate => 'Навигация';
+}
+
+/// Default ukrainian localization
+class UkFeedbackLocalizations extends FeedbackLocalizations {
+  /// Creates a [UkFeedbackLocalizations].
+  const UkFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'Відправити';
+
+  @override
+  String get feedbackDescriptionText => 'Опишіть проблему';
+
+  @override
+  String get draw => 'Малювання';
+
+  @override
+  String get navigate => 'Навігація';
+}
+
+/// Default turkish localization
+class TrFeedbackLocalizations extends FeedbackLocalizations {
+  /// Creates a [TrFeedbackLocalizations].
+  const TrFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'Gönder';
+
+  @override
+  String get feedbackDescriptionText => 'Sorun nedir?';
+
+  @override
+  String get draw => 'Çiz';
+
+  @override
+  String get navigate => 'Gezin';
+}
+
+/// Default Simplified Chinese localization
+class ZhFeedbackLocalizations extends FeedbackLocalizations {
+  /// Creates a [ZhFeedbackLocalizations].
+  const ZhFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => '提交';
+
+  @override
+  String get feedbackDescriptionText => '敬请留下您宝贵的意见和建议：';
+
+  @override
+  String get draw => '涂鸦';
+
+  @override
+  String get navigate => '导航';
+}
+
+// coverage:ignore-end
+
 /// This is a localization delegate, which includes all of the localizations
 /// already present in this library.
 class GlobalFeedbackLocalizationsDelegate
@@ -133,6 +210,10 @@ class GlobalFeedbackLocalizationsDelegate
     const Locale('de'): const DeFeedbackLocalizations(),
     const Locale('fr'): const FrFeedbackLocalizations(),
     const Locale('ar'): const ArFeedbackLocalizations(),
+    const Locale('ru'): const RuFeedbackLocalizations(),
+    const Locale('uk'): const UkFeedbackLocalizations(),
+    const Locale('tr'): const TrFeedbackLocalizations(),
+    const Locale('zh'): const ZhFeedbackLocalizations(),
   };
 
   @override
@@ -149,14 +230,15 @@ class GlobalFeedbackLocalizationsDelegate
   }
 
   @override
-  Future<FeedbackLocalizations> load(Locale locale) async {
+  Future<FeedbackLocalizations> load(Locale locale) {
     final languageLocale = Locale(locale.languageCode);
     // We only support language codes for now
     if (_supportedLocales.containsKey(languageLocale)) {
-      return _supportedLocales[languageLocale]!;
+      return SynchronousFuture<FeedbackLocalizations>(
+          _supportedLocales[languageLocale]!);
     }
     // The default is english
-    return const EnFeedbackLocalizations();
+    return SynchronousFuture(const EnFeedbackLocalizations());
   }
 
   @override

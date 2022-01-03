@@ -2,6 +2,7 @@
 
 import 'package:feedback/feedback.dart';
 import 'package:feedback/src/controls_column.dart';
+import 'package:feedback/src/scale_and_fade.dart';
 import 'package:feedback/src/feedback_bottom_sheet.dart';
 import 'package:feedback/src/paint_on_background.dart';
 import 'package:feedback/src/painter.dart';
@@ -13,6 +14,10 @@ import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
 typedef FeedbackButtonPress = void Function(BuildContext context);
+
+// See alignment.dart.
+const kScaleOrigin = Alignment(-.3, -.65);
+const kScaleFactor = .65;
 
 class FeedbackWidget extends StatefulWidget {
   const FeedbackWidget({
@@ -46,7 +51,17 @@ class FeedbackWidget extends StatefulWidget {
 @visibleForTesting
 class FeedbackWidgetState extends State<FeedbackWidget>
     with SingleTickerProviderStateMixin {
+  // Padding to put around the interactive screenshot preview.
+  final double padding = 8;
+
   final BackButtonInterceptor _interceptor = BackButtonInterceptor();
+
+  // We use a ValueNotifier instead of just a double and `SetState` because
+  // rebuilding the feedback sheet mid-drag cancels the drag.
+  // TODO(caseycrogers): replace `sheetProgress` with a direct reference to
+  //   `DraggableScrollableController` when the latter gets into production.
+  //   See: https://github.com/flutter/flutter/pull/92440.
+  ValueNotifier<double> sheetProgress = ValueNotifier(0);
 
   @visibleForTesting
   late PainterController painterController = create();
@@ -112,122 +127,168 @@ class FeedbackWidgetState extends State<FeedbackWidget>
       // Feedback is no longer visible,
       // reverse animation to hide it.
       _controller.reverse();
+      // Reset the sheet progress so the fade is no longer applied.
+      sheetProgress.value = 0;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final scaleAnimation = Tween<double>(begin: 1, end: 0.65)
-        .chain(CurveTween(curve: Curves.easeInSine))
-        .animate(_controller);
-
     final animation = Tween<double>(begin: 0, end: 1)
         .chain(CurveTween(curve: Curves.easeInSine))
         .animate(_controller);
-
-    final controlsHorizontalAlignment = Tween<double>(begin: 1.4, end: .95)
-        .chain(CurveTween(curve: Curves.easeInSine))
-        .animate(_controller);
-
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, child) {
-        return ColoredBox(
-          color: FeedbackTheme.of(context).background,
-          child: Stack(
-            fit: StackFit.passthrough,
-            alignment: Alignment.center,
-            children: <Widget>[
-              Align(
-                alignment: Alignment.topCenter,
-                child: ScaleAndClip(
-                  scale: scaleAnimation.value,
-                  alignmentProgress: animation.value,
-                  child: Screenshot(
-                    controller: screenshotController,
-                    child: PaintOnChild(
-                      controller: painterController,
-                      isPaintingActive:
-                          mode == FeedbackMode.draw && widget.isFeedbackVisible,
-                      child: widget.child,
-                    ),
+    // We need to supply a navigator because `TextField` and other widgets that
+    // could be used in the bottom feedback sheet require a navigator.
+    // The navigator needs to be above the custom layout instead of just around
+    // the bottom sheet because navigators block interaction on widgets behind
+    // them but the background widgets need to be tap-able behind the bottom
+    // sheet.
+    return Navigator(
+      onGenerateRoute: (_) {
+        return MaterialPageRoute<void>(
+          builder: (context) {
+            return Material(
+              color: FeedbackTheme.of(context).background,
+              child: AnimatedBuilder(
+                animation: _controller,
+                // Place the screenshot here so that the widget tree isn't being
+                // arbitrarily rebuilt.
+                child: Screenshot(
+                  controller: screenshotController,
+                  child: PaintOnChild(
+                    controller: painterController,
+                    isPaintingActive:
+                        mode == FeedbackMode.draw && widget.isFeedbackVisible,
+                    child: widget.child,
                   ),
                 ),
-              ),
-              Align(
-                alignment: Alignment(controlsHorizontalAlignment.value, -0.7),
-                child: ControlsColumn(
-                  mode: mode,
-                  activeColor: painterController.drawColor,
-                  colors: widget.drawColors,
-                  onColorChanged: (color) {
-                    setState(() {
-                      painterController.drawColor = color;
-                    });
-                    _hideKeyboard(context);
-                  },
-                  onUndo: () {
-                    painterController.undo();
-                    _hideKeyboard(context);
-                  },
-                  onClearDrawing: () {
-                    painterController.clear();
-                    _hideKeyboard(context);
-                  },
-                  onControlModeChanged: (mode) {
-                    setState(() {
-                      this.mode = mode;
-                      _hideKeyboard(context);
-                    });
-                  },
-                  onCloseFeedback: () {
-                    _hideKeyboard(context);
-                    BetterFeedback.of(context).hide();
-                  },
-                ),
-              ),
-              // only display if feedback is visible or this widget is still
-              // animating out
-              if (widget.isFeedbackVisible || !animation.isDismissed)
-                Positioned(
-                  key: const Key('feedback_bottom_sheet'),
-                  left: 0,
-                  // Make sure the input field is always visible,
-                  // especially if the keyboard is shown
-                  bottom: MediaQuery.of(context).viewInsets.bottom,
-                  right: 0,
-                  height: MediaQuery.of(context).size.height *
-                      // height should be screen size minus the bottom edge of
-                      // screenshot widget:
-                      //   1 - (scaleOrigin + height*scaleFactor)
-                      (1 - (.35 / 2 + 1.65 / 2 * .65)),
-                  child: SlideTransition(
-                    position: Tween(begin: const Offset(0, 1), end: Offset.zero)
-                        .animate(animation),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 24),
-                      child: FeedbackBottomSheet(
-                        feedbackBuilder: widget.feedbackBuilder,
-                        onSubmit: (
-                          String feedback, {
-                          Map<String, dynamic>? extras,
-                        }) async {
-                          await _sendFeedback(
-                            context,
-                            BetterFeedback.of(context).onFeedback!,
-                            screenshotController,
-                            feedback,
-                            widget.pixelRatio,
-                            extras: extras,
-                          );
-                          painterController.clear();
-                        },
+                builder: (context, screenshotChild) {
+                  return CustomMultiChildLayout(
+                    children: [
+                      LayoutId(
+                        id: _screenshotId,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: padding),
+                          child: ScaleAndFade(
+                            progress: sheetProgress,
+                            minScale: .7,
+                            // If opacity reaches zero, flutter will stop
+                            // drawing the child widget which breaks the
+                            // screenshot.
+                            minOpacity: .01,
+                            child:
+                                LayoutBuilder(builder: (context, constraints) {
+                              final size = MediaQuery.of(context).size;
+                              return OverflowBox(
+                                // Allow the screenshot to overflow to the full
+                                // screen size and then scale it down to meet
+                                // it's parent's constraints.
+                                maxWidth: size.width,
+                                maxHeight: size.height,
+                                child: ScaleAndClip(
+                                  progress: animation.value,
+                                  // Scale down to fit the constraints.
+                                  // `_FeedbackLayoutDelegate` ensures that the
+                                  // constraints are the same aspect ratio as
+                                  // the query size.
+                                  scaleFactor:
+                                      constraints.maxWidth / size.width,
+                                  child: LayoutBuilder(
+                                      builder: (context, constraints) {
+                                    return screenshotChild!;
+                                  }),
+                                ),
+                              );
+                            }),
+                          ),
+                        ),
                       ),
+                      if (!animation.isDismissed)
+                        LayoutId(
+                          id: _controlsColumnId,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: padding),
+                            child: ScaleAndFade(
+                              progress: sheetProgress,
+                              minScale: .7,
+                              child: ControlsColumn(
+                                mode: mode,
+                                activeColor: painterController.drawColor,
+                                colors: widget.drawColors,
+                                onColorChanged: (color) {
+                                  setState(() {
+                                    painterController.drawColor = color;
+                                  });
+                                  _hideKeyboard(context);
+                                },
+                                onUndo: () {
+                                  painterController.undo();
+                                  _hideKeyboard(context);
+                                },
+                                onClearDrawing: () {
+                                  painterController.clear();
+                                  _hideKeyboard(context);
+                                },
+                                onControlModeChanged: (mode) {
+                                  setState(() {
+                                    this.mode = mode;
+                                    _hideKeyboard(context);
+                                  });
+                                },
+                                onCloseFeedback: () {
+                                  _hideKeyboard(context);
+                                  BetterFeedback.of(context).hide();
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      if (!animation.isDismissed)
+                        LayoutId(
+                          id: _sheetId,
+                          child: NotificationListener<
+                              DraggableScrollableNotification>(
+                            onNotification: (notification) {
+                              sheetProgress.value = (notification.extent -
+                                      notification.minExtent) /
+                                  (notification.maxExtent -
+                                      notification.minExtent);
+                              return false;
+                            },
+                            child: FeedbackBottomSheet(
+                              key: const Key('feedback_bottom_sheet'),
+                              feedbackBuilder: widget.feedbackBuilder,
+                              onSubmit: (
+                                String feedback, {
+                                Map<String, dynamic>? extras,
+                              }) async {
+                                await _sendFeedback(
+                                  context,
+                                  BetterFeedback.of(context).onFeedback!,
+                                  screenshotController,
+                                  feedback,
+                                  widget.pixelRatio,
+                                  extras: extras,
+                                );
+                                painterController.clear();
+                              },
+                              sheetProgress: sheetProgress,
+                            ),
+                          ),
+                        ),
+                    ],
+                    delegate: _FeedbackLayoutDelegate(
+                      displayFeedback: !animation.isDismissed,
+                      query: MediaQuery.of(context),
+                      sheetFraction:
+                          FeedbackTheme.of(context).feedbackSheetHeight,
+                      animationProgress: animation.value,
                     ),
-                  ),
-                ),
-            ],
-          ),
+                  );
+                },
+              ),
+            );
+          },
         );
       },
     );
@@ -239,7 +300,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     ScreenshotController controller,
     String feedback,
     double pixelRatio, {
-    Duration delay = const Duration(milliseconds: 200),
+    Duration delay = const Duration(milliseconds: 2000),
     Map<String, dynamic>? extras,
   }) async {
     // Wait for the keyboard to be closed, and then proceed
@@ -255,11 +316,13 @@ class FeedbackWidgetState extends State<FeedbackWidget>
 
         // Give it to the developer
         // to do something with it.
-        await onFeedbackSubmitted(UserFeedback(
-          text: feedback,
-          screenshot: screenshot,
-          extra: extras,
-        ));
+        await onFeedbackSubmitted(
+          UserFeedback(
+            text: feedback,
+            screenshot: screenshot,
+            extra: extras,
+          ),
+        );
       },
     );
   }
@@ -292,5 +355,113 @@ class FeedbackWidgetState extends State<FeedbackWidget>
 
   static void _hideKeyboard(BuildContext context) {
     FocusScope.of(context).requestFocus(FocusNode());
+  }
+}
+
+const _screenshotId = 'screenshot_id';
+const _controlsColumnId = 'controls_column_id';
+const _sheetId = 'sheet_id';
+
+class _FeedbackLayoutDelegate extends MultiChildLayoutDelegate {
+  _FeedbackLayoutDelegate({
+    required this.displayFeedback,
+    required this.query,
+    required this.sheetFraction,
+    required this.animationProgress,
+  });
+
+  final bool displayFeedback;
+  final MediaQueryData query;
+  final double sheetFraction;
+  final double animationProgress;
+
+  double get safeAreaHeight => query.padding.top;
+
+  double get keyboardHeight => query.viewInsets.bottom;
+
+  double get screenHeight => query.size.height;
+
+  // Fraction of screen height taken up by the screenshot preview.
+  double get screenshotFraction =>
+      1 - sheetFraction - (safeAreaHeight / screenHeight);
+
+  double get screenshotHeight => screenshotFraction * screenHeight;
+
+  @override
+  void performLayout(Size size) {
+    if (!displayFeedback) {
+      layoutChild(_screenshotId, BoxConstraints.tight(size));
+      return;
+    }
+    // Lay out the controls.
+    final Size controlsSize = layoutChild(
+      _controlsColumnId,
+      BoxConstraints.loose(
+        Size(size.width, screenshotHeight),
+      ),
+    );
+
+    // Lay out screenshot preview, clipping the bounds to the correct aspect
+    // ratio.
+    final Size screenShotSize = layoutChild(
+      _screenshotId,
+      BoxConstraints.tight(
+        // This clips our available space to the aspect ratio of the screenshot
+        // preview.
+        applyBoxFit(
+          BoxFit.scaleDown,
+          query.size,
+          Size(
+            size.width - animationProgress * (controlsSize.width),
+            size.height - animationProgress * (size.height - screenshotHeight),
+          ),
+        ).destination,
+      ),
+    );
+
+    // Position the screenshot and controls centered together.
+    final double remainingWidth =
+        query.size.width - screenShotSize.width - controlsSize.width;
+    positionChild(
+      _screenshotId,
+      Offset(
+        animationProgress * remainingWidth / 2,
+        animationProgress * safeAreaHeight,
+      ),
+    );
+    positionChild(
+      _controlsColumnId,
+      Offset(
+        size.width -
+            animationProgress * (controlsSize.width + remainingWidth / 2),
+        safeAreaHeight + (screenshotHeight - controlsSize.height) / 2,
+      ),
+    );
+
+    // Lay out sheet.
+    final double sheetHeight = layoutChild(
+      _sheetId,
+      BoxConstraints.loose(
+        Size(
+          size.width,
+          size.height - query.viewInsets.bottom,
+        ),
+      ),
+    ).height;
+    positionChild(
+      _sheetId,
+      Offset(
+        0,
+        size.height -
+            animationProgress * (sheetHeight + query.viewInsets.bottom),
+      ),
+    );
+  }
+
+  @override
+  bool shouldRelayout(covariant _FeedbackLayoutDelegate oldDelegate) {
+    return query != oldDelegate.query ||
+        sheetFraction != oldDelegate.sheetFraction ||
+        animationProgress != oldDelegate.animationProgress;
   }
 }

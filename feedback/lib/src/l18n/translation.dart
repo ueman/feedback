@@ -156,6 +156,24 @@ class UkFeedbackLocalizations extends FeedbackLocalizations {
   String get navigate => 'Навігація';
 }
 
+/// Default turkish localization
+class TrFeedbackLocalizations extends FeedbackLocalizations {
+  /// Creates a [TrFeedbackLocalizations].
+  const TrFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'Gönder';
+
+  @override
+  String get feedbackDescriptionText => 'Sorun nedir?';
+
+  @override
+  String get draw => 'Çiz';
+
+  @override
+  String get navigate => 'Gezin';
+}
+
 /// Default Simplified Chinese localization
 class ZhFeedbackLocalizations extends FeedbackLocalizations {
   /// Creates a [ZhFeedbackLocalizations].
@@ -194,6 +212,7 @@ class GlobalFeedbackLocalizationsDelegate
     const Locale('ar'): const ArFeedbackLocalizations(),
     const Locale('ru'): const RuFeedbackLocalizations(),
     const Locale('uk'): const UkFeedbackLocalizations(),
+    const Locale('tr'): const TrFeedbackLocalizations(),
     const Locale('zh'): const ZhFeedbackLocalizations(),
   };
 

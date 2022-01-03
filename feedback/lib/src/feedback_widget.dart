@@ -54,8 +54,6 @@ class FeedbackWidgetState extends State<FeedbackWidget>
   // Padding to put around the interactive screenshot preview.
   final double padding = 8;
 
-  final BackButtonInterceptor _interceptor = BackButtonInterceptor();
-
   // We use a ValueNotifier instead of just a double and `SetState` because
   // rebuilding the feedback sheet mid-drag cancels the drag.
   // TODO(caseycrogers): replace `sheetProgress` with a direct reference to
@@ -86,14 +84,14 @@ class FeedbackWidgetState extends State<FeedbackWidget>
   @override
   void initState() {
     super.initState();
-    _interceptor.add(backButtonIntercept);
+    BackButtonInterceptor.add(backButtonIntercept);
   }
 
   @override
   void dispose() {
     super.dispose();
     _controller.dispose();
-    _interceptor.dispose();
+    BackButtonInterceptor.remove(backButtonIntercept);
   }
 
   @internal

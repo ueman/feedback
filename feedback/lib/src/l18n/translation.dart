@@ -174,6 +174,24 @@ class TrFeedbackLocalizations extends FeedbackLocalizations {
   String get navigate => 'Gezin';
 }
 
+/// Default Simplified Chinese localization
+class ZhFeedbackLocalizations extends FeedbackLocalizations {
+  /// Creates a [ZhFeedbackLocalizations].
+  const ZhFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => '提交';
+
+  @override
+  String get feedbackDescriptionText => '敬请留下您宝贵的意见和建议：';
+
+  @override
+  String get draw => '涂鸦';
+
+  @override
+  String get navigate => '导航';
+}
+
 // coverage:ignore-end
 
 /// This is a localization delegate, which includes all of the localizations
@@ -195,6 +213,7 @@ class GlobalFeedbackLocalizationsDelegate
     const Locale('ru'): const RuFeedbackLocalizations(),
     const Locale('uk'): const UkFeedbackLocalizations(),
     const Locale('tr'): const TrFeedbackLocalizations(),
+    const Locale('zh'): const ZhFeedbackLocalizations(),
   };
 
   @override

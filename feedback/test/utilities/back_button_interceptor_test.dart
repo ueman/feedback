@@ -4,16 +4,15 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   test('$BackButtonInterceptor', () async {
     TestWidgetsFlutterBinding.ensureInitialized();
-    final backButtonInterceptor = BackButtonInterceptor();
 
     var called = false;
 
-    backButtonInterceptor.add(() {
+    BackButtonInterceptor.add(() {
       called = true;
       return false;
     });
 
-    await backButtonInterceptor.didPopRoute();
+    BackButtonInterceptor.instance.didPopRoute();
 
     expect(called, isTrue);
   });

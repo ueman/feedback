@@ -1,8 +1,9 @@
-## [2.3.0-beta]
+## [2.3.0]
 
+* bottom sheet gets closed on back press
+* Added support for the following languages: russian (ru), ukrainian (uk), turkish (tr), simimplified chinese (zh)
 * *Breaking* if you're using a custom `feedbackBuilder`
 * Fixes [152](https://github.com/ueman/feedback/issues/152), [138](https://github.com/ueman/feedback/issues/138), [88](https://github.com/ueman/feedback/issues/88)
-
 
 ## [2.2.1]
 

@@ -229,7 +229,7 @@ class GlobalFeedbackLocalizationsDelegate
     const Locale('fr'): const FrFeedbackLocalizations(),
     const Locale('ar'): const ArFeedbackLocalizations(),
     const Locale('ru'): const RuFeedbackLocalizations(),
-    const Locale('sv'): const RuFeedbackLocalizations(),
+    const Locale('sv'): const SvFeedbackLocalizations(),
     const Locale('uk'): const UkFeedbackLocalizations(),
     const Locale('tr'): const TrFeedbackLocalizations(),
     const Locale('zh'): const ZhFeedbackLocalizations(),

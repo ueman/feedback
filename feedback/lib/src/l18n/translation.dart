@@ -138,6 +138,24 @@ class RuFeedbackLocalizations extends FeedbackLocalizations {
   String get navigate => 'Навигация';
 }
 
+/// Default swedish localization
+class SvFeedbackLocalizations extends FeedbackLocalizations {
+  /// Creates a [SvFeedbackLocalizations].
+  const SvFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'Skicka';
+
+  @override
+  String get feedbackDescriptionText => 'Vad är fel?';
+
+  @override
+  String get draw => 'Rita';
+
+  @override
+  String get navigate => 'Navigera';
+}
+
 /// Default ukrainian localization
 class UkFeedbackLocalizations extends FeedbackLocalizations {
   /// Creates a [UkFeedbackLocalizations].
@@ -211,6 +229,7 @@ class GlobalFeedbackLocalizationsDelegate
     const Locale('fr'): const FrFeedbackLocalizations(),
     const Locale('ar'): const ArFeedbackLocalizations(),
     const Locale('ru'): const RuFeedbackLocalizations(),
+    const Locale('sv'): const RuFeedbackLocalizations(),
     const Locale('uk'): const UkFeedbackLocalizations(),
     const Locale('tr'): const TrFeedbackLocalizations(),
     const Locale('zh'): const ZhFeedbackLocalizations(),

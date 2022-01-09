@@ -2,6 +2,7 @@
 
 import 'package:feedback/src/better_feedback.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
+import 'package:feedback/src/utilities/back_button_interceptor.dart';
 
 import 'package:flutter/material.dart';
 
@@ -21,10 +22,12 @@ class FeedbackBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (FeedbackTheme.of(context).sheetIsDraggable) {
-      return _DraggableFeedbackSheet(
-        feedbackBuilder: feedbackBuilder,
-        onSubmit: onSubmit,
-        sheetProgress: sheetProgress,
+      return DraggableScrollableActuator(
+        child: _DraggableFeedbackSheet(
+          feedbackBuilder: feedbackBuilder,
+          onSubmit: onSubmit,
+          sheetProgress: sheetProgress,
+        ),
       );
     }
     return Align(
@@ -62,6 +65,18 @@ class _DraggableFeedbackSheet extends StatefulWidget {
 
 class _DraggableFeedbackSheetState extends State<_DraggableFeedbackSheet> {
   @override
+  void initState() {
+    super.initState();
+    BackButtonInterceptor.add(_onBackButton, priority: 0);
+  }
+
+  @override
+  void dispose() {
+    BackButtonInterceptor.remove(_onBackButton);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final FeedbackThemeData feedbackTheme = FeedbackTheme.of(context);
     final MediaQueryData query = MediaQuery.of(context);
@@ -88,7 +103,8 @@ class _DraggableFeedbackSheetState extends State<_DraggableFeedbackSheet> {
         ),
         Expanded(
           child: DraggableScrollableSheet(
-            snap: true,
+            // Should be enabled as soons as the Flutter version gets raised
+            // snap: true,
             minChildSize: collapsedHeight,
             initialChildSize: collapsedHeight,
             builder: (context, scrollController) {
@@ -118,5 +134,17 @@ class _DraggableFeedbackSheetState extends State<_DraggableFeedbackSheet> {
         ),
       ],
     );
+  }
+
+  bool _onBackButton() {
+    if (widget.sheetProgress.value != 0) {
+      // TODO(caseycrogers): replace `reset` with `animateTo` when
+      //   `DraggableScrollableController` reaches production
+      if (DraggableScrollableActuator.reset(context)) {
+        widget.sheetProgress.value = 0;
+        return true;
+      }
+    }
+    return false;
   }
 }

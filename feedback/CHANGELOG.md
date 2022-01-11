@@ -1,3 +1,7 @@
+## [2.3.1]
+
+* Removed `meta` dependency
+
 ## [2.3.0]
 
 * bottom sheet gets closed on back press

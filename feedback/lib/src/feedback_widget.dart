@@ -93,7 +93,6 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     BackButtonInterceptor.remove(backButtonIntercept);
   }
 
-  @internal
   @visibleForTesting
   bool backButtonIntercept() {
     if (mode == FeedbackMode.draw && widget.isFeedbackVisible) {

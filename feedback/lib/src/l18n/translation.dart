@@ -257,7 +257,7 @@ class GlobalFeedbackLocalizationsDelegate
           _supportedLocales[languageLocale]!);
     }
     // The default is english
-    return SynchronousFuture(const EnFeedbackLocalizations());
+    return SynchronousFuture(_supportedLocales[const Locale('en')]!);
   }
 
   @override

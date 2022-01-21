@@ -22,6 +22,34 @@ extension SentryFeedback on FeedbackController {
       email: email,
     ));
   }
+
+  /// This method opens the feedback UI and uploads the users feedback
+  /// including an exception to Sentry.
+  void showAndUploadToSentryWithException(
+    dynamic throwable, {
+    Hub? hub,
+    String? name,
+    String? email,
+    StackTrace? trace,
+  }) async {
+    final realHub = hub ?? HubAdapter();
+    Scope? scope = null;
+    final id = await realHub.captureException(
+      throwable,
+      stackTrace: trace,
+      withScope: (_scope) => scope = _scope,
+    );
+
+    this.show(
+      sendToSentryWithException(
+        realHub,
+        id,
+        scope!,
+        name: name,
+        email: email,
+      ),
+    );
+  }
 }
 
 /// See [SentryFeedback.showAndUploadToSentry].
@@ -43,6 +71,26 @@ OnFeedbackCallback sendToSentry({
       ));
     });
     await realHub.captureUserFeedback(SentryUserFeedback(
+      eventId: id,
+      email: email,
+      name: name,
+      comments: feedback.text + '\n${feedback.extra.toString()}',
+    ));
+  };
+}
+
+/// See [SentryFeedback.showAndUploadToSentryWithException].
+/// This is just [visibleForTesting].
+@visibleForTesting
+OnFeedbackCallback sendToSentryWithException(Hub hub, SentryId id, Scope scope,
+    {String? name, String? email}) {
+  return (UserFeedback feedback) async {
+    scope.addAttachment(SentryAttachment.fromUint8List(
+      feedback.screenshot,
+      'screenshot.png',
+      contentType: 'image/png',
+    ));
+    await hub.captureUserFeedback(SentryUserFeedback(
       eventId: id,
       email: email,
       name: name,

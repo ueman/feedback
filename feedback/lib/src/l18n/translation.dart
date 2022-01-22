@@ -223,7 +223,9 @@ class GlobalFeedbackLocalizationsDelegate
   static const LocalizationsDelegate<FeedbackLocalizations> delegate =
       GlobalFeedbackLocalizationsDelegate();
 
-  static final _supportedLocales = <Locale, FeedbackLocalizations>{
+  /// Returns a dict of all supported locales.
+  /// Override this member to provide your own localized strings.
+  static final supportedLocales = <Locale, FeedbackLocalizations>{
     const Locale('en'): const EnFeedbackLocalizations(),
     const Locale('de'): const DeFeedbackLocalizations(),
     const Locale('fr'): const FrFeedbackLocalizations(),
@@ -235,10 +237,14 @@ class GlobalFeedbackLocalizationsDelegate
     const Locale('zh'): const ZhFeedbackLocalizations(),
   };
 
+  /// The default locale to use. Note that this locale should ALWAYS be
+  /// present in supportedLocales.
+  static const defaultLocale = Locale('de');
+
   @override
   bool isSupported(Locale locale) {
     // We only support language codes for now
-    if (_supportedLocales.containsKey(Locale(locale.languageCode))) {
+    if (supportedLocales.containsKey(Locale(locale.languageCode))) {
       return true;
     }
     debugPrint(
@@ -252,12 +258,9 @@ class GlobalFeedbackLocalizationsDelegate
   Future<FeedbackLocalizations> load(Locale locale) {
     final languageLocale = Locale(locale.languageCode);
     // We only support language codes for now
-    if (_supportedLocales.containsKey(languageLocale)) {
-      return SynchronousFuture<FeedbackLocalizations>(
-          _supportedLocales[languageLocale]!);
-    }
-    // The default is english
-    return SynchronousFuture(_supportedLocales[const Locale('en')]!);
+    return SynchronousFuture<FeedbackLocalizations>(
+      supportedLocales[languageLocale] ?? supportedLocales[defaultLocale]!,
+    );
   }
 
   @override

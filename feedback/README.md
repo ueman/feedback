@@ -201,15 +201,12 @@ class CustomFeedbackLocalizations implements FeedbackLocalizations {
 
 class CustomFeedbackLocalizationsDelegate
     extends GlobalFeedbackLocalizationsDelegate {
-  static final _supportedLocales = <Locale, FeedbackLocalizations>{
+  static final supportedLocales = <Locale, FeedbackLocalizations>{
     // remember to change the locale identifier
+    // as well as that defaultLocale (defaults to en) should ALWAYS be
+    // present here or overridden
     const Locale('en'): const CustomFeedbackLocalizations(),
   };
-
-  @override
-  Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture(const CustomFeedbackLocalizations());
-  }
 }
 
 void main() {

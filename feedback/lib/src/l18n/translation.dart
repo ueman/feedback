@@ -239,7 +239,7 @@ class GlobalFeedbackLocalizationsDelegate
 
   /// The default locale to use. Note that this locale should ALWAYS be
   /// present in supportedLocales.
-  static const defaultLocale = Locale('de');
+  static const defaultLocale = Locale('en');
 
   @override
   bool isSupported(Locale locale) {

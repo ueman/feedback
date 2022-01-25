@@ -225,7 +225,7 @@ class GlobalFeedbackLocalizationsDelegate
 
   /// Returns a dict of all supported locales.
   /// Override this member to provide your own localized strings.
-  static final supportedLocales = <Locale, FeedbackLocalizations>{
+  final supportedLocales = <Locale, FeedbackLocalizations>{
     const Locale('en'): const EnFeedbackLocalizations(),
     const Locale('de'): const DeFeedbackLocalizations(),
     const Locale('fr'): const FrFeedbackLocalizations(),

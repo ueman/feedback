@@ -1,3 +1,7 @@
+## [2.4.0]
+
+* Improve overriding of localization texts
+
 ## [2.3.1]
 
 * Removed `meta` dependency

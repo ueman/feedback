@@ -22,7 +22,7 @@ class FeedbackLocalization extends StatelessWidget {
 
   List<LocalizationsDelegate<dynamic>> get _localizationsDelegates => [
         ...GlobalMaterialLocalizations.delegates,
-        const GlobalFeedbackLocalizationsDelegate(),
+        GlobalFeedbackLocalizationsDelegate(),
       ];
   @override
   Widget build(BuildContext context) {

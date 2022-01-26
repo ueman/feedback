@@ -217,10 +217,10 @@ class ZhFeedbackLocalizations extends FeedbackLocalizations {
 class GlobalFeedbackLocalizationsDelegate
     extends LocalizationsDelegate<FeedbackLocalizations> {
   /// Creates a [GlobalFeedbackLocalizationsDelegate].
-  const GlobalFeedbackLocalizationsDelegate();
+  GlobalFeedbackLocalizationsDelegate();
 
   /// Returns the default instance of a [GlobalFeedbackLocalizationsDelegate].
-  static const LocalizationsDelegate<FeedbackLocalizations> delegate =
+  static LocalizationsDelegate<FeedbackLocalizations> delegate =
       GlobalFeedbackLocalizationsDelegate();
 
   /// Returns a dict of all supported locales.

@@ -58,7 +58,7 @@ class _MyAppState extends State<MyApp> {
           Colors.yellow,
         ],
       ),
-      localizationsDelegates: const [
+      localizationsDelegates: [
         GlobalFeedbackLocalizationsDelegate(),
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,

@@ -172,7 +172,7 @@ void main() {
           Colors.yellow,
         ],
       ),
-      localizationsDelegates: const [
+      localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -213,7 +213,7 @@ void main() {
   runApp(
     BetterFeedback(
       child: const MyApp(),
-      localizationsDelegates: const [
+      localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

@@ -1,3 +1,7 @@
+## [2.4.1]
+
+* Fix backspace not working in some cases ([#120](https://github.com/ueman/feedback/issues/120), [#177](https://github.com/ueman/feedback/issues/177))
+
 ## [2.4.0]
 
 * Improve overriding of localization texts

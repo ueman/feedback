@@ -121,10 +121,12 @@ class _DraggableFeedbackSheetState extends State<_DraggableFeedbackSheet> {
                 child: Material(
                   color: FeedbackTheme.of(context).feedbackSheetColor,
                   // A `ListView` makes the content here disappear.
-                  child: widget.feedbackBuilder(
-                    context,
-                    widget.onSubmit,
-                    scrollController,
+                  child: DefaultTextEditingShortcuts(
+                    child: widget.feedbackBuilder(
+                      context,
+                      widget.onSubmit,
+                      scrollController,
+                    ),
                   ),
                 ),
               );

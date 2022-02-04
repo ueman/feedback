@@ -103,8 +103,7 @@ class _DraggableFeedbackSheetState extends State<_DraggableFeedbackSheet> {
         ),
         Expanded(
           child: DraggableScrollableSheet(
-            // Should be enabled as soons as the Flutter version gets raised
-            // snap: true,
+            snap: true,
             minChildSize: collapsedHeight,
             initialChildSize: collapsedHeight,
             builder: (context, scrollController) {

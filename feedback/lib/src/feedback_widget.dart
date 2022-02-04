@@ -11,7 +11,6 @@ import 'package:feedback/src/screenshot.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
 import 'package:feedback/src/utilities/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
 typedef FeedbackButtonPress = void Function(BuildContext context);
 
@@ -94,7 +93,6 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     BackButtonInterceptor.remove(backButtonIntercept);
   }
 
-  @internal
   @visibleForTesting
   bool backButtonIntercept() {
     if (mode == FeedbackMode.draw && widget.isFeedbackVisible) {

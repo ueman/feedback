@@ -172,7 +172,7 @@ void main() {
           Colors.yellow,
         ],
       ),
-      localizationsDelegates: const [
+      localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -183,9 +183,46 @@ void main() {
   );
 }
 ```
-You can customize the text by using custom `localizationsDelegates`.
 How the properties of `FeedbackThemeData` correspond to the view can be seen in the following image. 
 <img src="https://raw.githubusercontent.com/ueman/feedback/master/img/theme_description.png" max-height="400" alt="Theme Usages">
+
+## Changing the localizations texts
+
+You can customize the localizations as follows.
+Create your own implementation of `FeedbackLocalizations` or subclass one of 
+the existing translations, if you just want to change one or two texts.
+Then create your own `GlobalFeedbackLocalizationsDelegate` and pass it to 
+`BetterFeedback`.
+
+```dart
+class CustomFeedbackLocalizations implements FeedbackLocalizations {
+  // ...
+}
+
+class CustomFeedbackLocalizationsDelegate
+    extends GlobalFeedbackLocalizationsDelegate {
+  static final supportedLocales = <Locale, FeedbackLocalizations>{
+    // remember to change the locale identifier
+    // as well as that defaultLocale (defaults to en) should ALWAYS be
+    // present here or overridden
+    const Locale('en'): const CustomFeedbackLocalizations(),
+  };
+}
+
+void main() {
+  runApp(
+    BetterFeedback(
+      child: const MyApp(),
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        CustomFeedbackLocalizationsDelegate(),
+      ],
+    ),
+  );
+}
+```
 
 ## 💡 Tips, tricks and usage scenarios
 

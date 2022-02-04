@@ -71,14 +71,22 @@ class MockHub implements Hub {
   void bindClient(SentryClient client) {}
 
   @override
-  Future<SentryId> captureEvent(SentryEvent event,
-      {stackTrace, hint, ScopeCallback? withScope}) {
+  Future<SentryId> captureEvent(
+    SentryEvent event, {
+    stackTrace,
+    hint,
+    ScopeCallback? withScope,
+  }) {
     throw UnimplementedError();
   }
 
   @override
-  Future<SentryId> captureException(throwable,
-      {stackTrace, hint, ScopeCallback? withScope}) {
+  Future<SentryId> captureException(
+    throwable, {
+    stackTrace,
+    hint,
+    ScopeCallback? withScope,
+  }) {
     throw UnimplementedError();
   }
 
@@ -97,4 +105,37 @@ class MockHub implements Hub {
 
   @override
   SentryId get lastEventId => throw UnimplementedError();
+
+  @override
+  Future<SentryId> captureTransaction(SentryTransaction transaction) {
+    throw UnimplementedError();
+  }
+
+  @override
+  ISentrySpan? getSpan() {
+    throw UnimplementedError();
+  }
+
+  @override
+  void setSpanContext(throwable, ISentrySpan span, String transaction) {}
+
+  @override
+  ISentrySpan startTransaction(
+    String name,
+    String operation, {
+    String? description,
+    bool? bindToScope,
+    Map<String, dynamic>? customSamplingContext,
+  }) {
+    throw UnimplementedError();
+  }
+
+  @override
+  ISentrySpan startTransactionWithContext(
+    SentryTransactionContext transactionContext, {
+    Map<String, dynamic>? customSamplingContext,
+    bool? bindToScope,
+  }) {
+    throw UnimplementedError();
+  }
 }

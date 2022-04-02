@@ -22,7 +22,7 @@ class _MediaQueryFromWindowsState extends State<MediaQueryFromWindow>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addObserver(this);
+    _binding!.addObserver(this);
   }
 
   // ACCESSIBILITY
@@ -67,14 +67,18 @@ class _MediaQueryFromWindowsState extends State<MediaQueryFromWindow>
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
-      data: MediaQueryData.fromWindow(WidgetsBinding.instance!.window),
+      data: MediaQueryData.fromWindow(_binding!.window),
       child: widget.child,
     );
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance!.removeObserver(this);
+    _binding!.removeObserver(this);
     super.dispose();
   }
+
+  // Needed because `WidgetsBinding.instance` is nullable up to 2.10
+  // and non-nullable after 2.10.
+  WidgetsBinding? get _binding => WidgetsBinding.instance;
 }

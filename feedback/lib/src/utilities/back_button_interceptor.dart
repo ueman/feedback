@@ -41,12 +41,12 @@ class BackButtonInterceptor with WidgetsBindingObserver {
   }
 
   static void _mount() {
-    WidgetsBinding.instance!.addObserver(instance);
+    _binding!.addObserver(instance);
   }
 
   static void _unMount() {
     _prioritizedCallbacks.clear();
-    WidgetsBinding.instance!.removeObserver(instance);
+    _binding!.removeObserver(instance);
   }
 
   Iterable<BoolCallback> get _callbacks =>
@@ -59,4 +59,8 @@ class BackButtonInterceptor with WidgetsBindingObserver {
     }
     return _callbacks.any((callback) => callback());
   }
+
+  // Needed because `WidgetsBinding.instance` is nullable up to 2.10
+  // and non-nullable after 2.10.
+  static WidgetsBinding? get _binding => WidgetsBinding.instance;
 }

@@ -23,15 +23,24 @@ class FeedbackApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeWrapper = FeedbackTheme(
+      data: data ?? FeedbackThemeData(),
+      child: child,
+    );
+
+    Widget mediaQueryWrapper;
+
+    /// Don't replace existing MediaQuery widget if it exists.
+    if (MediaQuery.maybeOf(context) == null) {
+      mediaQueryWrapper = MediaQueryFromWindow(child: themeWrapper);
+    } else {
+      mediaQueryWrapper = themeWrapper;
+    }
+
     return FeedbackLocalization(
       delegates: localizationsDelegates,
       localeOverride: localeOverride,
-      child: MediaQueryFromWindow(
-        child: FeedbackTheme(
-          data: data ?? FeedbackThemeData(),
-          child: child,
-        ),
-      ),
+      child: mediaQueryWrapper,
     );
   }
 }

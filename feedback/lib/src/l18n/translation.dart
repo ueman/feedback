@@ -211,7 +211,7 @@ class ZhFeedbackLocalizations extends FeedbackLocalizations {
 }
 /// Default polish localization
 class PlFeedbackLocalizations extends FeedbackLocalizations {
-  /// Creates a [EnFeedbackLocalizations].
+  /// Creates a [PlFeedbackLocalizations].
   const PlFeedbackLocalizations();
 
   @override

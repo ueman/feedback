@@ -209,6 +209,24 @@ class ZhFeedbackLocalizations extends FeedbackLocalizations {
   @override
   String get navigate => '导航';
 }
+/// Default polish localization
+class PlFeedbackLocalizations extends FeedbackLocalizations {
+  /// Creates a [EnFeedbackLocalizations].
+  const PlFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'Wyślij';
+
+  @override
+  String get feedbackDescriptionText => 'Co poszło nie tak?';
+
+  @override
+  String get draw => 'Rysuj';
+
+  @override
+  String get navigate => 'Nawiguj';
+}
+
 
 // coverage:ignore-end
 
@@ -235,6 +253,7 @@ class GlobalFeedbackLocalizationsDelegate
     const Locale('uk'): const UkFeedbackLocalizations(),
     const Locale('tr'): const TrFeedbackLocalizations(),
     const Locale('zh'): const ZhFeedbackLocalizations(),
+    const Locale('pl'): const PlFeedbackLocalizations(),
   };
 
   /// The default locale to use. Note that this locale should ALWAYS be

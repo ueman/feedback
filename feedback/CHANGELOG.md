@@ -1,6 +1,9 @@
 ## [2.5.0]
 
 * Added polish language
+* Requires at least Flutter 2.10.0
+* Compatibility with Flutter 3
+* Reuses MediaQuery if available
 
 ## [2.4.1]
 

@@ -209,6 +209,7 @@ class ZhFeedbackLocalizations extends FeedbackLocalizations {
   @override
   String get navigate => '导航';
 }
+
 /// Default polish localization
 class PlFeedbackLocalizations extends FeedbackLocalizations {
   /// Creates a [PlFeedbackLocalizations].
@@ -226,7 +227,6 @@ class PlFeedbackLocalizations extends FeedbackLocalizations {
   @override
   String get navigate => 'Nawiguj';
 }
-
 
 // coverage:ignore-end
 

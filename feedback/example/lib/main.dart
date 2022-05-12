@@ -184,7 +184,7 @@ class MyHomePage extends StatelessWidget {
               ElevatedButton(
                 child: const Text('Visit library page on pub.dev'),
                 onPressed: () {
-                  launch('https://pub.dev/packages/feedback');
+                  launchUrl(Uri.parse('https://pub.dev/packages/feedback'));
                 },
               ),
             ],

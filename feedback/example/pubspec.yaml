@@ -15,13 +15,13 @@ dependencies:
     path: ../../feedback
   flutter:
     sdk: flutter
-  flutter_email_sender: ^5.0.0
+  flutter_email_sender: ^5.1.0
   flutter_localizations:
     sdk: flutter
   flutter_markdown: ^0.6.2
   http: ^0.13.0
-  path_provider: ^2.0.0
-  share_plus: ^3.0.0
+  path_provider: ^2.0.10
+  share_plus: ^4.0.4
   url_launcher: ^6.1.2
 
 dev_dependencies:

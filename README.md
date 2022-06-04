@@ -78,4 +78,4 @@ Hey, I'm Jonas Uekötter. I created this awesome software. Visit my [GitHub prof
 
 <a href="https://github.com/ueman/feedback/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=ueman/feedback" />
-</a>
+</a> 

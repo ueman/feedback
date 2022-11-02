@@ -7,9 +7,9 @@
   <a href="https://github.com/ueman/feedback/actions/workflows/feedback.yml"><img src="https://github.com/ueman/feedback/actions/workflows/feedback.yml/badge.svg" alt="feedback workflow"></a>
   <a href="https://codecov.io/gh/ueman/feedback"><img src="https://codecov.io/gh/ueman/feedback/branch/master/graph/badge.svg" alt="code coverage"></a>
   <a href="https://github.com/ueman#sponsor-me"><img src="https://img.shields.io/github/sponsors/ueman" alt="Sponsoring"></a>
-  <a href="https://pub.dev/packages/feedback/score"><img src="https://badges.bar/feedback/likes" alt="likes"></a>
-  <a href="https://pub.dev/packages/feedback/score"><img src="https://badges.bar/feedback/popularity" alt="popularity"></a>
-  <a href="https://pub.dev/packages/feedback/score"><img src="https://badges.bar/feedback/pub%20points" alt="pub points"></a>
+  <a href="https://pub.dev/packages/feedback/score"><img src="https://img.shields.io/pub/likes/feedback" alt="likes"></a>
+  <a href="https://pub.dev/packages/feedback/score"><img src="https://img.shields.io/pub/popularity/feedback" alt="popularity"></a>
+  <a href="https://pub.dev/packages/feedback/score"><img src="https://img.shields.io/pub/points/feedback" alt="pub points"></a>
 </p>
 
 <p align="center">

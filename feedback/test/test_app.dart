@@ -68,7 +68,7 @@ class MyTestPageState extends State<MyTestPage> {
             ),
             Text(
               '$counter',
-              style: Theme.of(context).textTheme.headline4,
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
             const TextField(),
             TextButton(

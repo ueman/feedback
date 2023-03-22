@@ -1,6 +1,7 @@
 ## 2.4.0
 
 * Add compatibility with Sentry v7
+
 ## 2.3.0
 
 * Add ability to report exceptions `showAndUploadToSentryWithException`

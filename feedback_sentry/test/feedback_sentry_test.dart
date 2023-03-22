@@ -29,7 +29,7 @@ void main() {
     expect(mockHub.capturedFeedback?.name, 'foo');
     expect(mockHub.capturedFeedback?.email, 'bar@foo.de');
 
-    expect(mockHub.scope.attachements.length, 1);
+    expect(mockHub.scope.attachments.length, 1);
   });
 }
 

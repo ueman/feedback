@@ -176,7 +176,7 @@ class BetterFeedback extends StatefulWidget {
   }
 
   @override
-  _BetterFeedbackState createState() => _BetterFeedbackState();
+  State<BetterFeedback> createState() => _BetterFeedbackState();
 }
 
 class _BetterFeedbackState extends State<BetterFeedback> {
@@ -208,13 +208,13 @@ class _BetterFeedbackState extends State<BetterFeedback> {
             builder: (context) {
               assert(debugCheckHasFeedbackLocalizations(context));
               return FeedbackWidget(
-                child: widget.child,
                 isFeedbackVisible: controller.isVisible,
                 drawColors: FeedbackTheme.of(context).drawColors,
                 mode: widget.mode,
                 pixelRatio: widget.pixelRatio,
                 feedbackBuilder:
                     widget.feedbackBuilder ?? simpleFeedbackBuilder,
+                child: widget.child,
               );
             },
           ),

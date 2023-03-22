@@ -33,7 +33,7 @@ class StringFeedback extends StatefulWidget {
   final ScrollController? scrollController;
 
   @override
-  _StringFeedbackState createState() => _StringFeedbackState();
+  State<StringFeedback> createState() => _StringFeedbackState();
 }
 
 class _StringFeedbackState extends State<StringFeedback> {

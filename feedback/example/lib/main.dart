@@ -170,6 +170,7 @@ class MyHomePage extends StatelessWidget {
                       final screenshotFilePath =
                           await writeImageToStorage(feedback.screenshot);
 
+                      // ignore: deprecated_member_use
                       await Share.shareFiles(
                         [screenshotFilePath],
                         text: feedback.text,

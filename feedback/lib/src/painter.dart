@@ -9,7 +9,7 @@ class Painter extends StatefulWidget {
   final PainterController painterController;
 
   @override
-  _PainterState createState() => _PainterState();
+  State<Painter> createState() => _PainterState();
 }
 
 class _PainterState extends State<Painter> {

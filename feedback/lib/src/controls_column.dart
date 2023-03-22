@@ -60,12 +60,12 @@ class ControlsColumn extends StatelessWidget {
             quarterTurns: 1,
             child: MaterialButton(
               key: const ValueKey<String>('navigate_button'),
-              child: Text(FeedbackLocalizations.of(context).navigate),
               onPressed: isNavigatingActive
                   ? null
                   : () => onControlModeChanged(FeedbackMode.navigate),
               disabledTextColor:
                   FeedbackTheme.of(context).activeFeedbackModeColor,
+              child: Text(FeedbackLocalizations.of(context).navigate),
             ),
           ),
           _ColumnDivider(),
@@ -74,12 +74,12 @@ class ControlsColumn extends StatelessWidget {
             child: MaterialButton(
               key: const ValueKey<String>('draw_button'),
               minWidth: 20,
-              child: Text(FeedbackLocalizations.of(context).draw),
               onPressed: isNavigatingActive
                   ? () => onControlModeChanged(FeedbackMode.draw)
                   : null,
               disabledTextColor:
                   FeedbackTheme.of(context).activeFeedbackModeColor,
+              child: Text(FeedbackLocalizations.of(context).draw),
             ),
           ),
           IconButton(

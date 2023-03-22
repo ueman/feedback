@@ -1,3 +1,7 @@
+## [2.6.0]
+
+* Require Flutter 3.0.0
+
 ## [2.5.0]
 
 * Added polish language

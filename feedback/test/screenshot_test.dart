@@ -8,7 +8,10 @@ void main() {
   group('screenshot test', () {
     testWidgets('take screenshot', (tester) async {
       final controller = ScreenshotController();
-      final widget = Screenshot(child: const Example(), controller: controller);
+      final widget = Screenshot(
+        controller: controller,
+        child: const Example(),
+      );
 
       Uint8List? screenshot;
       await tester.runAsync(() async {

@@ -160,6 +160,13 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                 ),
                 builder: (context, screenshotChild) {
                   return CustomMultiChildLayout(
+                    delegate: _FeedbackLayoutDelegate(
+                      displayFeedback: !animation.isDismissed,
+                      query: MediaQuery.of(context),
+                      sheetFraction:
+                          FeedbackTheme.of(context).feedbackSheetHeight,
+                      animationProgress: animation.value,
+                    ),
                     children: [
                       LayoutId(
                         id: _screenshotId,
@@ -273,13 +280,6 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                           ),
                         ),
                     ],
-                    delegate: _FeedbackLayoutDelegate(
-                      displayFeedback: !animation.isDismissed,
-                      query: MediaQuery.of(context),
-                      sheetFraction:
-                          FeedbackTheme.of(context).feedbackSheetHeight,
-                      animationProgress: animation.value,
-                    ),
                   );
                 },
               ),
@@ -346,6 +346,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     );
 
     // Close feedback mode
+    // ignore: use_build_context_synchronously
     BetterFeedback.of(context).hide();
   }
 

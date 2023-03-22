@@ -16,12 +16,6 @@
   <img src="https://raw.githubusercontent.com/ueman/feedback/master/img/ff.png" height="100" alt="Flutter Favorite" />
 </p>
 
----
-
-💰 Using this library in a commercial product? Consider [becoming a sponsor](https://github.com/ueman#sponsor-me).
-
----
-
 A Flutter package for obtaining better feedback. It allows the user to provide interactive feedback 
 directly in the app, by annotating a screenshot of the current page, as well as by adding text.
 

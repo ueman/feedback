@@ -60,7 +60,7 @@ class CustomFeedbackForm extends StatefulWidget {
   final ScrollController? scrollController;
 
   @override
-  _CustomFeedbackFormState createState() => _CustomFeedbackFormState();
+  State<CustomFeedbackForm> createState() => _CustomFeedbackFormState();
 }
 
 class _CustomFeedbackFormState extends State<CustomFeedbackForm> {
@@ -95,12 +95,12 @@ class _CustomFeedbackFormState extends State<CustomFeedbackForm> {
                           items: FeedbackType.values
                               .map(
                                 (type) => DropdownMenuItem<FeedbackType>(
+                                  value: type,
                                   child: Text(type
                                       .toString()
                                       .split('.')
                                       .last
                                       .replaceAll('_', ' ')),
-                                  value: type,
                                 ),
                               )
                               .toList(),

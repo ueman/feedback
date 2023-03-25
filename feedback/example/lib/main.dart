@@ -24,7 +24,7 @@ class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  _MyAppState createState() => _MyAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
 bool _useCustomFeedback = false;
@@ -33,13 +33,6 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return BetterFeedback(
-      child: MaterialApp(
-        title: 'Feedback Demo',
-        theme: ThemeData(
-          primarySwatch: _useCustomFeedback ? Colors.green : Colors.blue,
-        ),
-        home: MyHomePage(_toggleCustomizedFeedback),
-      ),
       // If custom feedback is not enabled, supply null and the default text
       // feedback form will be used.
       feedbackBuilder: _useCustomFeedback
@@ -67,6 +60,13 @@ class _MyAppState extends State<MyApp> {
       localeOverride: const Locale('en'),
       mode: FeedbackMode.draw,
       pixelRatio: 1,
+      child: MaterialApp(
+        title: 'Feedback Demo',
+        theme: ThemeData(
+          primarySwatch: _useCustomFeedback ? Colors.green : Colors.blue,
+        ),
+        home: MyHomePage(_toggleCustomizedFeedback),
+      ),
     );
   }
 

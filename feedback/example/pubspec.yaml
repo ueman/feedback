@@ -15,7 +15,7 @@ dependencies:
     path: ../../feedback
   flutter:
     sdk: flutter
-  flutter_email_sender: ^5.1.0
+  flutter_email_sender: ^6.0.0
   flutter_localizations:
     sdk: flutter
   flutter_markdown: ^0.6.2

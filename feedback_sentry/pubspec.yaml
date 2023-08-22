@@ -6,7 +6,7 @@ repository: https://github.com/ueman/feedback
 issue_tracker: https://github.com/ueman/feedback/issues
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: "<4.0.0"
   flutter: ">=2.2.0"
 
 dependencies:

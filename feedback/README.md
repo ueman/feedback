@@ -233,6 +233,7 @@ in the screenshot.
 
 - Platform views are invisible in screenshots (like [webview](https://pub.dev/packages/webview_flutter) or [Google Maps](https://pub.dev/packages/google_maps_flutter)). For further details, see this [Flutter issue](https://github.com/flutter/flutter/issues/25306).
 - Web only works with Flutter's CanvasKit Renderer. For more information on how to use it, see [Flutter Web Renderer docs](https://flutter.dev/docs/development/tools/web-renderers).
+- If you are using [showDialog](https://api.flutter.dev/flutter/material/showDialog.html), you will notice that the [Dialog](https://api.flutter.dev/flutter/material/Dialog-class.html) is rendered above the `BetterFeedback`. To prevent this you have to set `useRootNavigator` in `showDialog` to `false`.
 
 ## 📣 Maintainer
 

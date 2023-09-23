@@ -57,7 +57,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
   // rebuilding the feedback sheet mid-drag cancels the drag.
   // TODO(caseycrogers): replace `sheetProgress` with a direct reference to
   //   `DraggableScrollableController` when the latter gets into production.
-  //   See: https://github.com/flutter/flutter/pull/92440.
+  //   See: https://github.com/flutter/flutter/pull/135366.
   ValueNotifier<double> sheetProgress = ValueNotifier(0);
 
   @visibleForTesting

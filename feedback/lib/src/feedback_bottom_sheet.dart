@@ -103,6 +103,7 @@ class _DraggableFeedbackSheetState extends State<_DraggableFeedbackSheet> {
         ),
         Expanded(
           child: DraggableScrollableSheet(
+            controller: BetterFeedback.of(context).sheetController,
             snap: true,
             minChildSize: collapsedHeight,
             initialChildSize: collapsedHeight,

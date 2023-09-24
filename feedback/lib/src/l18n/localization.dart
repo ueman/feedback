@@ -33,11 +33,10 @@ class FeedbackLocalization extends StatelessWidget {
 
     return Localizations(
       delegates: mergedDelegates,
-      locale: localeOverride ?? _defaultLocale,
+      locale: localeOverride ??
+          View.maybeOf(context)?.platformDispatcher.locale ??
+          const Locale('en'),
       child: child,
     );
   }
 }
-
-Locale get _defaultLocale =>
-    WidgetsFlutterBinding.ensureInitialized().window.locale;

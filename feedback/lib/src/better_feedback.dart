@@ -104,7 +104,9 @@ class BetterFeedback extends StatefulWidget {
     Key? key,
     required this.child,
     this.feedbackBuilder,
+    this.themeMode,
     this.theme,
+    this.darkTheme,
     this.localizationsDelegates,
     this.localeOverride,
     this.mode = FeedbackMode.draw,
@@ -125,8 +127,13 @@ class BetterFeedback extends StatefulWidget {
   /// prompt for input.
   final FeedbackBuilder? feedbackBuilder;
 
+  final ThemeMode? themeMode;
+
   /// The Theme, which gets used to style the feedback ui.
   final FeedbackThemeData? theme;
+
+  /// The Theme, which gets used to style the feedback ui.
+  final FeedbackThemeData? darkTheme;
 
   /// The delegates for this library's FeedbackLocalization widget.
   /// You need to supply the following delegates if you choose to customize it.
@@ -198,7 +205,9 @@ class _BetterFeedbackState extends State<BetterFeedback> {
   @override
   Widget build(BuildContext context) {
     return FeedbackApp(
-      data: widget.theme,
+      themeMode: widget.themeMode,
+      theme: widget.theme,
+      darkTheme: widget.darkTheme,
       localizationsDelegates: widget.localizationsDelegates,
       localeOverride: widget.localeOverride,
       child: Builder(builder: (context) {

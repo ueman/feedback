@@ -8,8 +8,12 @@ const _defaultDrawColors = [
 ];
 
 /// This is the same as `Colors.grey[50]`
-/// or the default value of ThemeData.canvasColor
+/// or the default value of ThemeData.canvasColor for light theme
 const _lightGrey = Color(0xFFFAFAFA);
+
+/// This is the same as `Colors.grey[850],
+/// or default value of ThemeData.canvasColor for dark theme
+const _darkGrey = Color(0xFF303030);
 
 /// This is the same as `Colors.blue`
 /// or the default value of ThemeData.accentColor
@@ -32,14 +36,28 @@ class FeedbackThemeData {
     this.drawColors = _defaultDrawColors,
     this.bottomSheetDescriptionStyle = _defaultBottomSheetDescriptionStyle,
     this.sheetIsDraggable = true,
-  }) :
+  })  :
         // if the user chooses to supply custom drawing colors,
         // make sure there is at least on color to draw with
         assert(
           // ignore: prefer_is_empty
           drawColors.length > 0,
           'There must be at least one color to draw with',
-        );
+        ),
+        brightness = ThemeData.estimateBrightnessForColor(feedbackSheetColor);
+
+  /// Create a dark version of the [FeedbackThemeData]
+  factory FeedbackThemeData.dark({bool sheetIsDraggable = true}) =>
+      FeedbackThemeData(
+          background: Colors.grey.shade700,
+          feedbackSheetColor: _darkGrey,
+          bottomSheetDescriptionStyle: const TextStyle(
+            color: Colors.white,
+          ),
+          sheetIsDraggable: sheetIsDraggable);
+
+  /// Brightness of the theme based on the [background] color
+  final Brightness brightness;
 
   /// The background of the feedback view.
   final Color background;

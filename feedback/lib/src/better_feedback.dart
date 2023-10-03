@@ -127,12 +127,24 @@ class BetterFeedback extends StatefulWidget {
   /// prompt for input.
   final FeedbackBuilder? feedbackBuilder;
 
+  /// Determines which theme will be used by the Feedback UI.
+  /// If set to ThemeMode.system, the choice of which theme to use will be based
+  /// on the user's system preferences (using the MediaQuery.platformBrightnessOf).
+  /// If set to ThemeMode.light the [theme] will be used, regardless of the user's
+  /// system preference.  If [theme] isn't provided [FeedbackThemeData()] will
+  /// be used.
+  /// If set to ThemeMode.dark the [darkTheme] will be used regardless of the
+  /// user's system preference. If [darkTheme] and [theme] aren't provided
+  /// [FeedbackThemeData.dark()] will be used.
+  /// The default value is ThemeMode.system.
   final ThemeMode? themeMode;
 
-  /// The Theme, which gets used to style the feedback ui.
+  /// The Theme, which gets used to style the feedback ui if the [themeMode] is
+  /// ThemeMode.light or user's system preference is light.
   final FeedbackThemeData? theme;
 
-  /// The Theme, which gets used to style the feedback ui.
+  /// The theme, which gets used to style the feedback ui if the [themeMode] is
+  /// ThemeMode.dark or user's system preference is dark.
   final FeedbackThemeData? darkTheme;
 
   /// The delegates for this library's FeedbackLocalization widget.

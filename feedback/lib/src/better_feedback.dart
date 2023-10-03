@@ -13,9 +13,9 @@ import 'package:flutter/material.dart';
 
 /// The function to be called when the user submits his feedback.
 typedef OnSubmit = Future<void> Function(
-  String feedback, {
-  Map<String, dynamic>? extras,
-});
+    String feedback, {
+    Map<String, dynamic>? extras,
+    });
 
 /// A function that returns a Widget that prompts the user for feedback and
 /// calls [OnSubmit] when the user wants to submit their feedback.
@@ -28,10 +28,10 @@ typedef OnSubmit = Future<void> Function(
 /// wrapping the feedback sheet's content.
 /// See: [FeedbackThemeData.sheetIsDraggable] and [DraggableScrollableSheet].
 typedef FeedbackBuilder = Widget Function(
-  BuildContext,
-  OnSubmit,
-  ScrollController?,
-);
+    BuildContext,
+    OnSubmit,
+    ScrollController?,
+    );
 
 /// A drag handle to be placed at the top of a draggable feedback sheet.
 ///
@@ -51,21 +51,23 @@ class FeedbackSheetDragHandle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final FeedbackThemeData feedbackTheme = FeedbackTheme.of(context);
     return IgnorePointer(
-      child: Container(
-        height: 20,
-        padding: const EdgeInsets.symmetric(vertical: 7.5),
-        alignment: Alignment.center,
-        color: FeedbackTheme.of(context).feedbackSheetColor,
         child: Container(
-          height: 5,
-          width: 30,
-          decoration: BoxDecoration(
-            color: Colors.black26,
-            borderRadius: BorderRadius.circular(5),
+          height: 20,
+          padding: const EdgeInsets.symmetric(vertical: 7.5),
+          alignment: Alignment.center,
+          color: feedbackTheme.feedbackSheetColor,
+          child: Container(
+            height: 5,
+            width: 30,
+            decoration: BoxDecoration(
+              color: feedbackTheme.brightness == Brightness.light ? Colors
+                  .black26 : Colors.white38,
+              borderRadius: BorderRadius.circular(5),
+            ),
           ),
         ),
-      ),
     );
   }
 }
@@ -111,10 +113,11 @@ class BetterFeedback extends StatefulWidget {
     this.localeOverride,
     this.mode = FeedbackMode.draw,
     this.pixelRatio = 3.0,
-  })  : assert(
-          pixelRatio > 0,
-          'pixelRatio needs to be larger than 0',
-        ),
+  })
+      : assert(
+  pixelRatio > 0,
+  'pixelRatio needs to be larger than 0',
+  ),
         super(key: key);
 
   /// The application to wrap, typically a [MaterialApp].
@@ -134,7 +137,8 @@ class BetterFeedback extends StatefulWidget {
   /// system preference.  If [theme] isn't provided [FeedbackThemeData()] will
   /// be used.
   /// If set to ThemeMode.dark the [darkTheme] will be used regardless of the
-  /// user's system preference. If [darkTheme] and [theme] aren't provided
+  /// user's system preference. If [darkTheme] isn't provided, will fallback to
+  /// [theme]. If both [darkTheme] and [theme] aren't provided
   /// [FeedbackThemeData.dark()] will be used.
   /// The default value is ThemeMode.system.
   final ThemeMode? themeMode;
@@ -186,10 +190,10 @@ class BetterFeedback extends StatefulWidget {
   /// ```
   static FeedbackController of(BuildContext context) {
     final feedbackData =
-        context.dependOnInheritedWidgetOfExactType<FeedbackData>();
+    context.dependOnInheritedWidgetOfExactType<FeedbackData>();
     assert(
-      feedbackData != null,
-      'You need to add a $BetterFeedback widget above this context!',
+    feedbackData != null,
+    'You need to add a $BetterFeedback widget above this context!',
     );
     return feedbackData!.controller;
   }
@@ -230,11 +234,13 @@ class _BetterFeedbackState extends State<BetterFeedback> {
               assert(debugCheckHasFeedbackLocalizations(context));
               return FeedbackWidget(
                 isFeedbackVisible: controller.isVisible,
-                drawColors: FeedbackTheme.of(context).drawColors,
+                drawColors: FeedbackTheme
+                    .of(context)
+                    .drawColors,
                 mode: widget.mode,
                 pixelRatio: widget.pixelRatio,
                 feedbackBuilder:
-                    widget.feedbackBuilder ?? simpleFeedbackBuilder,
+                widget.feedbackBuilder ?? simpleFeedbackBuilder,
                 child: widget.child,
               );
             },

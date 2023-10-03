@@ -1,11 +1,10 @@
 include: package:flutter_lints/flutter.yaml
 
 analyzer:
-  strong-mode:
-    implicit-casts: false
-    implicit-dynamic: false
   language:
-    strict-raw-types: false
+    strict-raw-types: true
+    strict-inference: true
+    strict-casts: true
   errors:
     missing_required_param: error
     missing_return: error

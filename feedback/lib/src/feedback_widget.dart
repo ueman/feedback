@@ -174,8 +174,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                       delegate: _FeedbackLayoutDelegate(
                         displayFeedback: !animation.isDismissed,
                         query: MediaQuery.of(context),
-                        sheetFraction:
-                            FeedbackTheme.of(context).feedbackSheetHeight,
+                        sheetFraction: feedbackThemeData.feedbackSheetHeight,
                         animationProgress: animation.value,
                       ),
                       children: [
@@ -190,8 +189,8 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                               // drawing the child widget which breaks the
                               // screenshot.
                               minOpacity: .01,
-                              child:
-                                  LayoutBuilder(builder: (context, constraints) {
+                              child: LayoutBuilder(
+                                  builder: (context, constraints) {
                                 final size = MediaQuery.of(context).size;
                                 return OverflowBox(
                                   // Allow the screenshot to overflow to the full

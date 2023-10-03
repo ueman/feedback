@@ -1,3 +1,8 @@
+## [3.0.0]
+
+* Require Flutter 3.10.0
+* Require Dart 3.0.0
+
 ## [2.6.0]
 
 * Require Flutter 3.0.0

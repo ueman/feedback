@@ -28,6 +28,6 @@ jobs:
         with:
           channel: 'stable'
       - run: flutter pub get
-      - run: flutter format -n --set-exit-if-changed .
+      - run: dart format --set-exit-if-changed .
       - run: flutter analyze
       - run: flutter test

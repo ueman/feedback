@@ -17,20 +17,40 @@ void main() {
           matchesGoldenFile('golden_images/closed_feedback.png'));
     });
 
-    testWidgets(' open feedback', (tester) async {
-      const widget = BetterFeedback(
-        child: MyTestApp(),
-      );
+    group(' open feedback', () {
+      testWidgets(' light mode', (tester) async {
+        const widget = BetterFeedback(
+          themeMode: ThemeMode.light,
+          child: MyTestApp(),
+        );
 
-      await tester.pumpWidget(widget);
-      await tester.pumpAndSettle();
-      // open feedback
-      final openFeedbackButton = find.byKey(const Key('open_feedback'));
-      await tester.tap(openFeedbackButton);
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(widget);
+        await tester.pumpAndSettle();
+        // open feedback
+        final openFeedbackButton = find.byKey(const Key('open_feedback'));
+        await tester.tap(openFeedbackButton);
+        await tester.pumpAndSettle();
 
-      await expectLater(find.byType(BetterFeedback),
-          matchesGoldenFile('golden_images/open_feedback.png'));
+        await expectLater(find.byType(BetterFeedback),
+            matchesGoldenFile('golden_images/open_feedback_light_mode.png'));
+      });
+
+      testWidgets(' dark mode', (tester) async {
+        const widget = BetterFeedback(
+          themeMode: ThemeMode.dark,
+          child: MyTestApp(),
+        );
+
+        await tester.pumpWidget(widget);
+        await tester.pumpAndSettle();
+        // open feedback
+        final openFeedbackButton = find.byKey(const Key('open_feedback'));
+        await tester.tap(openFeedbackButton);
+        await tester.pumpAndSettle();
+
+        await expectLater(find.byType(BetterFeedback),
+            matchesGoldenFile('golden_images/open_feedback_dark_mode.png'));
+      });
     });
   });
 }

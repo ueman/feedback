@@ -51,6 +51,7 @@ class _MyAppState extends State<MyApp> {
           Colors.yellow,
         ],
       ),
+      darkTheme: FeedbackThemeData.dark(),
       localizationsDelegates: [
         GlobalFeedbackLocalizationsDelegate(),
         GlobalMaterialLocalizations.delegate,

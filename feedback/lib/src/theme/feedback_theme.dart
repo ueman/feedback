@@ -28,16 +28,17 @@ const _defaultBottomSheetDescriptionStyle = TextStyle(
 class FeedbackThemeData {
   /// Creates a [FeedbackThemeData].
   /// ![Theme](https://raw.githubusercontent.com/ueman/feedback/master/img/theme_description.png "Theme")
-  FeedbackThemeData({
-    this.background = Colors.grey,
-    this.feedbackSheetColor = _lightGrey,
-    this.feedbackSheetHeight = .25,
-    this.activeFeedbackModeColor = _blue,
-    this.drawColors = _defaultDrawColors,
-    this.bottomSheetDescriptionStyle = _defaultBottomSheetDescriptionStyle,
-    this.sheetIsDraggable = true,
-    this.dragHandleColor = Colors.black26,
-  })  :
+  FeedbackThemeData(
+      {this.background = Colors.grey,
+      this.feedbackSheetColor = _lightGrey,
+      this.feedbackSheetHeight = .25,
+      this.activeFeedbackModeColor = _blue,
+      this.drawColors = _defaultDrawColors,
+      this.bottomSheetDescriptionStyle = _defaultBottomSheetDescriptionStyle,
+      this.sheetIsDraggable = true,
+      Color? dragHandleColor,
+      ColorScheme? colorScheme})
+      :
         // if the user chooses to supply custom drawing colors,
         // make sure there is at least on color to draw with
         assert(
@@ -45,7 +46,15 @@ class FeedbackThemeData {
           drawColors.length > 0,
           'There must be at least one color to draw with',
         ),
-        brightness = ThemeData.estimateBrightnessForColor(feedbackSheetColor);
+        brightness = ThemeData.estimateBrightnessForColor(feedbackSheetColor) {
+    final bool isDark = brightness == Brightness.dark;
+    this.dragHandleColor =
+        dragHandleColor ?? (isDark ? Colors.black26 : Colors.white38);
+    this.colorScheme = colorScheme ??
+        (isDark
+            ? ColorScheme.dark(background: background)
+            : ColorScheme.light(background: background));
+  }
 
   /// Create a dark version of the [FeedbackThemeData]
   factory FeedbackThemeData.dark({bool sheetIsDraggable = true}) =>
@@ -101,7 +110,10 @@ class FeedbackThemeData {
   final bool sheetIsDraggable;
 
   /// Color of the drag handle on the feedback sheet
-  final Color? dragHandleColor;
+  late final Color dragHandleColor;
+
+  /// [ColorScheme] on the feedback UI
+  late final ColorScheme colorScheme;
 }
 
 /// Provides an instance of [FeedbackThemeData] for all descendants.

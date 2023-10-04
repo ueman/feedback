@@ -138,9 +138,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     final ThemeData theme = ThemeData(
         brightness: feedbackThemeData.brightness,
         cardColor: feedbackThemeData.feedbackSheetColor,
-        colorScheme: feedbackThemeData.brightness == Brightness.dark
-            ? ColorScheme.dark(background: feedbackThemeData.background)
-            : ColorScheme.light(background: feedbackThemeData.background));
+        colorScheme: feedbackThemeData.colorScheme);
 
     // We need to supply a navigator because `TextField` and other widgets that
     // could be used in the bottom feedback sheet require a navigator.

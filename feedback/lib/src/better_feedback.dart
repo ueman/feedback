@@ -62,9 +62,7 @@ class FeedbackSheetDragHandle extends StatelessWidget {
           height: 5,
           width: 30,
           decoration: BoxDecoration(
-            color: feedbackTheme.brightness == Brightness.light
-                ? Colors.black26
-                : Colors.white38,
+            color: feedbackTheme.dragHandleColor,
             borderRadius: BorderRadius.circular(5),
           ),
         ),

@@ -36,6 +36,7 @@ class FeedbackThemeData {
     this.drawColors = _defaultDrawColors,
     this.bottomSheetDescriptionStyle = _defaultBottomSheetDescriptionStyle,
     this.sheetIsDraggable = true,
+    this.dragHandleColor = Colors.black26,
   })  :
         // if the user chooses to supply custom drawing colors,
         // make sure there is at least on color to draw with
@@ -49,12 +50,14 @@ class FeedbackThemeData {
   /// Create a dark version of the [FeedbackThemeData]
   factory FeedbackThemeData.dark({bool sheetIsDraggable = true}) =>
       FeedbackThemeData(
-          background: Colors.grey.shade700,
-          feedbackSheetColor: _darkGrey,
-          bottomSheetDescriptionStyle: const TextStyle(
-            color: Colors.white,
-          ),
-          sheetIsDraggable: sheetIsDraggable);
+        background: Colors.grey.shade700,
+        dragHandleColor: Colors.white38,
+        feedbackSheetColor: _darkGrey,
+        bottomSheetDescriptionStyle: const TextStyle(
+          color: Colors.white,
+        ),
+        sheetIsDraggable: sheetIsDraggable,
+      );
 
   /// Brightness of the theme based on the [background] color
   final Brightness brightness;
@@ -86,6 +89,9 @@ class FeedbackThemeData {
   /// [DraggableScrollableSheet] that will expand when the user drags upward on
   /// it. This is useful for large feedback forms.
   final bool sheetIsDraggable;
+
+  /// Color of the drag handle on the feedback sheet
+  final Color? dragHandleColor;
 }
 
 /// Provides an instance of [FeedbackThemeData] for all descendants.

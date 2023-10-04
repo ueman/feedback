@@ -36,7 +36,7 @@ class FeedbackApp extends StatelessWidget {
       themeData = FeedbackThemeData.dark();
     }
 
-    themeData ??= theme ?? FeedbackThemeData();
+    themeData ??= theme ?? FeedbackThemeData.light();
 
     return themeData;
   }

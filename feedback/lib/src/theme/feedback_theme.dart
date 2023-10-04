@@ -59,6 +59,16 @@ class FeedbackThemeData {
         sheetIsDraggable: sheetIsDraggable,
       );
 
+  /// Create a light version of the [FeedbackThemeData]
+  factory FeedbackThemeData.light({bool sheetIsDraggable = true}) =>
+      FeedbackThemeData(
+        background: Colors.grey,
+        dragHandleColor: Colors.black26,
+        feedbackSheetColor: _lightGrey,
+        bottomSheetDescriptionStyle: _defaultBottomSheetDescriptionStyle,
+        sheetIsDraggable: sheetIsDraggable,
+      );
+
   /// Brightness of the theme based on the [background] color
   final Brightness brightness;
 

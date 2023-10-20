@@ -51,17 +51,18 @@ class FeedbackSheetDragHandle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final FeedbackThemeData feedbackTheme = FeedbackTheme.of(context);
     return IgnorePointer(
       child: Container(
         height: 20,
         padding: const EdgeInsets.symmetric(vertical: 7.5),
         alignment: Alignment.center,
-        color: FeedbackTheme.of(context).feedbackSheetColor,
+        color: feedbackTheme.feedbackSheetColor,
         child: Container(
           height: 5,
           width: 30,
           decoration: BoxDecoration(
-            color: Colors.black26,
+            color: feedbackTheme.dragHandleColor,
             borderRadius: BorderRadius.circular(5),
           ),
         ),
@@ -104,7 +105,9 @@ class BetterFeedback extends StatefulWidget {
     Key? key,
     required this.child,
     this.feedbackBuilder,
+    this.themeMode,
     this.theme,
+    this.darkTheme,
     this.localizationsDelegates,
     this.localeOverride,
     this.mode = FeedbackMode.draw,
@@ -125,8 +128,26 @@ class BetterFeedback extends StatefulWidget {
   /// prompt for input.
   final FeedbackBuilder? feedbackBuilder;
 
-  /// The Theme, which gets used to style the feedback ui.
+  /// Determines which theme will be used by the Feedback UI.
+  /// If set to [ThemeMode.system], the choice of which theme to use will be based
+  /// on the user's system preferences (using the [MediaQuery.platformBrightnessOf]).
+  /// If set to [ThemeMode.light] the [theme] will be used, regardless of the user's
+  /// system preference.  If [theme] isn't provided [FeedbackThemeData] will
+  /// be used.
+  /// If set to [ThemeMode.dark] the [darkTheme] will be used regardless of the
+  /// user's system preference. If [darkTheme] isn't provided, will fallback to
+  /// [theme]. If both [darkTheme] and [theme] aren't provided
+  /// [FeedbackThemeData.dark] will be used.
+  /// The default value is [ThemeMode.system].
+  final ThemeMode? themeMode;
+
+  /// The Theme, which gets used to style the feedback ui if the [themeMode] is
+  /// ThemeMode.light or user's system preference is light.
   final FeedbackThemeData? theme;
+
+  /// The theme, which gets used to style the feedback ui if the [themeMode] is
+  /// ThemeMode.dark or user's system preference is dark.
+  final FeedbackThemeData? darkTheme;
 
   /// The delegates for this library's FeedbackLocalization widget.
   /// You need to supply the following delegates if you choose to customize it.
@@ -198,7 +219,9 @@ class _BetterFeedbackState extends State<BetterFeedback> {
   @override
   Widget build(BuildContext context) {
     return FeedbackApp(
-      data: widget.theme,
+      themeMode: widget.themeMode,
+      theme: widget.theme,
+      darkTheme: widget.darkTheme,
       localizationsDelegates: widget.localizationsDelegates,
       localeOverride: widget.localeOverride,
       child: Builder(builder: (context) {

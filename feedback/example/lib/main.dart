@@ -21,7 +21,7 @@ void main() {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -76,7 +76,7 @@ class _MyAppState extends State<MyApp> {
 }
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage(this.toggleCustomizedFeedback, {Key? key}) : super(key: key);
+  const MyHomePage(this.toggleCustomizedFeedback, {super.key});
 
   final VoidCallback toggleCustomizedFeedback;
 

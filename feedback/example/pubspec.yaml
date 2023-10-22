@@ -18,10 +18,10 @@ dependencies:
   flutter_email_sender: ^6.0.2
   flutter_localizations:
     sdk: flutter
-  flutter_markdown: ^0.6.17
+  flutter_markdown: ^0.6.18
   http: ^1.0.0
   path_provider: ^2.1.1
-  share_plus: ^7.1.0
+  share_plus: ^7.2.1
   url_launcher: ^6.1.14
 
 dev_dependencies:

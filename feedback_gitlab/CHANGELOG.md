@@ -1,3 +1,7 @@
+## 3.0.0
+
+* Update dependencies
+
 ## 2.2.0
 
 * This update is compatible with feedback 2.2.0

@@ -17,10 +17,10 @@ class StringFeedback extends StatefulWidget {
   /// Create a [StringFeedback].
   /// This is the default feedback bottom sheet, which is presented to the user.
   const StringFeedback({
-    Key? key,
+    super.key,
     required this.onSubmit,
     required this.scrollController,
-  }) : super(key: key);
+  });
 
   /// Should be called when the user taps the submit button.
   final OnSubmit onSubmit;

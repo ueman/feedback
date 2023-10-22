@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 
 class ScaleAndClip extends StatelessWidget {
   const ScaleAndClip({
-    Key? key,
+    super.key,
     required this.child,
     required this.scaleFactor,
     required this.progress,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final double scaleFactor;

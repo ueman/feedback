@@ -123,10 +123,10 @@ class FeedbackTheme extends InheritedTheme {
   ///
   /// Both [data] and [child] arguments must not be null.
   const FeedbackTheme({
-    Key? key,
+    super.key,
     required this.data,
-    required Widget child,
-  }) : super(key: key, child: child);
+    required super.child,
+  });
 
   /// This [FeedbackThemeData] can be obtained by calling
   /// `FeedbackTheme.of(context)`.

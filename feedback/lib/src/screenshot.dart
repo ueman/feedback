@@ -44,10 +44,10 @@ class ScreenshotController {
 
 class Screenshot extends StatelessWidget {
   const Screenshot({
-    Key? key,
+    super.key,
     required this.child,
     required this.controller,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final ScreenshotController controller;

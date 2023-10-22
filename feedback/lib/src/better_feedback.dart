@@ -47,7 +47,7 @@ typedef FeedbackBuilder = Widget Function(
 //   See: https://github.com/flutter/flutter/pull/92440.
 class FeedbackSheetDragHandle extends StatelessWidget {
   /// Create a drag handle.
-  const FeedbackSheetDragHandle({Key? key}) : super(key: key);
+  const FeedbackSheetDragHandle({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +102,7 @@ class BetterFeedback extends StatefulWidget {
   /// );
   /// ```
   const BetterFeedback({
-    Key? key,
+    super.key,
     required this.child,
     this.feedbackBuilder,
     this.themeMode,
@@ -112,11 +112,10 @@ class BetterFeedback extends StatefulWidget {
     this.localeOverride,
     this.mode = FeedbackMode.draw,
     this.pixelRatio = 3.0,
-  })  : assert(
+  }) : assert(
           pixelRatio > 0,
           'pixelRatio needs to be larger than 0',
-        ),
-        super(key: key);
+        );
 
   /// The application to wrap, typically a [MaterialApp].
   final Widget child;

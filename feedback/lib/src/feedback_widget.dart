@@ -20,20 +20,19 @@ const kScaleFactor = .65;
 
 class FeedbackWidget extends StatefulWidget {
   const FeedbackWidget({
-    Key? key,
+    super.key,
     required this.child,
     required this.isFeedbackVisible,
     required this.drawColors,
     required this.mode,
     required this.pixelRatio,
     required this.feedbackBuilder,
-  })  : assert(
+  }) : assert(
           // This way, we can have a const constructor
           // ignore: prefer_is_empty
           drawColors.length > 0,
           'There must be at least one color to draw',
-        ),
-        super(key: key);
+        );
 
   final bool isFeedbackVisible;
   final FeedbackMode mode;

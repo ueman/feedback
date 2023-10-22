@@ -10,11 +10,11 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 class FeedbackLocalization extends StatelessWidget {
   /// Creates a [FeedbackLocalization].
   const FeedbackLocalization({
-    Key? key,
+    super.key,
     required this.child,
     this.delegates,
     this.localeOverride,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final List<LocalizationsDelegate<dynamic>>? delegates;

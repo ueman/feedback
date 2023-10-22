@@ -39,14 +39,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macOS-latest, ubuntu-latest, windows-latest]
+        os: [macOS-latest, ubuntu-latest]
         flutter_channel: [stable, beta]
         include:
           - os: macOS-latest
             flutter_build: ios --no-codesign
           - os: ubuntu-latest
-            flutter_build: apk
-          - os: windows-latest
             flutter_build: apk
     env:
       GRADLE_OPTS: -Dorg.gradle.daemon=false

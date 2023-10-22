@@ -2,6 +2,8 @@
 
 * Require Flutter 3.10.0
 * Require Dart 3.0.0
+* Add dark mode
+* Improve feedback controller
 
 ## [2.6.0]
 

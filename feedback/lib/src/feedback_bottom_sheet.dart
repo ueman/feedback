@@ -9,11 +9,11 @@ import 'package:flutter/material.dart';
 /// Shows the text input in which the user can describe his feedback.
 class FeedbackBottomSheet extends StatelessWidget {
   const FeedbackBottomSheet({
-    Key? key,
+    super.key,
     required this.feedbackBuilder,
     required this.onSubmit,
     required this.sheetProgress,
-  }) : super(key: key);
+  });
 
   final FeedbackBuilder feedbackBuilder;
   final OnSubmit onSubmit;
@@ -48,11 +48,10 @@ class FeedbackBottomSheet extends StatelessWidget {
 
 class _DraggableFeedbackSheet extends StatefulWidget {
   const _DraggableFeedbackSheet({
-    Key? key,
     required this.feedbackBuilder,
     required this.onSubmit,
     required this.sheetProgress,
-  }) : super(key: key);
+  });
 
   final FeedbackBuilder feedbackBuilder;
   final OnSubmit onSubmit;

@@ -54,8 +54,8 @@ class _PainterState extends State<Painter> {
 class _PainterPainter extends CustomPainter {
   _PainterPainter(
     this._path, {
-    Listenable? repaint,
-  }) : super(repaint: repaint);
+    super.repaint,
+  });
 
   final _PathHistory _path;
 

@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 
 class FeedbackData extends InheritedWidget {
   const FeedbackData({
-    Key? key,
-    required Widget child,
+    super.key,
+    required super.child,
     required this.controller,
-  }) : super(key: key, child: child);
+  });
 
   final FeedbackController controller;
 

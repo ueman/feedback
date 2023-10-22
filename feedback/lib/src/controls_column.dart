@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 class ControlsColumn extends StatelessWidget {
   /// Creates a [ControlsColumn].
   ControlsColumn({
-    Key? key,
+    super.key,
     required this.mode,
     required this.activeColor,
     required this.onColorChanged,
@@ -23,8 +23,7 @@ class ControlsColumn extends StatelessWidget {
           colors.isNotEmpty,
           'There must be at least one color to draw in colors',
         ),
-        assert(colors.contains(activeColor), 'colors must contain activeColor'),
-        super(key: key);
+        assert(colors.contains(activeColor), 'colors must contain activeColor');
 
   final ValueChanged<Color> onColorChanged;
   final VoidCallback onUndo;
@@ -107,11 +106,11 @@ class ControlsColumn extends StatelessWidget {
 
 class _ColorSelectionIconButton extends StatelessWidget {
   const _ColorSelectionIconButton({
-    Key? key,
+    super.key,
     required this.color,
     required this.onPressed,
     required this.isActive,
-  }) : super(key: key);
+  });
 
   final Color color;
   final ValueChanged<Color>? onPressed;

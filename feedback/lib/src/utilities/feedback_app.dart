@@ -7,14 +7,14 @@ import 'package:flutter/material.dart';
 
 class FeedbackApp extends StatelessWidget {
   const FeedbackApp({
-    Key? key,
+    super.key,
     required this.child,
     this.themeMode,
     this.theme,
     this.darkTheme,
     this.localizationsDelegates,
     this.localeOverride,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final ThemeMode? themeMode;

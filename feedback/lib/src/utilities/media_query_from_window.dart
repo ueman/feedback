@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 /// its dependents when `window` changes, instead of rebuilding the entire
 /// widget tree.
 class MediaQueryFromWindow extends StatefulWidget {
-  const MediaQueryFromWindow({Key? key, required this.child}) : super(key: key);
+  const MediaQueryFromWindow({super.key, required this.child});
 
   final Widget child;
 

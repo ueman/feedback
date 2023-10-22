@@ -10,8 +10,8 @@ class ScaleAndFade extends StatelessWidget {
     this.maxOpacity = 1,
     this.minScale = 0,
     this.maxScale = 1,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final ValueListenable<double> progress;
   final Widget child;

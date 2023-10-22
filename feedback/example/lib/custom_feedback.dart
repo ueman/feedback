@@ -51,10 +51,10 @@ enum FeedbackRating {
 /// other fields are optional.
 class CustomFeedbackForm extends StatefulWidget {
   const CustomFeedbackForm({
-    Key? key,
+    super.key,
     required this.onSubmit,
     required this.scrollController,
-  }) : super(key: key);
+  });
 
   final OnSubmit onSubmit;
   final ScrollController? scrollController;

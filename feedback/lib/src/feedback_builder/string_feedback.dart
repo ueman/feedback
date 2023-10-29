@@ -89,10 +89,12 @@ class _StringFeedbackState extends State<StringFeedback> {
         ),
         TextButton(
           key: const Key('submit_feedback_button'),
-          child: Text(FeedbackLocalizations.of(context).submitButtonText,
-              style: TextStyle(
-                color: FeedbackTheme.of(context).activeFeedbackModeColor,
-              )),
+          child: Text(
+            FeedbackLocalizations.of(context).submitButtonText,
+            style: TextStyle(
+              color: FeedbackTheme.of(context).activeFeedbackModeColor,
+            ),
+          ),
           onPressed: () => widget.onSubmit(controller.text),
         ),
         const SizedBox(height: 8),

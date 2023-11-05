@@ -23,6 +23,10 @@ const _defaultBottomSheetDescriptionStyle = TextStyle(
   color: Colors.black,
 );
 
+const _defaultBottomSheetTextInputStyle = TextStyle(
+  color: Colors.black,
+);
+
 /// See the following image to get a better understanding of the properties.
 /// ![Theme](https://raw.githubusercontent.com/ueman/feedback/master/img/theme_description.png "Theme")
 class FeedbackThemeData {
@@ -35,6 +39,7 @@ class FeedbackThemeData {
       this.activeFeedbackModeColor = _blue,
       this.drawColors = _defaultDrawColors,
       this.bottomSheetDescriptionStyle = _defaultBottomSheetDescriptionStyle,
+      this.bottomSheetTextInputStyle = _defaultBottomSheetTextInputStyle,
       this.sheetIsDraggable = true,
       Color? dragHandleColor,
       ColorScheme? colorScheme})
@@ -101,6 +106,9 @@ class FeedbackThemeData {
 
   /// Text Style of the text above of the feedback text input.
   final TextStyle bottomSheetDescriptionStyle;
+
+  /// Text Style of the text input.
+  final TextStyle bottomSheetTextInputStyle;
 
   /// Whether or not the bottom sheet is draggable.
   ///

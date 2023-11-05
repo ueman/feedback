@@ -71,6 +71,7 @@ class _StringFeedbackState extends State<StringFeedback> {
                         FeedbackTheme.of(context).bottomSheetDescriptionStyle,
                   ),
                   TextField(
+                    style: FeedbackTheme.of(context).bottomSheetTextInputStyle,
                     key: const Key('text_input_field'),
                     maxLines: 2,
                     minLines: 2,

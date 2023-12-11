@@ -216,6 +216,24 @@ class PlFeedbackLocalizations extends FeedbackLocalizations {
   const PlFeedbackLocalizations();
 
   @override
+  String get submitButtonText => 'Wyślij';
+
+  @override
+  String get feedbackDescriptionText => 'Co poszło nie tak?';
+
+  @override
+  String get draw => 'Rysuj';
+
+  @override
+  String get navigate => 'Nawiguj';
+}
+
+/// Default portuguese localization
+class PtFeedbackLocalizations extends FeedbackLocalizations {
+  /// Creates a [PtFeedbackLocalizations].
+  const PtFeedbackLocalizations();
+
+  @override
   String get submitButtonText => 'Enviar';
 
   @override
@@ -228,23 +246,6 @@ class PlFeedbackLocalizations extends FeedbackLocalizations {
   String get navigate => 'Navegar';
 }
 
-/// Default portuguese localization
-class PtFeedbackLocalizations extends FeedbackLocalizations {
-  /// Creates a [PtFeedbackLocalizations].
-  const PtFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Wyślij';
-
-  @override
-  String get feedbackDescriptionText => 'Co poszło nie tak?';
-
-  @override
-  String get draw => 'Rysuj';
-
-  @override
-  String get navigate => 'Nawiguj';
-}
 // coverage:ignore-end
 
 /// This is a localization delegate, which includes all of the localizations

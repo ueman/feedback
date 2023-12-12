@@ -23,6 +23,20 @@ extension BetterFeedbackX on FeedbackController {
   ///   }
   /// )
   /// ```
+  /// You can also add the `onIssueCreated` callback if you want to, this way you will have access to the user feedback object after it was sent to gitlab.
+  /// It is a good way to toggle a loader when handling feedback this way.
+  /// ```dart
+  ///
+  /// BetterFeedback.of(context).showAndUploadToGitLab(
+  ///       projectId: 'gitlab-project-id',
+  ///       apiToken: 'gitlab-api-token',
+  ///       gitlabUrl: 'gitlab.org',
+  ///       onIssueCreated: (feedback) {
+  ///         print(feedback);
+  ///         yourLoaderController.hide();
+  ///       }
+  /// );
+  /// ```
   /// The API token needs access to:
   ///   - read_api
   ///   - write_repository

@@ -48,15 +48,13 @@ extension BetterFeedbackX on FeedbackController {
     http.Client? client,
     OnFeedbackCallback? onIssueCreated,
   }) {
-    show((feedback) async {
-      uploadToGitLab(
-        projectId: projectId,
-        apiToken: apiToken,
-        gitlabUrl: gitlabUrl,
-        client: client,
-        onIssueCreated: onIssueCreated,
-      );
-    });
+    show(uploadToGitLab(
+      projectId: projectId,
+      apiToken: apiToken,
+      gitlabUrl: gitlabUrl,
+      client: client,
+      onIssueCreated: onIssueCreated,
+    ));
   }
 }
 

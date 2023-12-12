@@ -32,13 +32,17 @@ extension BetterFeedbackX on FeedbackController {
     required String apiToken,
     String? gitlabUrl,
     http.Client? client,
+    OnFeedbackCallback? onIssueCreated,
   }) {
-    show(uploadToGitLab(
-      projectId: projectId,
-      apiToken: apiToken,
-      gitlabUrl: gitlabUrl,
-      client: client,
-    ));
+    show((feedback) async {
+      uploadToGitLab(
+        projectId: projectId,
+        apiToken: apiToken,
+        gitlabUrl: gitlabUrl,
+        client: client,
+        onIssueCreated: onIssueCreated,
+      );
+    });
   }
 }
 
@@ -50,6 +54,7 @@ OnFeedbackCallback uploadToGitLab({
   required String apiToken,
   String? gitlabUrl,
   http.Client? client,
+  OnFeedbackCallback? onIssueCreated,
 }) {
   final httpClient = client ?? http.Client();
   final baseUrl = gitlabUrl ?? 'gitlab.com';
@@ -94,5 +99,6 @@ OnFeedbackCallback uploadToGitLab({
       ),
       headers: {'PRIVATE-TOKEN': apiToken},
     );
+    await onIssueCreated?.call(feedback);
   };
 }

@@ -8,6 +8,12 @@ import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 
 void main() {
+  final feedback = UserFeedback(
+    screenshot: Uint8List.fromList([]),
+    text: 'foo bar',
+    extra: {'foo': 'bar'},
+  );
+
   test('uploads', () async {
     final mockClient = MockClient();
     var onFeedback = uploadToGitLab(
@@ -17,14 +23,28 @@ void main() {
       client: mockClient,
     );
 
-    onFeedback(UserFeedback(
-      screenshot: Uint8List.fromList([]),
-      text: 'foo bar',
-      extra: {'foo': 'bar'},
-    ));
+    onFeedback(feedback);
 
     final result = await mockClient.completer.future;
     expect(result, true);
+  });
+
+  test('onIssueCreated callback should be called', () async {
+    bool mockClient = false;
+    final client = MockClient();
+    var onFeedback = uploadToGitLab(
+      projectId: '123',
+      apiToken: '123',
+      gitlabUrl: 'example.org',
+      client: client,
+      onIssueCreated: (feedback) => mockClient = true,
+    );
+
+    onFeedback(feedback);
+
+    await client.completer.future;
+    await Future.delayed(const Duration(milliseconds: 200));
+    expect(mockClient, isTrue);
   });
 }
 

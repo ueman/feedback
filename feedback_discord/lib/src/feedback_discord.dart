@@ -54,7 +54,7 @@ OnFeedbackCallback uploadToDiscord({
       baseUrl,
     );
     final uploadRequest = http.MultipartRequest('POST', uri)
-      ..fields['content'] = 'FeedbackTest'
+      ..fields['content'] = feedback.text
       ..files.add(http.MultipartFile.fromBytes(
         'file',
         feedback.screenshot,

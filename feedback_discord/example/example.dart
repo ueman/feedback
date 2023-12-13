@@ -54,8 +54,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(
               onPressed: () {
                 BetterFeedback.of(context).showAndUploadToDiscord(
-                  channel: '#discord-feedbacks',
-                  discordUrl: 'https://discord.com/api/webhooks/1184473488468217916/x3Umb1v_EEWsf3octWJgPAXYM1EMmnBkTr8-W3t4Fb-ePe6aOcZ2_6AIOa2IkiG4Xc_i',
+                  channel: '#discord-feedback',
+                  discordUrl: 'https://discord.com/api/webhooks/',
                 );
               },
               child: const Text('Show Feedback view'),

@@ -5,7 +5,7 @@ import 'package:http_parser/http_parser.dart';
 
 /// This is an extension to make it easier to call
 /// [showAndUploadToGitLab].
-extension BetterFeedbackX on FeedbackController {
+extension BetterFeedbackDiscord on FeedbackController {
   /// Example usage:
   /// ```dart
   /// import 'package:feedback_gitlab/feedback_gitlab.dart';

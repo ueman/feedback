@@ -37,10 +37,10 @@ void main() {
 
 Provide a way to show the feedback panel by calling 
 ```dart
-BetterFeedback.of(context).showAndUploadToGitLab(
-    projectId: 'project-Id',
-    apiToken: 'api-token',
-);
+  BetterFeedback.of(context).showAndUploadToDiscord(
+    channel: '#discord-feedback',
+    discordUrl: 'https://discord.com/api/webhooks/',
+ );
 ```
 Provide a way to hide the feedback panel by calling  `BetterFeedback.of(context).hide();` 
 

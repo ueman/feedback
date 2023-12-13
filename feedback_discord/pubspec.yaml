@@ -1,6 +1,6 @@
 name: feedback_discord
 description: A Flutter package for getting better feedback. It allows the user to give interactive feedback directly in the app and upload it as an issue to Discord channel
-version: 3.0.0
+version: 1.0.0
 homepage: https://uekoetter.dev
 repository: https://github.com/ueman/feedback
 issue_tracker: https://github.com/ueman/feedback/issues

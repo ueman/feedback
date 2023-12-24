@@ -228,6 +228,7 @@ class PlFeedbackLocalizations extends FeedbackLocalizations {
   String get navigate => 'Nawiguj';
 }
 
+
 /// Default portuguese localization
 class PtFeedbackLocalizations extends FeedbackLocalizations {
   /// Creates a [PtFeedbackLocalizations].
@@ -244,6 +245,24 @@ class PtFeedbackLocalizations extends FeedbackLocalizations {
 
   @override
   String get navigate => 'Navegar';
+}
+
+/// Default japanese localization
+class JaFeedbackLocalizations extends FeedbackLocalizations {
+  /// Creates a [JaFeedbackLocalizations].
+  const JaFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => '送信';
+
+  @override
+  String get feedbackDescriptionText => '何がありましたか？';
+
+  @override
+  String get draw => '描く';
+
+  @override
+  String get navigate => 'ナビゲート';
 }
 
 // coverage:ignore-end
@@ -272,7 +291,9 @@ class GlobalFeedbackLocalizationsDelegate
     const Locale('tr'): const TrFeedbackLocalizations(),
     const Locale('zh'): const ZhFeedbackLocalizations(),
     const Locale('pl'): const PlFeedbackLocalizations(),
+
     const Locale('pt'): const PtFeedbackLocalizations(),
+    const Locale('ja'): const JaFeedbackLocalizations(),
   };
 
   /// The default locale to use. Note that this locale should ALWAYS be

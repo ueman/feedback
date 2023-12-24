@@ -228,7 +228,6 @@ class PlFeedbackLocalizations extends FeedbackLocalizations {
   String get navigate => 'Nawiguj';
 }
 
-
 /// Default portuguese localization
 class PtFeedbackLocalizations extends FeedbackLocalizations {
   /// Creates a [PtFeedbackLocalizations].
@@ -291,7 +290,6 @@ class GlobalFeedbackLocalizationsDelegate
     const Locale('tr'): const TrFeedbackLocalizations(),
     const Locale('zh'): const ZhFeedbackLocalizations(),
     const Locale('pl'): const PlFeedbackLocalizations(),
-
     const Locale('pt'): const PtFeedbackLocalizations(),
     const Locale('ja'): const JaFeedbackLocalizations(),
   };

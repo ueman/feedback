@@ -228,6 +228,25 @@ class PlFeedbackLocalizations extends FeedbackLocalizations {
   String get navigate => 'Nawiguj';
 }
 
+
+/// Default portuguese localization
+class PtFeedbackLocalizations extends FeedbackLocalizations {
+  /// Creates a [PtFeedbackLocalizations].
+  const PtFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'Enviar';
+
+  @override
+  String get feedbackDescriptionText => 'Qual o problema?';
+
+  @override
+  String get draw => 'Desenhar';
+
+  @override
+  String get navigate => 'Navegar';
+}
+
 /// Default japanese localization
 class JaFeedbackLocalizations extends FeedbackLocalizations {
   /// Creates a [JaFeedbackLocalizations].
@@ -272,6 +291,8 @@ class GlobalFeedbackLocalizationsDelegate
     const Locale('tr'): const TrFeedbackLocalizations(),
     const Locale('zh'): const ZhFeedbackLocalizations(),
     const Locale('pl'): const PlFeedbackLocalizations(),
+
+    const Locale('pt'): const PtFeedbackLocalizations(),
     const Locale('ja'): const JaFeedbackLocalizations(),
   };
 

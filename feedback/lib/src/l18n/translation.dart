@@ -328,6 +328,8 @@ class GlobalFeedbackLocalizationsDelegate
     const Locale('pl'): const PlFeedbackLocalizations(),
     const Locale('pt'): const PtFeedbackLocalizations(),
     const Locale('ja'): const JaFeedbackLocalizations(),
+    const Locale('el'): const ElFeedbackLocalizations(),
+    const Locale('bg'): const BgFeedbackLocalizations(),
   };
 
   /// The default locale to use. Note that this locale should ALWAYS be

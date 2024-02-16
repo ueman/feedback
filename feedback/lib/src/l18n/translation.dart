@@ -264,6 +264,42 @@ class JaFeedbackLocalizations extends FeedbackLocalizations {
   String get navigate => 'ナビゲート';
 }
 
+/// Default greek localization
+class ElFeedbackLocalizations extends FeedbackLocalizations {
+  /// Creates a [ElFeedbackLocalizations]
+  const ElFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'Υποβολή';
+
+  @override
+  String get feedbackDescriptionText => 'Τι πρόβλημα υπάρχει;';
+
+  @override
+  String get draw => 'Σχεδίαση';
+
+  @override
+  String get navigate => 'Πλοήγηση';
+}
+
+/// Default bulgarian localization
+class BgFeedbackLocalizations extends FeedbackLocalizations {
+  /// Creates a [BgFeedbackLocalizations]
+  const BgFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'Подчинение';
+
+  @override
+  String get feedbackDescriptionText => 'текст на описанието';
+
+  @override
+  String get draw => 'Нарисувай';
+
+  @override
+  String get navigate => 'Навигиране';
+}
+
 // coverage:ignore-end
 
 /// This is a localization delegate, which includes all of the localizations

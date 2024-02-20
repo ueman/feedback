@@ -16,6 +16,12 @@
   <img src="https://raw.githubusercontent.com/ueman/feedback/master/img/ff.png" height="100" alt="Flutter Favorite" />
 </p>
 
+<p align="center">
+
+[![Package of the week video](https://img.youtube.com/vi/yjsN2Goe_po/0.jpg)](https://www.youtube.com/watch?v=yjsN2Goe_po "feedback (Package of the Week)")
+
+</p>
+
 A Flutter package for obtaining better feedback. It allows the user to provide interactive feedback 
 directly in the app, by annotating a screenshot of the current page, as well as by adding text.
 

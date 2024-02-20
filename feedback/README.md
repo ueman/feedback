@@ -23,6 +23,12 @@ directly in the app, by annotating a screenshot of the current page, as well as 
   <img src="https://raw.githubusercontent.com/ueman/feedback/master/img/example_0.1.0-beta.gif" width="200" alt="Example Image">
 </p>
 
+<p align="center">
+
+[![Package of the week video](https://img.youtube.com/vi/yjsN2Goe_po/0.jpg)](https://www.youtube.com/watch?v=yjsN2Goe_po "feedback (Package of the Week)")
+
+</p>
+
 ## Demo
 
 An interactive web example is available here: <a href="https://ueman.github.io/feedback/"><img src="https://img.shields.io/badge/Try-Flutter%20Web%20demo-blue" alt="Online demo"></a>. It also contains a small tutorial on how to use this library.

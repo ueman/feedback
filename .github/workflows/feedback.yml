@@ -32,7 +32,7 @@ jobs:
       - run: dart format --set-exit-if-changed .
       - run: flutter analyze
       - run: flutter test --coverage
-      - uses: codecov/codecov-action@v3.1.4
+      - uses: codecov/codecov-action@v3.1.6
 
   build:
     needs: check

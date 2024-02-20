@@ -18,7 +18,7 @@ jobs:
       run:
         working-directory: feedback
     # the golden images were generated on MacOS, therefore the tests must run on MacOS
-    runs-on: macos-latest
+    runs-on: macos-latest-large
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v3
@@ -39,10 +39,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macOS-latest, ubuntu-latest]
+        os: [macos-latest-large, ubuntu-latest]
         flutter_channel: [stable, beta]
         include:
-          - os: macOS-latest
+          - os: macos-latest-large
             flutter_build: ios --no-codesign
           - os: ubuntu-latest
             flutter_build: apk

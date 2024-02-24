@@ -11,7 +11,18 @@ The latest version is <a href="https://pub.dev/packages/feedback_github"><img sr
 dependencies:
   flutter:
     sdk: flutter
-  feedback_github: x.y.z # use the latest version found on pub.dev
+  feedback_github:
+    git: 
+      url: https://github.com/defuncart/fork_feedback/
+      path: feedback_github
+      ref: feature/add-create-issue-on-github
+
+dependency_overrides:
+  feedback:
+    git: 
+      url: https://github.com/defuncart/fork_feedback/
+      path: feedback
+      ref: feature/add-create-issue-on-github
 ```
 
 Then, run `flutter pub get` in your terminal.
@@ -37,13 +48,22 @@ void main() {
 
 Provide a way to show the feedback panel by calling 
 ```dart
-BetterFeedback.of(context).showAndUploadToGitLab(
-    projectId: 'project-Id',
-    apiToken: 'api-token',
+BetterFeedback.of(context).showAndUploadToGitHub(
+  username: 'username',
+  repository: 'repository',
+  authToken: 'github_pat_',
+  labels: ['feedback'],
+  assignees: ['username'],
+  logs: 'log1\nlog2',
+  imageId: Uuid().v4(),
 );
 ```
 Provide a way to hide the feedback panel by calling  `BetterFeedback.of(context).hide();` 
 
+
+## Repository Setup
+
+The github repository `repository` for user `username` requires a `issue_images` branch where the images for issue can be uploaded to.
 
 ## 📣  Author
 

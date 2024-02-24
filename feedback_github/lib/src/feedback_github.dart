@@ -20,14 +20,18 @@ extension BetterFeedbackX on FeedbackController {
   ///       authToken: 'github_pat_token',
   ///       labels: ['feedback'],
   ///       assignees: ['dash'],
+  ///       imageId: 'unique-id',
   ///     );
   ///   }
   /// )
   /// ```
+  ///
   /// The API token (Personal Access Token) needs access to:
-  ///   - issues (read and write)
+  ///   - issues (write)
+  ///   - content (write)
   ///   - metadata (read)
-  /// See https://docs.github.com/en/enterprise-server@3.9/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens
+  ///
+  /// It is assumed that the branch `issue_images` exists for [repository]
   void showAndUploadToGitHub({
     required String username,
     required String repository,
@@ -35,6 +39,7 @@ extension BetterFeedbackX on FeedbackController {
     List<String>? labels,
     List<String>? assignees,
     String? logs,
+    required String imageId,
     String? githubUrl,
     http.Client? client,
   }) {
@@ -45,6 +50,7 @@ extension BetterFeedbackX on FeedbackController {
       labels: labels,
       assignees: assignees,
       logs: logs,
+      imageId: imageId,
       githubUrl: githubUrl,
       client: client,
     ));
@@ -61,6 +67,7 @@ OnFeedbackCallback uploadToGitLab({
   List<String>? labels,
   List<String>? assignees,
   String? logs,
+  required String imageId,
   String? githubUrl,
   http.Client? client,
 }) {
@@ -68,20 +75,41 @@ OnFeedbackCallback uploadToGitLab({
   final baseUrl = githubUrl ?? 'api.github.com';
 
   return (UserFeedback feedback) async {
-    final uri = Uri.https(
+    var uri = Uri.https(
       baseUrl,
       'repos/$username/$repository/issues',
     );
 
-    // title contains first 20 characters of message, with a default for empty feedback
-    final title = feedback.text.length > 20
-        ? '${feedback.text.substring(0, 20)}...'
-        : feedback.text.isEmpty
-            ? 'New Feedback'
-            : feedback.text;
-    // body contains message and optional logs
-    final body = '''${feedback.text}
-    ${logs != null ? '''
+    // upload image to /issue_images branch
+    var response = await httpClient.put(
+      Uri.https(
+        baseUrl,
+        'repos/$username/$repository/contents/issue_images/$imageId.png',
+      ),
+      headers: {
+        'Accept': 'application/vnd.github+json',
+        'Authorization': 'Bearer $authToken',
+      },
+      body: jsonEncode({
+        'message': imageId,
+        'content': base64Encode(feedback.screenshot),
+        'branch': 'issue_images',
+      }),
+    );
+
+    if (response.statusCode == 201) {
+      final imageUrl = jsonDecode(response.body)['content']['download_url'];
+
+      // title contains first 20 characters of message, with a default for empty feedback
+      final title = feedback.text.length > 20
+          ? '${feedback.text.substring(0, 20)}...'
+          : feedback.text.isEmpty
+              ? 'New Feedback'
+              : feedback.text;
+      // body contains message and optional logs
+      final body = '''${feedback.text}
+![]($imageUrl)
+${logs != null ? '''
 <details>
 <summary>Logs</summary>
 
@@ -92,27 +120,27 @@ $logs
 ''' : ''}
 ''';
 
-    // https://docs.github.com/en/rest/issues/issues?apiVersion=2022-11-28#create-an-issue
-    final response = await httpClient.post(
-      uri,
-      headers: {
-        'Accept': 'application/vnd.github+json',
-        'Authorization': 'Bearer $authToken',
-      },
-      body: jsonEncode({
-        'title': title,
-        'body': body,
-        if (labels != null && labels.isNotEmpty) 'labels': labels,
-        if (assignees != null && assignees.isNotEmpty) 'assignees': assignees,
-      }),
-    );
+      uri = Uri.https(
+        baseUrl,
+        'repos/$username/$repository/issues',
+      );
 
-    print(response.body);
+      // https://docs.github.com/en/rest/issues/issues?apiVersion=2022-11-28#create-an-issue
+      response = await httpClient.post(
+        uri,
+        headers: {
+          'Accept': 'application/vnd.github+json',
+          'Authorization': 'Bearer $authToken',
+        },
+        body: jsonEncode({
+          'title': title,
+          'body': body,
+          if (labels != null && labels.isNotEmpty) 'labels': labels,
+          if (assignees != null && assignees.isNotEmpty) 'assignees': assignees,
+        }),
+      );
 
-    if (response.statusCode == 201) {
-      print('uploaded');
-    } else {
-      print('not uploaded');
+      // TODO error handling
     }
   };
 }

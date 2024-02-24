@@ -2,11 +2,11 @@
 
 import 'package:feedback/feedback.dart';
 import 'package:feedback/src/controls_column.dart';
-import 'package:feedback/src/scale_and_fade.dart';
 import 'package:feedback/src/feedback_bottom_sheet.dart';
 import 'package:feedback/src/paint_on_background.dart';
 import 'package:feedback/src/painter.dart';
 import 'package:feedback/src/scale_and_clip.dart';
+import 'package:feedback/src/scale_and_fade.dart';
 import 'package:feedback/src/screenshot.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
 import 'package:feedback/src/utilities/back_button_interceptor.dart';
@@ -25,6 +25,7 @@ class FeedbackWidget extends StatefulWidget {
     required this.isFeedbackVisible,
     required this.drawColors,
     required this.mode,
+    required this.supportedModes,
     required this.pixelRatio,
     required this.feedbackBuilder,
   }) : assert(
@@ -36,6 +37,7 @@ class FeedbackWidget extends StatefulWidget {
 
   final bool isFeedbackVisible;
   final FeedbackMode mode;
+  final List<FeedbackMode> supportedModes;
   final double pixelRatio;
   final Widget child;
   final List<Color> drawColors;
@@ -82,6 +84,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
   @override
   void initState() {
     super.initState();
+
     BackButtonInterceptor.add(backButtonIntercept);
   }
 
@@ -110,6 +113,9 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     super.didUpdateWidget(oldWidget);
     // update feedback mode with the initial value
     mode = widget.mode;
+    if (!widget.supportedModes.contains(mode)) {
+      mode = widget.supportedModes.first;
+    }
     if (oldWidget.isFeedbackVisible != widget.isFeedbackVisible &&
         oldWidget.isFeedbackVisible == false) {
       // Feedback is now visible,
@@ -223,6 +229,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                                 minScale: .7,
                                 child: ControlsColumn(
                                   mode: mode,
+                                  supportedModes: widget.supportedModes,
                                   activeColor: painterController.drawColor,
                                   colors: widget.drawColors,
                                   onColorChanged: (color) {

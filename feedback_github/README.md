@@ -54,7 +54,7 @@ BetterFeedback.of(context).showAndUploadToGitHub(
   authToken: 'github_pat_',
   labels: ['feedback'],
   assignees: ['username'],
-  logs: 'log1\nlog2',
+  customMarkdown: '**Hello World**',
   imageId: Uuid().v4(),
 );
 ```

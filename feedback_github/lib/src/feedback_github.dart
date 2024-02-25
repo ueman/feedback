@@ -20,6 +20,7 @@ extension BetterFeedbackX on FeedbackController {
   ///       authToken: 'github_pat_token',
   ///       labels: ['feedback'],
   ///       assignees: ['dash'],
+  ///       customMarkdown: '**Hello World**',
   ///       imageId: 'unique-id',
   ///     );
   ///   }
@@ -38,7 +39,7 @@ extension BetterFeedbackX on FeedbackController {
     required String authToken,
     List<String>? labels,
     List<String>? assignees,
-    String? logs,
+    String? customMarkdown,
     required String imageId,
     String? githubUrl,
     http.Client? client,
@@ -49,7 +50,7 @@ extension BetterFeedbackX on FeedbackController {
       authToken: authToken,
       labels: labels,
       assignees: assignees,
-      logs: logs,
+      customMarkdown: customMarkdown,
       imageId: imageId,
       githubUrl: githubUrl,
       client: client,
@@ -66,7 +67,7 @@ OnFeedbackCallback uploadToGitLab({
   required String authToken,
   List<String>? labels,
   List<String>? assignees,
-  String? logs,
+  String? customMarkdown,
   required String imageId,
   String? githubUrl,
   http.Client? client,
@@ -109,15 +110,7 @@ OnFeedbackCallback uploadToGitLab({
       // body contains message and optional logs
       final body = '''${feedback.text}
 ![]($imageUrl)
-${logs != null ? '''
-<details>
-<summary>Logs</summary>
-
-```
-$logs
-```
-</details>
-''' : ''}
+${customMarkdown ?? ''}
 ''';
 
       uri = Uri.https(

@@ -300,6 +300,24 @@ class BgFeedbackLocalizations extends FeedbackLocalizations {
   String get navigate => 'Навигиране';
 }
 
+/// Default spanish localization
+class EsFeedbackLocalizations extends FeedbackLocalizations {
+  /// Creates a [EsFeedbackLocalizations]
+  const EsFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'Enviar';
+
+  @override
+  String get feedbackDescriptionText => '¿Cuál es el problema?';
+
+  @override
+  String get draw => 'Dibujar';
+
+  @override
+  String get navigate => 'Navegar';
+}
+
 // coverage:ignore-end
 
 /// This is a localization delegate, which includes all of the localizations
@@ -330,6 +348,7 @@ class GlobalFeedbackLocalizationsDelegate
     const Locale('ja'): const JaFeedbackLocalizations(),
     const Locale('el'): const ElFeedbackLocalizations(),
     const Locale('bg'): const BgFeedbackLocalizations(),
+    const Locale('es'): const EsFeedbackLocalizations()
   };
 
   /// The default locale to use. Note that this locale should ALWAYS be

@@ -60,6 +60,7 @@ class _MyAppState extends State<MyApp> {
       ],
       localeOverride: const Locale('en'),
       mode: FeedbackMode.draw,
+      supportedModes: FeedbackMode.values,
       pixelRatio: 1,
       child: MaterialApp(
         title: 'Feedback Demo',

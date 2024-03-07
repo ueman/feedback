@@ -12,6 +12,7 @@ class ControlsColumn extends StatelessWidget {
   ControlsColumn({
     super.key,
     required this.mode,
+    required this.supportedModes,
     required this.activeColor,
     required this.onColorChanged,
     required this.onUndo,
@@ -33,6 +34,7 @@ class ControlsColumn extends StatelessWidget {
   final List<Color> colors;
   final Color activeColor;
   final FeedbackMode mode;
+  final List<FeedbackMode> supportedModes;
 
   @override
   Widget build(BuildContext context) {
@@ -54,50 +56,54 @@ class ControlsColumn extends StatelessWidget {
             icon: const Icon(Icons.close),
             onPressed: onCloseFeedback,
           ),
-          _ColumnDivider(),
-          RotatedBox(
-            quarterTurns: 1,
-            child: MaterialButton(
-              key: const ValueKey<String>('navigate_button'),
-              onPressed: isNavigatingActive
-                  ? null
-                  : () => onControlModeChanged(FeedbackMode.navigate),
-              disabledTextColor:
-                  FeedbackTheme.of(context).activeFeedbackModeColor,
-              child: Text(FeedbackLocalizations.of(context).navigate),
+          if (supportedModes.contains(FeedbackMode.navigate)) ...[
+            _ColumnDivider(),
+            RotatedBox(
+              quarterTurns: 1,
+              child: MaterialButton(
+                key: const ValueKey<String>('navigate_button'),
+                onPressed: isNavigatingActive
+                    ? null
+                    : () => onControlModeChanged(FeedbackMode.navigate),
+                disabledTextColor:
+                    FeedbackTheme.of(context).activeFeedbackModeColor,
+                child: Text(FeedbackLocalizations.of(context).navigate),
+              ),
             ),
-          ),
-          _ColumnDivider(),
-          RotatedBox(
-            quarterTurns: 1,
-            child: MaterialButton(
-              key: const ValueKey<String>('draw_button'),
-              minWidth: 20,
-              onPressed: isNavigatingActive
-                  ? () => onControlModeChanged(FeedbackMode.draw)
-                  : null,
-              disabledTextColor:
-                  FeedbackTheme.of(context).activeFeedbackModeColor,
-              child: Text(FeedbackLocalizations.of(context).draw),
+          ],
+          if (supportedModes.contains(FeedbackMode.draw)) ...[
+            _ColumnDivider(),
+            RotatedBox(
+              quarterTurns: 1,
+              child: MaterialButton(
+                key: const ValueKey<String>('draw_button'),
+                minWidth: 20,
+                onPressed: isNavigatingActive
+                    ? () => onControlModeChanged(FeedbackMode.draw)
+                    : null,
+                disabledTextColor:
+                    FeedbackTheme.of(context).activeFeedbackModeColor,
+                child: Text(FeedbackLocalizations.of(context).draw),
+              ),
             ),
-          ),
-          IconButton(
-            key: const ValueKey<String>('undo_button'),
-            icon: const Icon(Icons.undo),
-            onPressed: isNavigatingActive ? null : onUndo,
-          ),
-          IconButton(
-            key: const ValueKey<String>('clear_button'),
-            icon: const Icon(Icons.delete),
-            onPressed: isNavigatingActive ? null : onClearDrawing,
-          ),
-          for (final color in colors)
-            _ColorSelectionIconButton(
-              key: ValueKey<Color>(color),
-              color: color,
-              onPressed: isNavigatingActive ? null : onColorChanged,
-              isActive: activeColor == color,
+            IconButton(
+              key: const ValueKey<String>('undo_button'),
+              icon: const Icon(Icons.undo),
+              onPressed: isNavigatingActive ? null : onUndo,
             ),
+            IconButton(
+              key: const ValueKey<String>('clear_button'),
+              icon: const Icon(Icons.delete),
+              onPressed: isNavigatingActive ? null : onClearDrawing,
+            ),
+            for (final color in colors)
+              _ColorSelectionIconButton(
+                key: ValueKey<Color>(color),
+                color: color,
+                onPressed: isNavigatingActive ? null : onColorChanged,
+                isActive: activeColor == color,
+              ),
+          ],
         ],
       ),
     );

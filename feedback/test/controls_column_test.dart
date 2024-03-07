@@ -1,13 +1,14 @@
 import 'package:feedback/src/controls_column.dart';
 import 'package:feedback/src/feedback_mode.dart';
 import 'package:feedback/src/l18n/localization.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   Widget create({
     Color? activeColor,
     FeedbackMode? mode,
+    List<FeedbackMode>? supportedModes,
     ValueChanged<Color>? onColorChanged,
     VoidCallback? onUndo,
     ValueChanged<FeedbackMode>? onControlModeChanged,
@@ -19,6 +20,7 @@ void main() {
       child: ControlsColumn(
         activeColor: activeColor ?? Colors.red,
         mode: mode ?? FeedbackMode.draw,
+        supportedModes: supportedModes ?? FeedbackMode.values,
         colors:
             colors ?? [Colors.red, Colors.green, Colors.blue, Colors.yellow],
         onClearDrawing: onClearDrawing ?? () {},

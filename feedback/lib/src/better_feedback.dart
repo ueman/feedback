@@ -111,6 +111,7 @@ class BetterFeedback extends StatefulWidget {
     this.localizationsDelegates,
     this.localeOverride,
     this.mode = FeedbackMode.draw,
+    this.supportedModes = FeedbackMode.values,
     this.pixelRatio = 3.0,
   }) : assert(
           pixelRatio > 0,
@@ -165,6 +166,11 @@ class BetterFeedback extends StatefulWidget {
   /// By default it will allow the user to navigate.
   /// See [FeedbackMode] for other options.
   final FeedbackMode mode;
+
+  /// Set the default supported modes.
+  /// By default all modes will be supported.
+  /// See [FeedbackMode] for more info.
+  final List<FeedbackMode> supportedModes;
 
   /// The pixelRatio describes the scale between
   /// the logical pixels and the size of the output image.
@@ -233,6 +239,7 @@ class _BetterFeedbackState extends State<BetterFeedback> {
                 isFeedbackVisible: controller.isVisible,
                 drawColors: FeedbackTheme.of(context).drawColors,
                 mode: widget.mode,
+                supportedModes: widget.supportedModes,
                 pixelRatio: widget.pixelRatio,
                 feedbackBuilder:
                     widget.feedbackBuilder ?? simpleFeedbackBuilder,

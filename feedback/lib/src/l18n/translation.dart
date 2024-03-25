@@ -93,13 +93,13 @@ class FaFeedbackLocalizations extends FeedbackLocalizations {
   String get submitButtonText => 'تایید';
 
   @override
-  String get feedbackDescriptionText => 'مشکل چیست ؟ ';
+  String get feedbackDescriptionText => 'چه مشکلی پیش آمده ؟';
 
   @override
   String get draw => 'رسم';
 
   @override
-  String get navigate => 'انتقال';
+  String get navigate => 'پیمایش';
 }
 
 /// Default french localization

@@ -99,7 +99,7 @@ class FaFeedbackLocalizations extends FeedbackLocalizations {
   String get draw => 'رسم';
 
   @override
-  String get navigate => 'انتقالÏ';
+  String get navigate => 'انتقال';
 }
 
 /// Default french localization

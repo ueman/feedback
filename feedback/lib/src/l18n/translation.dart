@@ -86,7 +86,7 @@ class EnFeedbackLocalizations extends FeedbackLocalizations {
 
 /// Default persian localization
 class FaFeedbackLocalizations extends FeedbackLocalizations {
-  /// Creates a [EnFeedbackLocalizations].
+  /// Creates a [FaFeedbackLocalizations].
   const FaFeedbackLocalizations();
 
   @override

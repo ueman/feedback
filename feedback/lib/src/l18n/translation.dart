@@ -84,6 +84,24 @@ class EnFeedbackLocalizations extends FeedbackLocalizations {
   String get navigate => 'Navigate';
 }
 
+/// Default persian localization
+class FaFeedbackLocalizations extends FeedbackLocalizations {
+  /// Creates a [FaFeedbackLocalizations].
+  const FaFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'تایید';
+
+  @override
+  String get feedbackDescriptionText => 'چه مشکلی پیش آمده ؟';
+
+  @override
+  String get draw => 'رسم';
+
+  @override
+  String get navigate => 'پیمایش';
+}
+
 /// Default french localization
 class FrFeedbackLocalizations extends FeedbackLocalizations {
   /// Creates a [FrFeedbackLocalizations].
@@ -348,7 +366,8 @@ class GlobalFeedbackLocalizationsDelegate
     const Locale('ja'): const JaFeedbackLocalizations(),
     const Locale('el'): const ElFeedbackLocalizations(),
     const Locale('bg'): const BgFeedbackLocalizations(),
-    const Locale('es'): const EsFeedbackLocalizations()
+    const Locale('es'): const EsFeedbackLocalizations(),
+    const Locale('fa'): const FaFeedbackLocalizations(),
   };
 
   /// The default locale to use. Note that this locale should ALWAYS be

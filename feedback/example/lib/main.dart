@@ -92,11 +92,10 @@ class MyHomePage extends StatelessWidget {
         child: Container(color: Colors.blue),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              const SizedBox(height: 10),
               const MarkdownBody(
                 data: '# How does it work?\n'
                     '1. Just press the `Provide feedback` button.\n'
@@ -187,6 +186,21 @@ class MyHomePage extends StatelessWidget {
                 child: const Text('Visit library page on pub.dev'),
                 onPressed: () {
                   launchUrl(Uri.parse('https://pub.dev/packages/feedback'));
+                },
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                child: const Text('Open Dialog #1'),
+                onPressed: () {
+                  showDialog<dynamic>(
+                    context: context,
+                    builder: (_) {
+                      return AlertDialog(
+                        title: const Text("Dialog #1"),
+                        content: Container(),
+                      );
+                    },
+                  );
                 },
               ),
             ],

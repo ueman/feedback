@@ -3,7 +3,6 @@
 import 'package:feedback/src/better_feedback.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
 import 'package:feedback/src/utilities/back_button_interceptor.dart';
-
 import 'package:flutter/material.dart';
 
 /// Shows the text input in which the user can describe his feedback.
@@ -39,7 +38,17 @@ class FeedbackBottomSheet extends StatelessWidget {
           color: FeedbackTheme.of(context).feedbackSheetColor,
           // Pass a null scroll controller because the sheet is not drag
           // enabled.
-          child: feedbackBuilder(context, onSubmit, null),
+          child: Navigator(
+            onGenerateRoute: (_) {
+              return MaterialPageRoute<void>(
+                builder: (_) => feedbackBuilder(
+                  context,
+                  onSubmit,
+                  null,
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
@@ -122,10 +131,16 @@ class _DraggableFeedbackSheetState extends State<_DraggableFeedbackSheet> {
                   color: FeedbackTheme.of(context).feedbackSheetColor,
                   // A `ListView` makes the content here disappear.
                   child: DefaultTextEditingShortcuts(
-                    child: widget.feedbackBuilder(
-                      context,
-                      widget.onSubmit,
-                      scrollController,
+                    child: Navigator(
+                      onGenerateRoute: (_) {
+                        return MaterialPageRoute<void>(
+                          builder: (_) => widget.feedbackBuilder(
+                            context,
+                            widget.onSubmit,
+                            scrollController,
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ),

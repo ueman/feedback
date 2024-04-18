@@ -90,22 +90,41 @@ class _CustomFeedbackFormState extends State<CustomFeedbackForm> {
                         child: Text('*'),
                       ),
                       Flexible(
-                        child: DropdownButton<FeedbackType>(
-                          value: _customFeedback.feedbackType,
-                          items: FeedbackType.values
-                              .map(
-                                (type) => DropdownMenuItem<FeedbackType>(
-                                  value: type,
-                                  child: Text(type
-                                      .toString()
-                                      .split('.')
-                                      .last
-                                      .replaceAll('_', ' ')),
-                                ),
-                              )
-                              .toList(),
-                          onChanged: (feedbackType) => setState(() =>
-                              _customFeedback.feedbackType = feedbackType),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            DropdownButton<FeedbackType>(
+                              value: _customFeedback.feedbackType,
+                              items: FeedbackType.values
+                                  .map(
+                                    (type) => DropdownMenuItem<FeedbackType>(
+                                      value: type,
+                                      child: Text(type
+                                          .toString()
+                                          .split('.')
+                                          .last
+                                          .replaceAll('_', ' ')),
+                                    ),
+                                  )
+                                  .toList(),
+                              onChanged: (feedbackType) => setState(() =>
+                                  _customFeedback.feedbackType = feedbackType),
+                            ),
+                            ElevatedButton(
+                              child: const Text('Open Dialog #2'),
+                              onPressed: () {
+                                showDialog<dynamic>(
+                                  context: context,
+                                  builder: (_) {
+                                    return AlertDialog(
+                                      title: const Text("Dialog #2"),
+                                      content: Container(),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ],
                         ),
                       ),
                     ],

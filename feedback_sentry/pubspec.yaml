@@ -13,7 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
   feedback: ^3.0.0
-  sentry: ^7.0.0
+  sentry: ^8.0.0
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,4 @@
-## 3.0.0
+## 4.0.0
 
 * Add compatibility with Sentry v8
 

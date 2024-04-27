@@ -1,3 +1,7 @@
+## 3.0.1
+
+* Add compatibility with Sentry v8
+
 ## 3.0.0
 
 * Update dependencies

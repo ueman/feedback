@@ -122,6 +122,37 @@ class FeedbackThemeData {
 
   /// [ColorScheme] on the feedback UI
   late final ColorScheme colorScheme;
+
+  /// Creates a copy of the current [FeedbackThemeData] with the given
+  /// optional fields replaced with the given values.
+  FeedbackThemeData copyWith({
+    Color? background,
+    Color? feedbackSheetColor,
+    double? feedbackSheetHeight,
+    Color? activeFeedbackModeColor,
+    List<Color>? drawColors,
+    TextStyle? bottomSheetDescriptionStyle,
+    TextStyle? bottomSheetTextInputStyle,
+    bool? sheetIsDraggable,
+    Color? dragHandleColor,
+    ColorScheme? colorScheme,
+  }) {
+    return FeedbackThemeData(
+      background: background ?? this.background,
+      feedbackSheetColor: feedbackSheetColor ?? this.feedbackSheetColor,
+      feedbackSheetHeight: feedbackSheetHeight ?? this.feedbackSheetHeight,
+      activeFeedbackModeColor:
+          activeFeedbackModeColor ?? this.activeFeedbackModeColor,
+      drawColors: drawColors ?? this.drawColors,
+      bottomSheetDescriptionStyle:
+          bottomSheetDescriptionStyle ?? this.bottomSheetDescriptionStyle,
+      bottomSheetTextInputStyle:
+          bottomSheetTextInputStyle ?? this.bottomSheetTextInputStyle,
+      sheetIsDraggable: sheetIsDraggable ?? this.sheetIsDraggable,
+      dragHandleColor: dragHandleColor ?? this.dragHandleColor,
+      colorScheme: colorScheme ?? this.colorScheme,
+    );
+  }
 }
 
 /// Provides an instance of [FeedbackThemeData] for all descendants.

@@ -52,7 +52,8 @@ class FeedbackThemeData {
           drawColors.length > 0,
           'There must be at least one color to draw with',
         ) {
-    brightness ??= ThemeData.estimateBrightnessForColor(feedbackSheetColor);
+    this.brightness =
+        brightness ??= ThemeData.estimateBrightnessForColor(feedbackSheetColor);
     final bool isDark = brightness == Brightness.dark;
     this.dragHandleColor =
         dragHandleColor ?? (isDark ? Colors.black26 : Colors.white38);

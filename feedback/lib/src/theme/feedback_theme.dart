@@ -41,6 +41,7 @@ class FeedbackThemeData {
       this.bottomSheetDescriptionStyle = _defaultBottomSheetDescriptionStyle,
       this.bottomSheetTextInputStyle = _defaultBottomSheetTextInputStyle,
       this.sheetIsDraggable = true,
+      Brightness? brightness,
       Color? dragHandleColor,
       ColorScheme? colorScheme})
       :
@@ -50,8 +51,8 @@ class FeedbackThemeData {
           // ignore: prefer_is_empty
           drawColors.length > 0,
           'There must be at least one color to draw with',
-        ),
-        brightness = ThemeData.estimateBrightnessForColor(feedbackSheetColor) {
+        ) {
+    brightness ??= ThemeData.estimateBrightnessForColor(feedbackSheetColor);
     final bool isDark = brightness == Brightness.dark;
     this.dragHandleColor =
         dragHandleColor ?? (isDark ? Colors.black26 : Colors.white38);
@@ -71,6 +72,7 @@ class FeedbackThemeData {
           color: Colors.white,
         ),
         sheetIsDraggable: sheetIsDraggable,
+        brightness: Brightness.dark,
       );
 
   /// Create a light version of the [FeedbackThemeData]
@@ -81,10 +83,11 @@ class FeedbackThemeData {
         feedbackSheetColor: _lightGrey,
         bottomSheetDescriptionStyle: _defaultBottomSheetDescriptionStyle,
         sheetIsDraggable: sheetIsDraggable,
+        brightness: Brightness.light,
       );
 
   /// Brightness of the theme based on the [background] color
-  final Brightness brightness;
+  late final Brightness brightness;
 
   /// The background of the feedback view.
   final Color background;
@@ -135,6 +138,7 @@ class FeedbackThemeData {
     TextStyle? bottomSheetTextInputStyle,
     bool? sheetIsDraggable,
     Color? dragHandleColor,
+    Brightness? brightness,
     ColorScheme? colorScheme,
   }) {
     return FeedbackThemeData(
@@ -150,6 +154,7 @@ class FeedbackThemeData {
           bottomSheetTextInputStyle ?? this.bottomSheetTextInputStyle,
       sheetIsDraggable: sheetIsDraggable ?? this.sheetIsDraggable,
       dragHandleColor: dragHandleColor ?? this.dragHandleColor,
+      brightness: brightness ?? this.brightness,
       colorScheme: colorScheme ?? this.colorScheme,
     );
   }

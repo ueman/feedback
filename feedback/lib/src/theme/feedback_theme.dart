@@ -41,6 +41,7 @@ class FeedbackThemeData {
       this.bottomSheetDescriptionStyle = _defaultBottomSheetDescriptionStyle,
       this.bottomSheetTextInputStyle = _defaultBottomSheetTextInputStyle,
       this.sheetIsDraggable = true,
+      Brightness? brightness,
       Color? dragHandleColor,
       ColorScheme? colorScheme})
       :
@@ -50,8 +51,9 @@ class FeedbackThemeData {
           // ignore: prefer_is_empty
           drawColors.length > 0,
           'There must be at least one color to draw with',
-        ),
-        brightness = ThemeData.estimateBrightnessForColor(feedbackSheetColor) {
+        ) {
+    this.brightness =
+        brightness ??= ThemeData.estimateBrightnessForColor(feedbackSheetColor);
     final bool isDark = brightness == Brightness.dark;
     this.dragHandleColor =
         dragHandleColor ?? (isDark ? Colors.black26 : Colors.white38);
@@ -71,6 +73,7 @@ class FeedbackThemeData {
           color: Colors.white,
         ),
         sheetIsDraggable: sheetIsDraggable,
+        brightness: Brightness.dark,
       );
 
   /// Create a light version of the [FeedbackThemeData]
@@ -81,10 +84,11 @@ class FeedbackThemeData {
         feedbackSheetColor: _lightGrey,
         bottomSheetDescriptionStyle: _defaultBottomSheetDescriptionStyle,
         sheetIsDraggable: sheetIsDraggable,
+        brightness: Brightness.light,
       );
 
   /// Brightness of the theme based on the [background] color
-  final Brightness brightness;
+  late final Brightness brightness;
 
   /// The background of the feedback view.
   final Color background;
@@ -122,6 +126,39 @@ class FeedbackThemeData {
 
   /// [ColorScheme] on the feedback UI
   late final ColorScheme colorScheme;
+
+  /// Creates a copy of the current [FeedbackThemeData] with the given
+  /// optional fields replaced with the given values.
+  FeedbackThemeData copyWith({
+    Color? background,
+    Color? feedbackSheetColor,
+    double? feedbackSheetHeight,
+    Color? activeFeedbackModeColor,
+    List<Color>? drawColors,
+    TextStyle? bottomSheetDescriptionStyle,
+    TextStyle? bottomSheetTextInputStyle,
+    bool? sheetIsDraggable,
+    Color? dragHandleColor,
+    Brightness? brightness,
+    ColorScheme? colorScheme,
+  }) {
+    return FeedbackThemeData(
+      background: background ?? this.background,
+      feedbackSheetColor: feedbackSheetColor ?? this.feedbackSheetColor,
+      feedbackSheetHeight: feedbackSheetHeight ?? this.feedbackSheetHeight,
+      activeFeedbackModeColor:
+          activeFeedbackModeColor ?? this.activeFeedbackModeColor,
+      drawColors: drawColors ?? this.drawColors,
+      bottomSheetDescriptionStyle:
+          bottomSheetDescriptionStyle ?? this.bottomSheetDescriptionStyle,
+      bottomSheetTextInputStyle:
+          bottomSheetTextInputStyle ?? this.bottomSheetTextInputStyle,
+      sheetIsDraggable: sheetIsDraggable ?? this.sheetIsDraggable,
+      dragHandleColor: dragHandleColor ?? this.dragHandleColor,
+      brightness: brightness ?? this.brightness,
+      colorScheme: colorScheme ?? this.colorScheme,
+    );
+  }
 }
 
 /// Provides an instance of [FeedbackThemeData] for all descendants.

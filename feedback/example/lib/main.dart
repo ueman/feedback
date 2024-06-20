@@ -42,8 +42,8 @@ class _MyAppState extends State<MyApp> {
               )
           : null,
       theme: FeedbackThemeData(
-          background: Colors.white,
-          feedbackSheetColor: Color(0xFFDDDDDD),
+          background: Colors.grey,
+          feedbackSheetColor: Colors.grey[50]!,
           drawColors: [
             Colors.red,
             Colors.green,

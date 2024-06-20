@@ -42,16 +42,28 @@ class _MyAppState extends State<MyApp> {
               )
           : null,
       theme: FeedbackThemeData(
-        background: Colors.grey,
-        feedbackSheetColor: Colors.grey[50]!,
+          background: Colors.grey,
+          feedbackSheetColor: Colors.grey[50]!,
+          drawColors: [
+            Colors.red,
+            Colors.green,
+            Colors.blue,
+            Colors.yellow,
+          ],
+          bottomSheetTextInputStyle: const TextStyle(color: Colors.black),
+          bottomSheetDescriptionStyle: const TextStyle(color: Colors.black)),
+      darkTheme: FeedbackThemeData(
+        background: Colors.black,
+        feedbackSheetColor: const Color(0xFF222222),
         drawColors: [
           Colors.red,
           Colors.green,
           Colors.blue,
           Colors.yellow,
         ],
+        bottomSheetTextInputStyle: const TextStyle(color: Colors.white),
+        bottomSheetDescriptionStyle: const TextStyle(color: Colors.white),
       ),
-      darkTheme: FeedbackThemeData.dark(),
       localizationsDelegates: [
         GlobalFeedbackLocalizationsDelegate(),
         GlobalMaterialLocalizations.delegate,
@@ -65,6 +77,11 @@ class _MyAppState extends State<MyApp> {
         title: 'Feedback Demo',
         theme: ThemeData(
           primarySwatch: _useCustomFeedback ? Colors.green : Colors.blue,
+          brightness: Brightness.light,
+        ),
+        darkTheme: ThemeData(
+          primarySwatch: _useCustomFeedback ? Colors.green : Colors.blue,
+          brightness: Brightness.dark,
         ),
         home: MyHomePage(_toggleCustomizedFeedback),
       ),

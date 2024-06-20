@@ -134,10 +134,13 @@ class FeedbackWidgetState extends State<FeedbackWidget>
         .animate(_controller);
 
     final FeedbackThemeData feedbackThemeData = FeedbackTheme.of(context);
-    final ThemeData theme = ThemeData(
-        brightness: feedbackThemeData.brightness,
-        cardColor: feedbackThemeData.feedbackSheetColor,
-        colorScheme: feedbackThemeData.colorScheme);
+    final theme = ThemeData(
+      brightness: feedbackThemeData.brightness,
+      cardColor: feedbackThemeData.feedbackSheetColor,
+      colorScheme: feedbackThemeData.colorScheme,
+    );
+
+    print("Outside of builder: ${theme.brightness}");
 
     // We need to supply a overlay because `TextField` and other widgets that
     // could be used in the bottom feedback sheet require an overlay widget ancestor.
@@ -162,6 +165,9 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                   ),
                 ),
                 builder: (context, screenshotChild) {
+                  final brightness = Theme.of(context).brightness;
+                  print("In builder: $brightness");
+
                   return CustomMultiChildLayout(
                     delegate: _FeedbackLayoutDelegate(
                       displayFeedback: !animation.isDismissed,

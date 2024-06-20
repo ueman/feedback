@@ -42,16 +42,29 @@ class _MyAppState extends State<MyApp> {
               )
           : null,
       theme: FeedbackThemeData(
-        background: Colors.grey,
-        feedbackSheetColor: Colors.grey[50]!,
+        background: Colors.white,
+        feedbackSheetColor: Color(0xFFDDDDDD),
         drawColors: [
           Colors.red,
           Colors.green,
           Colors.blue,
           Colors.yellow,
         ],
+        bottomSheetTextInputStyle: TextStyle(color: Colors.black),
+        bottomSheetDescriptionStyle: TextStyle(color: Colors.black)
       ),
-      darkTheme: FeedbackThemeData.dark(),
+      darkTheme: FeedbackThemeData(
+        background: Colors.black,
+        feedbackSheetColor: Color(0xFF222222),
+        drawColors: [
+          Colors.red,
+          Colors.green,
+          Colors.blue,
+          Colors.yellow,
+        ],
+        bottomSheetTextInputStyle: TextStyle(color: Colors.white),
+        bottomSheetDescriptionStyle: TextStyle(color: Colors.white),
+      ),
       localizationsDelegates: [
         GlobalFeedbackLocalizationsDelegate(),
         GlobalMaterialLocalizations.delegate,
@@ -71,8 +84,7 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  void _toggleCustomizedFeedback() =>
-      setState(() => _useCustomFeedback = !_useCustomFeedback);
+  void _toggleCustomizedFeedback() => setState(() => _useCustomFeedback = !_useCustomFeedback);
 }
 
 class MyHomePage extends StatelessWidget {
@@ -84,9 +96,7 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_useCustomFeedback
-            ? '(Custom) Feedback Example'
-            : 'Feedback Example'),
+        title: Text(_useCustomFeedback ? '(Custom) Feedback Example' : 'Feedback Example'),
       ),
       drawer: Drawer(
         child: Container(color: Colors.blue),
@@ -146,8 +156,7 @@ class MyHomePage extends StatelessWidget {
                   onPressed: () {
                     BetterFeedback.of(context).show((feedback) async {
                       // draft an email and send to developer
-                      final screenshotFilePath =
-                          await writeImageToStorage(feedback.screenshot);
+                      final screenshotFilePath = await writeImageToStorage(feedback.screenshot);
 
                       final Email email = Email(
                         body: feedback.text,
@@ -167,8 +176,7 @@ class MyHomePage extends StatelessWidget {
                 onPressed: () {
                   BetterFeedback.of(context).show(
                     (feedback) async {
-                      final screenshotFilePath =
-                          await writeImageToStorage(feedback.screenshot);
+                      final screenshotFilePath = await writeImageToStorage(feedback.screenshot);
 
                       // ignore: deprecated_member_use
                       await Share.shareFiles(
@@ -209,10 +217,8 @@ class MyHomePage extends StatelessWidget {
       ),
       floatingActionButton: MaterialButton(
         color: Theme.of(context).primaryColor,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(20))),
-        child: const Text('toggle feedback mode',
-            style: TextStyle(color: Colors.white)),
+        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
+        child: const Text('toggle feedback mode', style: TextStyle(color: Colors.white)),
         onPressed: () {
           // don't toggle the feedback mode if it's currently visible
           if (!BetterFeedback.of(context).isVisible) {

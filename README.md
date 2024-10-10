@@ -18,39 +18,37 @@
 
 <p align="center">
 
-[![Package of the week video](https://img.youtube.com/vi/yjsN2Goe_po/0.jpg)](https://www.youtube.com/watch?v=yjsN2Goe_po "feedback (Package of the Week)")
+[![Vídeo da biblioteca da semana](https://img.youtube.com/vi/yjsN2Goe_po/0.jpg)](https://www.youtube.com/watch?v=yjsN2Goe_po "feedback (Package of the Week)")
 
 </p>
 
-A Flutter package for obtaining better feedback. It allows the user to provide interactive feedback 
-directly in the app, by annotating a screenshot of the current page, as well as by adding text.
+Uma biblioteca do Flutter feita para conseguir melhores feedbacks. Ela permite que o usuário dê feedbacks 
+interativos diretamente de dentro do app, ao fazer capturas de tela do app, sendo possível adicionar texto também.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/ueman/feedback/master/img/example_0.1.0-beta.gif" width="200" alt="Example Image">
+  <img src="https://raw.githubusercontent.com/ueman/feedback/master/img/example_0.1.0-beta.gif" width="200" alt="Imagem de exemplo">
 </p>
 
 ## Demo
 
-An interactive web example is available here: <a href="https://ueman.github.io/feedback/"><img src="https://img.shields.io/badge/Try-Flutter%20Web%20demo-blue" alt="Online demo"></a>. It also contains a small tutorial on how to use this library.
+Um exemplo interativo no navegador está disponível aqui: <a href="https://ueman.github.io/feedback/"><img src="https://img.shields.io/badge/Try-Flutter%20Web%20demo-blue" alt="Online demo"></a>. Também contém um pequeno tutorial sobre como usar essa biblioteca
 
-## Motivation
+## Motivação
 
-It is often quite hard to achieve a very good user experience. The most important
-aspect of creating a good user experience is to obtain and to listen to feedback
-of your user. Focus groups are one solution to this problem but it is quite expensive. Another solution is to use this library to obtain direct feedback
-of your users. This library is lightweight and easy to integrate and makes it
-really easy for your users to send valuable feedback to you.
+Geralmente é difícil conseguir uma ótima experiência de usuário. O aspecto mais importante
+de criar uma boa experiência do usuário é conseguir e ouvir ao feedback do usuário.
+Grupos de foco são uma solução para esse problema, mas são caros. Outra solução é usar essa biblioteca e obter feedback diretamente dos seus usuários.
+Essa biblioteca é leve e fácil de entregar, e faz com que seja realmente fácil para seus usuários enviarem feedbacks úteis para você.
 
-By obtaining the feedback with an annotated image it is much easier for you
-get a good understanding of your users problem with a certain feature or screen
-of your app. It is like the saying "A picture is worth a thousand words" because
-a textual description can be interpreted in many ways which makes it harder to
+Ao obter o feedback com uma imagem comentada é muito mais fácil para você ter um bom entendimento do problema dos seus usuários
+com alguma certa funcionalidade ou tela do seu app. Assim como o ditado "Uma imagem vale mais do que mil palavras" porque uma descrição em forma de texto
+pode ser interpretada de muitas formas, o que faz com que a compreensão seja mais difícil.
 understand.
 
 ### Plugins
 
-Depending on your use case there are wide variety of solutions.
-These are a couple suggestions:
+Dependendo do seu caso de uso existe uma grande variedade de soluções.
+Aqui estão algumas delas:
 
 | Plugin                         | Package                          |
 |--------------------------------|--------------------------------|
@@ -60,21 +58,20 @@ These are a couple suggestions:
 
 | Target                         | Notes                          |
 |--------------------------------|--------------------------------|
-| Upload to a server             | To upload the feedback to a server you should use for example a [MultipartRequest](https://pub.dev/documentation/http/latest/http/MultipartRequest-class.html). |
-| Share via platform share dialog | [share_plus on pub.dev](https://pub.dev/packages/share_plus). Also shown in the example. |
+| Subir para um servidor             | Para subir o feedback para um servidor você deve usar como exemplo um [MultipartRequest](https://pub.dev/documentation/http/latest/http/MultipartRequest-class.html). |
+| Compartilhar via platform share dialog | [share_plus on pub.dev](https://pub.dev/packages/share_plus). Também é mostrado no exemplo. |
 | Firebase | [Firestore](https://pub.dev/packages/cloud_firestore), [Cloud Storage](https://pub.dev/packages/firebase_storage), [Database](https://pub.dev/packages/firebase_database)
-|   Jira | Jira has a [REST API to create issues and upload files](https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-an-issue-examples) |
-| Trello | Trello has a [REST API to create issues and upload files](https://developer.atlassian.com/cloud/trello/rest/api-group-actions/) |
-| E-Mail | You can use the users email client like [in the sample app](https://github.com/ueman/feedback/blob/master/feedback/example/lib/main.dart#L147-L160) to send feedback to yourself using the [flutter_email_sender](https://pub.dev/packages/flutter_email_sender) plugin. |
+|   Jira | Jira tem uma [REST API to create issues and upload files](https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-an-issue-examples) |
+| Trello | Trello tem uma [REST API to create issues and upload files](https://developer.atlassian.com/cloud/trello/rest/api-group-actions/) |
+| E-Mail | Você pode usar o email do usuário como no [in the sample app](https://github.com/ueman/feedback/blob/master/feedback/example/lib/main.dart#L147-L160) para enviar o feedback para você mesmo usando o [flutter_email_sender](https://pub.dev/packages/flutter_email_sender) plugin. |
 
+Se você tiver um código de exemplo sobre como subir isso para uma plataforma, eu agradeceria um pull request para o example app.
 
-If you have sample code on how to upload it to a platform, I would appreciate a pull request to the example app.
+## 📣  Mantenedor
 
-## 📣  Maintainer
+Olá, eu sou Jonas Uekötter. Eu criei esse incrível software. Visite o meu [GitHub profile](https://github.com/ueman) e me siga no [Twitter](https://twitter.com/ue_man). Se você gostou, por favor deixe um like ou marque com uma estrela no Github.
 
-Hey, I'm Jonas Uekötter. I created this awesome software. Visit my [GitHub profile](https://github.com/ueman) and follow me on [Twitter](https://twitter.com/ue_man). If you like this, please leave a like or star it on GitHub.
-
-## Contributors
+## Contribuidores
 
 <a href="https://github.com/ueman/feedback/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=ueman/feedback" />

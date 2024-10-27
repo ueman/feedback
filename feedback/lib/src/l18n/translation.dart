@@ -379,7 +379,7 @@ class GlobalFeedbackLocalizationsDelegate
     const Locale('uk'): const UkFeedbackLocalizations(),
     const Locale('tr'): const TrFeedbackLocalizations(),
     const Locale('zh'): const ZhFeedbackLocalizations(),
-    const Locale('zh-TW'): const ZhTWFeedbackLocalizations(),
+    const Locale('zh', 'TW'): const ZhTWFeedbackLocalizations(),
     const Locale('pl'): const PlFeedbackLocalizations(),
     const Locale('pt'): const PtFeedbackLocalizations(),
     const Locale('ja'): const JaFeedbackLocalizations(),

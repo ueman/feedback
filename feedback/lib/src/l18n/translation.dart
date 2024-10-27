@@ -228,6 +228,24 @@ class ZhFeedbackLocalizations extends FeedbackLocalizations {
   String get navigate => '导航';
 }
 
+/// Default Simplified Chinese localization
+class ZhTWFeedbackLocalizations extends FeedbackLocalizations {
+  /// Creates a [ZhTWFeedbackLocalizations].
+  const ZhTWFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => '提交';
+
+  @override
+  String get feedbackDescriptionText => '敬請留下您寶貴的意見和建議：';
+
+  @override
+  String get draw => '標記';
+
+  @override
+  String get navigate => '切換頁面';
+}
+
 /// Default polish localization
 class PlFeedbackLocalizations extends FeedbackLocalizations {
   /// Creates a [PlFeedbackLocalizations].
@@ -261,7 +279,7 @@ class PtFeedbackLocalizations extends FeedbackLocalizations {
   String get draw => 'Desenhar';
 
   @override
-  String get navigate => 'Navegar';
+  String get navigate => '瀏覽頁面';
 }
 
 /// Default japanese localization
@@ -361,6 +379,7 @@ class GlobalFeedbackLocalizationsDelegate
     const Locale('uk'): const UkFeedbackLocalizations(),
     const Locale('tr'): const TrFeedbackLocalizations(),
     const Locale('zh'): const ZhFeedbackLocalizations(),
+    const Locale('zh-TW'): const ZhTWFeedbackLocalizations(),
     const Locale('pl'): const PlFeedbackLocalizations(),
     const Locale('pt'): const PtFeedbackLocalizations(),
     const Locale('ja'): const JaFeedbackLocalizations(),

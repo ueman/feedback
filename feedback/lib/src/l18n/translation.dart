@@ -408,8 +408,12 @@ class GlobalFeedbackLocalizationsDelegate
 
   @override
   Future<FeedbackLocalizations> load(Locale locale) {
-    final languageLocale = Locale(locale.languageCode);
-    // We only support language codes for now
+    Locale languageLocale;
+    if (supportedLocales.containsKey(locale)) {
+      languageLocale = locale;
+    } else {
+      languageLocale = Locale(locale.languageCode);
+    }
     return SynchronousFuture<FeedbackLocalizations>(
       supportedLocales[languageLocale] ?? supportedLocales[defaultLocale]!,
     );

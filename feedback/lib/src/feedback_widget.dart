@@ -158,7 +158,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                     controller: painterController,
                     isPaintingActive:
                         mode == FeedbackMode.draw && widget.isFeedbackVisible,
-                    child: widget.child,
+                    child: LookupBoundary(child: widget.child),
                   ),
                 ),
                 builder: (context, screenshotChild) {

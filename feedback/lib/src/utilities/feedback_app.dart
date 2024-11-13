@@ -2,7 +2,6 @@
 
 import 'package:feedback/src/l18n/localization.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
-import 'package:feedback/src/utilities/media_query_from_window.dart';
 import 'package:flutter/material.dart';
 
 class FeedbackApp extends StatelessWidget {
@@ -43,24 +42,13 @@ class FeedbackApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeWrapper = FeedbackTheme(
-      data: _buildThemeData(context),
-      child: child,
-    );
-
-    Widget mediaQueryWrapper;
-
-    /// Don't replace existing MediaQuery widget if it exists.
-    if (MediaQuery.maybeOf(context) == null) {
-      mediaQueryWrapper = MediaQueryFromWindow(child: themeWrapper);
-    } else {
-      mediaQueryWrapper = themeWrapper;
-    }
-
     return FeedbackLocalization(
       delegates: localizationsDelegates,
       localeOverride: localeOverride,
-      child: mediaQueryWrapper,
+      child: FeedbackTheme(
+        data: _buildThemeData(context),
+        child: child,
+      ),
     );
   }
 }

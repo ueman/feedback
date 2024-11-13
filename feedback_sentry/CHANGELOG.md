@@ -1,3 +1,8 @@
+## 3.1.0
+
+* Require `sentry ^8.10.0`
+* Start using Sentry's user feedback feature
+
 ## 3.0.1
 
 * Add compatibility with Sentry v8

@@ -7,7 +7,7 @@ export 'package:feedback/feedback.dart';
 
 /// Extension on [FeedbackController] in order to make
 /// it easier to call [showAndUploadToSentry].
-extension SentryFeedback on FeedbackController {
+extension SentryFeedbackX on FeedbackController {
   /// This method opens the feedback ui and the users feedback
   /// is uploaded to Sentry after the user submitted his feedback.
   /// [name] and [email] are optional. They are shown in the Sentry.io ui.s
@@ -26,6 +26,10 @@ extension SentryFeedback on FeedbackController {
   /// This method opens the feedback ui and the users feedback
   /// is uploaded to Sentry after the user submitted his feedback.
   /// [name] and [email] are optional. They are shown in the Sentry.io ui.s
+  @Deprecated(
+    'Sentry marked the underlying APIs for this method as deprecated. '
+    'Unfortunately, there is no replacement.',
+  )
   void showAndUploadToSentryWithException({
     Hub? hub,
     String? name,
@@ -54,19 +58,21 @@ OnFeedbackCallback sendToSentry({
   final realHub = hub ?? HubAdapter();
 
   return (UserFeedback feedback) async {
-    final id = await realHub.captureMessage(feedback.text, withScope: (scope) {
-      scope.addAttachment(SentryAttachment.fromUint8List(
-        feedback.screenshot,
-        'screenshot.png',
-        contentType: 'image/png',
-      ));
-    });
-    await realHub.captureUserFeedback(SentryUserFeedback(
-      eventId: id,
-      email: email,
-      name: name,
-      comments: feedback.text + '\n${feedback.extra.toString()}',
-    ));
+    await realHub.captureFeedback(
+      SentryFeedback(
+        contactEmail: email,
+        name: name,
+        message: feedback.text,
+        unknown: feedback.extra,
+      ),
+      hint: Hint.withScreenshot(
+        SentryAttachment.fromUint8List(
+          feedback.screenshot,
+          'screenshot.png',
+          contentType: 'image/png',
+        ),
+      ),
+    );
   };
 }
 
@@ -94,6 +100,7 @@ OnFeedbackCallback sendToSentryWithException({
         ));
       },
     );
+    // ignore: deprecated_member_use
     await realHub.captureUserFeedback(SentryUserFeedback(
       eventId: id,
       email: email,

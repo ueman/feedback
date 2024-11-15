@@ -1,17 +1,11 @@
-import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:example/feedback_functions.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'custom_feedback.dart';
@@ -32,35 +26,47 @@ bool _useCustomFeedback = false;
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return BetterFeedback(
-      // If custom feedback is not enabled, supply null and the default text
-      // feedback form will be used.
-      feedbackBuilder: _useCustomFeedback
-          ? (context, onSubmit, scrollController) => CustomFeedbackForm(
-                onSubmit: onSubmit,
-                scrollController: scrollController,
-              )
-          : null,
-      theme: FeedbackThemeData(
-        background: Colors.grey,
-        feedbackSheetColor: Colors.grey[50]!,
-        drawColors: [
-          Colors.red,
-          Colors.green,
-          Colors.blue,
-          Colors.yellow,
-        ],
-      ),
-      darkTheme: FeedbackThemeData.dark(),
-      localizationsDelegates: [
-        GlobalFeedbackLocalizationsDelegate(),
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
+    final theme = FeedbackThemeData(
+      background: Colors.grey,
+      feedbackSheetColor: Colors.grey[50]!,
+      drawColors: [
+        Colors.red,
+        Colors.green,
+        Colors.blue,
+        Colors.yellow,
       ],
+    );
+    final delegates = <LocalizationsDelegate<dynamic>>[
+      GlobalFeedbackLocalizationsDelegate(),
+      GlobalMaterialLocalizations.delegate,
+      GlobalCupertinoLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+    ];
+    if (_useCustomFeedback) {
+      return BetterFeedback<OnSubmit, UserFeedback>.customFeedback(
+        feedbackBuilder: (context, onSubmit, formController) => CustomFeedbackForm(
+          onSubmit: onSubmit,
+          formController: formController,
+        ),
+        theme: theme,
+        darkTheme: FeedbackThemeData.dark(),
+        localizationsDelegates: delegates,
+        localeOverride: const Locale('en'),
+        mode: FeedbackMode.draw,
+        child: MaterialApp(
+          title: 'Feedback Demo',
+          theme: ThemeData(
+            primarySwatch: _useCustomFeedback ? Colors.green : Colors.blue,
+          ),
+          home: MyHomePage(_toggleCustomizedFeedback),
+        ),
+      );
+    }
+    return BetterFeedback.simpleFeedback(
+      darkTheme: FeedbackThemeData.dark(),
+      localizationsDelegates: delegates,
       localeOverride: const Locale('en'),
       mode: FeedbackMode.draw,
-      pixelRatio: 1,
       child: MaterialApp(
         title: 'Feedback Demo',
         theme: ThemeData(
@@ -71,8 +77,7 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  void _toggleCustomizedFeedback() =>
-      setState(() => _useCustomFeedback = !_useCustomFeedback);
+  void _toggleCustomizedFeedback() => setState(() => _useCustomFeedback = !_useCustomFeedback);
 }
 
 class MyHomePage extends StatelessWidget {
@@ -84,9 +89,7 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_useCustomFeedback
-            ? '(Custom) Feedback Example'
-            : 'Feedback Example'),
+        title: Text(_useCustomFeedback ? '(Custom) Feedback Example' : 'Feedback Example'),
       ),
       drawer: Drawer(
         child: Container(color: Colors.blue),
@@ -126,17 +129,13 @@ class MyHomePage extends StatelessWidget {
               const Divider(),
               ElevatedButton(
                 child: const Text('Provide feedback'),
-                onPressed: () {
-                  BetterFeedback.of(context).show(
-                    (feedback) async {
-                      // upload to server, share whatever
-                      // for example purposes just show it to the user
-                      alertFeedbackFunction(
-                        context,
-                        feedback,
-                      );
-                    },
-                  );
+                onPressed: () async {
+                  // We're going to open the alert dialog after the feedback is complete, so
+                  // there's no need to provide an `onSubmit` callback.
+                  final feedback = await BetterFeedback.simpleFeedbackOf(context).show(null);
+                  // User cancelled feedback before submitting and/or navigated away.
+                  if (feedback == null || !context.mounted) return;
+                  onSubmitAlertDialog(context, feedback);
                 },
               ),
               const SizedBox(height: 10),
@@ -144,20 +143,7 @@ class MyHomePage extends StatelessWidget {
                 TextButton(
                   child: const Text('Provide E-Mail feedback'),
                   onPressed: () {
-                    BetterFeedback.of(context).show((feedback) async {
-                      // draft an email and send to developer
-                      final screenshotFilePath =
-                          await writeImageToStorage(feedback.screenshot);
-
-                      final Email email = Email(
-                        body: feedback.text,
-                        subject: 'App Feedback',
-                        recipients: ['john.doe@flutter.dev'],
-                        attachmentPaths: [screenshotFilePath],
-                        isHTML: false,
-                      );
-                      await FlutterEmailSender.send(email);
-                    });
+                    BetterFeedback.simpleFeedbackOf(context).show(onSubmitEmail);
                   },
                 ),
                 const SizedBox(height: 10),
@@ -165,18 +151,7 @@ class MyHomePage extends StatelessWidget {
               ElevatedButton(
                 child: const Text('Provide feedback via platform sharing'),
                 onPressed: () {
-                  BetterFeedback.of(context).show(
-                    (feedback) async {
-                      final screenshotFilePath =
-                          await writeImageToStorage(feedback.screenshot);
-
-                      // ignore: deprecated_member_use
-                      await Share.shareFiles(
-                        [screenshotFilePath],
-                        text: feedback.text,
-                      );
-                    },
-                  );
+                  BetterFeedback.simpleFeedbackOf(context).show(onSubmitPlatformSharing);
                 },
               ),
               const Divider(),
@@ -209,13 +184,11 @@ class MyHomePage extends StatelessWidget {
       ),
       floatingActionButton: MaterialButton(
         color: Theme.of(context).primaryColor,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(20))),
-        child: const Text('toggle feedback mode',
-            style: TextStyle(color: Colors.white)),
+        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
+        child: const Text('toggle feedback mode', style: TextStyle(color: Colors.white)),
         onPressed: () {
           // don't toggle the feedback mode if it's currently visible
-          if (!BetterFeedback.of(context).isVisible) {
+          if (!BetterFeedback.simpleFeedbackOf(context).isVisible) {
             toggleCustomizedFeedback();
           }
         },
@@ -236,56 +209,4 @@ class _SecondaryScaffold extends StatelessWidget {
       ),
     );
   }
-}
-
-Future<String> writeImageToStorage(Uint8List feedbackScreenshot) async {
-  final Directory output = await getTemporaryDirectory();
-  final String screenshotFilePath = '${output.path}/feedback.png';
-  final File screenshotFile = File(screenshotFilePath);
-  await screenshotFile.writeAsBytes(feedbackScreenshot);
-  return screenshotFilePath;
-}
-
-Future<void> createGitlabIssueFromFeedback(BuildContext context) async {
-  BetterFeedback.of(context).show((feedback) async {
-    const projectId = 'your-gitlab-project-id';
-    const apiToken = 'your-gitlab-api-token';
-
-    final screenshotFilePath = await writeImageToStorage(feedback.screenshot);
-
-    // Upload screenshot
-    final uploadRequest = http.MultipartRequest(
-      'POST',
-      Uri.https(
-        'gitlab.com',
-        '/api/v4/projects/$projectId/uploads',
-      ),
-    )
-      ..files.add(await http.MultipartFile.fromPath(
-        'file',
-        screenshotFilePath,
-      ))
-      ..headers.putIfAbsent('PRIVATE-TOKEN', () => apiToken);
-    final uploadResponse = await uploadRequest.send();
-
-    final dynamic uploadResponseMap = jsonDecode(
-      await uploadResponse.stream.bytesToString(),
-    );
-
-    // Create issue
-    await http.post(
-      Uri.https(
-        'gitlab.com',
-        '/api/v4/projects/$projectId/issues',
-        <String, String>{
-          'title': feedback.text.padRight(80),
-          'description': '${feedback.text}\n'
-              "${uploadResponseMap["markdown"] ?? "Missing image!"}",
-        },
-      ),
-      headers: {
-        'PRIVATE-TOKEN': apiToken,
-      },
-    );
-  });
 }

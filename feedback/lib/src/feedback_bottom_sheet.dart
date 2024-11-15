@@ -1,30 +1,35 @@
 // ignore_for_file: public_member_api_docs
 
 import 'package:feedback/src/better_feedback.dart';
+import 'package:feedback/src/feedback_form_controller.dart';
+import 'package:feedback/src/screenshot.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
 import 'package:feedback/src/utilities/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 
 /// Shows the text input in which the user can describe his feedback.
-class FeedbackBottomSheet extends StatelessWidget {
+class FeedbackBottomSheet<T, R> extends StatelessWidget {
   const FeedbackBottomSheet({
     super.key,
+    required this.route,
+    required this.screenshotController,
     required this.feedbackBuilder,
-    required this.onSubmit,
     required this.sheetProgress,
   });
 
-  final FeedbackBuilder feedbackBuilder;
-  final OnSubmit onSubmit;
+  final T route;
+  final ScreenshotController screenshotController;
+  final FeedbackBuilder<T, R> feedbackBuilder;
   final ValueNotifier<double> sheetProgress;
 
   @override
   Widget build(BuildContext context) {
     if (FeedbackTheme.of(context).sheetIsDraggable) {
       return DraggableScrollableActuator(
-        child: _DraggableFeedbackSheet(
+        child: _DraggableFeedbackSheet<T, R>(
+          route: route,
+          screenshotController: screenshotController,
           feedbackBuilder: feedbackBuilder,
-          onSubmit: onSubmit,
           sheetProgress: sheetProgress,
         ),
       );
@@ -43,8 +48,8 @@ class FeedbackBottomSheet extends StatelessWidget {
               return MaterialPageRoute<void>(
                 builder: (_) => feedbackBuilder(
                   context,
-                  onSubmit,
-                  null,
+                  route,
+                  FeedbackFormController<R>(screenshotController),
                 ),
               );
             },
@@ -55,23 +60,25 @@ class FeedbackBottomSheet extends StatelessWidget {
   }
 }
 
-class _DraggableFeedbackSheet extends StatefulWidget {
+class _DraggableFeedbackSheet<T, R> extends StatefulWidget {
   const _DraggableFeedbackSheet({
+    required this.route,
+    required this.screenshotController,
     required this.feedbackBuilder,
-    required this.onSubmit,
     required this.sheetProgress,
   });
 
-  final FeedbackBuilder feedbackBuilder;
-  final OnSubmit onSubmit;
+  final T route;
+  final ScreenshotController screenshotController;
+  final FeedbackBuilder<T, R> feedbackBuilder;
   final ValueNotifier<double> sheetProgress;
 
   @override
-  State<_DraggableFeedbackSheet> createState() =>
+  State<_DraggableFeedbackSheet<T, R>> createState() =>
       _DraggableFeedbackSheetState();
 }
 
-class _DraggableFeedbackSheetState extends State<_DraggableFeedbackSheet> {
+class _DraggableFeedbackSheetState<T, R> extends State<_DraggableFeedbackSheet<T, R>> {
   @override
   void initState() {
     super.initState();
@@ -111,7 +118,7 @@ class _DraggableFeedbackSheetState extends State<_DraggableFeedbackSheet> {
         ),
         Expanded(
           child: DraggableScrollableSheet(
-            controller: BetterFeedback.of(context).sheetController,
+            controller: BetterFeedback.of<T, R>(context).sheetController,
             snap: true,
             minChildSize: collapsedHeight,
             initialChildSize: collapsedHeight,
@@ -136,8 +143,8 @@ class _DraggableFeedbackSheetState extends State<_DraggableFeedbackSheet> {
                         return MaterialPageRoute<void>(
                           builder: (_) => widget.feedbackBuilder(
                             context,
-                            widget.onSubmit,
-                            scrollController,
+                            widget.route,
+                            FeedbackFormController(widget.screenshotController, scrollController),
                           ),
                         );
                       },

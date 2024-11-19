@@ -54,7 +54,3 @@ Provide a way to hide the feedback panel by calling  `BetterFeedback.of(context)
 You can raise issues [here](https://github.com/ueman/feedback/issues).
 If you've got a question do not hesitate to ask it [here](https://github.com/ueman/feedback/discussions).
 Contributions are also welcome. You can do a pull request on GitHub [here](https://github.com/ueman/feedback/pulls). Please take a look at [`up for grabs`](https://github.com/ueman/feedback/issues?q=is%3Aopen+is%3Aissue+label%3Aup-for-grabs) issues first.
-
-## Sponsoring
-
-I'm working on my packages on my free-time, but I don't have as much time as I would. If this package or any other package I created is helping you, please consider to [sponsor](https://github.com/ueman#sponsor-me) me. By doing so, I will prioritize your issues or your pull-requests before the others.

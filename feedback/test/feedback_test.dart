@@ -12,7 +12,7 @@ import 'test_app.dart';
 void main() {
   group('BetterFeedback', () {
     testWidgets('can open feedback with default settings', (tester) async {
-      final widget = BetterFeedback(
+      final widget = BetterFeedback.simpleFeedback(
         child: Builder(
           builder: (context) {
             return const MyTestApp();
@@ -41,7 +41,7 @@ void main() {
     });
 
     testWidgets('can open feedback in drawing mode', (tester) async {
-      final widget = BetterFeedback(
+      final widget = BetterFeedback.simpleFeedback(
         mode: FeedbackMode.draw,
         child: Builder(
           builder: (context) {
@@ -71,7 +71,7 @@ void main() {
     });
 
     testWidgets('can open feedback in navigation mode', (tester) async {
-      final widget = BetterFeedback(
+      final widget = BetterFeedback.simpleFeedback(
         mode: FeedbackMode.navigate,
         child: Builder(
           builder: (context) {

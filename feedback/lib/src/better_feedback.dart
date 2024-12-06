@@ -11,11 +11,7 @@ import 'package:feedback/src/utilities/renderer/renderer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-/// The function to be called when the user submits his feedback.
-typedef OnSubmit = Future<void> Function(
-  String feedback, {
-  Map<String, dynamic>? extras,
-});
+typedef OnSubmit = FutureOr<void> Function(BuildContext context, UserFeedback feedback);
 
 /// A function that returns a Widget that prompts the user for feedback and
 /// calls [OnSubmit] when the user wants to submit their feedback.
@@ -27,10 +23,11 @@ typedef OnSubmit = Future<void> Function(
 /// scrolled. Typically, this will be a `ListView` or `SingleChildScrollView`
 /// wrapping the feedback sheet's content.
 /// See: [FeedbackThemeData.sheetIsDraggable] and [DraggableScrollableSheet].
-typedef FeedbackBuilder = Widget Function(
-  BuildContext,
-  OnSubmit,
-  ScrollController?,
+typedef FeedbackBuilder<T, R> = Widget Function(
+  BuildContext context,
+  T route,
+  // All the callbacks the sheet needs to communicate with `BetterFeedback`.
+  FeedbackFormController<R> formController,
 );
 
 /// A drag handle to be placed at the top of a draggable feedback sheet.
@@ -71,12 +68,6 @@ class FeedbackSheetDragHandle extends StatelessWidget {
   }
 }
 
-/// Function which gets called when the user submits his feedback.
-/// [feedback] is the user generated feedback. A string, by default.
-/// [screenshot] is a raw png encoded image.
-/// [OnFeedbackCallback] should cast [feedback] to the appropriate type.
-typedef OnFeedbackCallback = FutureOr<void> Function(UserFeedback);
-
 /// A feedback widget that uses a custom widget and data type for
 /// prompting the user for their feedback. This widget should be the root of
 /// your widget tree. Specifically, it should be above any [Navigator] widgets,
@@ -90,32 +81,39 @@ typedef OnFeedbackCallback = FutureOr<void> Function(UserFeedback);
 ///   home: MyHomePage(),
 /// );
 /// ```
-///
-class BetterFeedback extends StatefulWidget {
-  /// Creates a [BetterFeedback].
-  ///
-  /// /// ```dart
-  /// BetterFeedback(
-  ///   child: MaterialApp(
-  ///   title: 'App',
-  ///   home: MyHomePage(),
-  /// );
-  /// ```
-  const BetterFeedback({
+class BetterFeedback<T, R> extends StatefulWidget {
+  static BetterFeedback<OnSubmit?, UserFeedback> simpleFeedback({
+    Key? key,
+    required Widget child,
+    ThemeMode? themeMode,
+    FeedbackThemeData? theme,
+    FeedbackThemeData? darkTheme,
+    List<LocalizationsDelegate<dynamic>>? localizationsDelegates,
+    Locale? localeOverride,
+    FeedbackMode mode = FeedbackMode.draw,
+  }) =>
+      BetterFeedback.customFeedback(
+        key: key,
+        feedbackBuilder: simpleFeedbackBuilder,
+        themeMode: themeMode,
+        darkTheme: darkTheme,
+        localizationsDelegates: localizationsDelegates,
+        localeOverride: localeOverride,
+        mode: mode,
+        child: child,
+      );
+
+  const BetterFeedback.customFeedback({
     super.key,
     required this.child,
-    this.feedbackBuilder,
+    required this.feedbackBuilder,
     this.themeMode,
     this.theme,
     this.darkTheme,
     this.localizationsDelegates,
     this.localeOverride,
     this.mode = FeedbackMode.draw,
-    this.pixelRatio = 3.0,
-  }) : assert(
-          pixelRatio > 0,
-          'pixelRatio needs to be larger than 0',
-        );
+  });
 
   /// The application to wrap, typically a [MaterialApp].
   final Widget child;
@@ -125,7 +123,7 @@ class BetterFeedback extends StatefulWidget {
   /// some form fields and a submit button that calls [OnSubmit] when pressed.
   /// Defaults to [StringFeedback] which uses a single editable text field to
   /// prompt for input.
-  final FeedbackBuilder? feedbackBuilder;
+  final FeedbackBuilder<T, R> feedbackBuilder;
 
   /// Determines which theme will be used by the Feedback UI.
   /// If set to [ThemeMode.system], the choice of which theme to use will be based
@@ -166,16 +164,6 @@ class BetterFeedback extends StatefulWidget {
   /// See [FeedbackMode] for other options.
   final FeedbackMode mode;
 
-  /// The pixelRatio describes the scale between
-  /// the logical pixels and the size of the output image.
-  /// Specifying 1.0 will give you a 1:1 mapping between
-  /// logical pixels and the output pixels in the image.
-  /// The default is a pixel ration of 3 and a value below 1 is not recommended.
-  ///
-  /// See [RenderRepaintBoundary](https://api.flutter.dev/flutter/rendering/RenderRepaintBoundary/toImage.html)
-  /// for information on the underlying implementation.
-  final double pixelRatio;
-
   /// Call `BetterFeedback.of(context)` to get an
   /// instance of [FeedbackData] on which you can call `.show()` or `.hide()`
   /// to enable or disable the feedback view.
@@ -185,22 +173,25 @@ class BetterFeedback extends StatefulWidget {
   /// BetterFeedback.of(context).show(...);
   /// BetterFeedback.of(context).hide(...);
   /// ```
-  static FeedbackController of(BuildContext context) {
-    final feedbackData =
-        context.dependOnInheritedWidgetOfExactType<FeedbackData>();
+  static FeedbackController<T, R> of<T, R>(BuildContext context) {
+    final feedbackData = context.dependOnInheritedWidgetOfExactType<FeedbackData<T, R>>();
     assert(
       feedbackData != null,
-      'You need to add a $BetterFeedback widget above this context!',
+      'You need to add a ${BetterFeedback<T, R>} widget above this context!',
     );
     return feedbackData!.controller;
   }
 
+  static FeedbackController<OnSubmit?, UserFeedback> simpleFeedbackOf(BuildContext context) {
+    return of<OnSubmit?, UserFeedback>(context);
+  }
+
   @override
-  State<BetterFeedback> createState() => _BetterFeedbackState();
+  State<BetterFeedback<T, R>> createState() => _BetterFeedbackState();
 }
 
-class _BetterFeedbackState extends State<BetterFeedback> {
-  FeedbackController controller = FeedbackController();
+class _BetterFeedbackState<T, R> extends State<BetterFeedback<T, R>> {
+  FeedbackController<T, R> controller = FeedbackController();
 
   @override
   void initState() {
@@ -229,13 +220,12 @@ class _BetterFeedbackState extends State<BetterFeedback> {
           child: Builder(
             builder: (context) {
               assert(debugCheckHasFeedbackLocalizations(context));
-              return FeedbackWidget(
-                isFeedbackVisible: controller.isVisible,
+              return FeedbackWidget<T, R>(
+                isVisible: controller.isVisible,
+                route: controller.currentRoute,
                 drawColors: FeedbackTheme.of(context).drawColors,
                 mode: widget.mode,
-                pixelRatio: widget.pixelRatio,
-                feedbackBuilder:
-                    widget.feedbackBuilder ?? simpleFeedbackBuilder,
+                feedbackBuilder: widget.feedbackBuilder,
                 child: widget.child,
               );
             },

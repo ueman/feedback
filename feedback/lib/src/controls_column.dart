@@ -5,6 +5,9 @@ import 'package:feedback/src/l18n/translation.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
 import 'package:flutter/material.dart';
 
+import 'color_picker/color_picker_icon.dart';
+import 'utilities/custom_color_position.dart';
+
 /// This is the Widget on the right side of the app when the feedback view
 /// is active.
 class ControlsColumn extends StatelessWidget {
@@ -19,11 +22,14 @@ class ControlsColumn extends StatelessWidget {
     required this.onCloseFeedback,
     required this.onClearDrawing,
     required this.colors,
-  })  : assert(
+    required this.showCustomColor,
+    required this.customColorPosition,
+  }) : assert(
           colors.isNotEmpty,
           'There must be at least one color to draw in colors',
-        ),
-        assert(colors.contains(activeColor), 'colors must contain activeColor');
+        );
+
+  // assert(colors.contains(activeColor), 'colors must contain activeColor');
 
   final ValueChanged<Color> onColorChanged;
   final VoidCallback onUndo;
@@ -31,6 +37,8 @@ class ControlsColumn extends StatelessWidget {
   final VoidCallback onCloseFeedback;
   final VoidCallback onClearDrawing;
   final List<Color> colors;
+  final bool showCustomColor;
+  final CustomColorPosition customColorPosition;
   final Color activeColor;
   final FeedbackMode mode;
 
@@ -91,12 +99,22 @@ class ControlsColumn extends StatelessWidget {
             icon: const Icon(Icons.delete),
             onPressed: isNavigatingActive ? null : onClearDrawing,
           ),
+          if (customColorPosition.isLeading)
+            ColorPickerIcon(
+              onColorChanged: isNavigatingActive ? null : onColorChanged,
+              activeColor: activeColor,
+            ),
           for (final color in colors)
             _ColorSelectionIconButton(
               key: ValueKey<Color>(color),
               color: color,
               onPressed: isNavigatingActive ? null : onColorChanged,
               isActive: activeColor == color,
+            ),
+          if (customColorPosition.isTrailing)
+            ColorPickerIcon(
+              onColorChanged: isNavigatingActive ? null : onColorChanged,
+              activeColor: activeColor,
             ),
         ],
       ),

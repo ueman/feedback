@@ -1,8 +1,9 @@
 import 'package:feedback/src/controls_column.dart';
 import 'package:feedback/src/feedback_mode.dart';
 import 'package:feedback/src/l18n/localization.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:feedback/src/utilities/custom_color_position.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   Widget create({
@@ -14,6 +15,8 @@ void main() {
     VoidCallback? onCloseFeedback,
     VoidCallback? onClearDrawing,
     List<Color>? colors,
+    bool? showCustomColor,
+    CustomColorPosition? customColorPosition,
   }) {
     return FeedbackLocalization(
       child: ControlsColumn(
@@ -26,6 +29,8 @@ void main() {
         onColorChanged: onColorChanged ?? (newColor) {},
         onControlModeChanged: onControlModeChanged ?? (newMode) {},
         onUndo: onUndo ?? () {},
+        showCustomColor: showCustomColor ?? true,
+        customColorPosition: customColorPosition ?? CustomColorPosition.trailing,
       ),
     );
   }

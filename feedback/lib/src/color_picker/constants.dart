@@ -7,6 +7,7 @@ final _colorsList = List<Color>.from(
 ).toList();
 final _colorShare = 1 / (_colorsList.length - 1);
 
+const _thumbRadius = 24.0;
 double _cachedHueSlider = 1.0;
 
 double _cachedAlphaSlider = _maxAlpha.toDouble();
@@ -16,5 +17,3 @@ const _maxAlpha = 255;
 final GlobalKey _whiteToColorKey = GlobalKey();
 const Color _startColor = Colors.white;
 double _cachedWhiteToColorValue = 1.0;
-
-

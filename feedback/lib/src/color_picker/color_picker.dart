@@ -38,13 +38,13 @@ class _ColorPickerState extends State<_ColorPicker> {
                 outsideSetter: widget.onColorChanged,
               ),
             ),
-            SizedBox(height: 12),
+            SizedBox(height: _thumbRadius),
             _AlphaSlider(
               color: _hueSlideColor,
               whiteToColorValue: _whiteToColorValue,
               outsideSetter: widget.onColorChanged,
             ),
-            SizedBox(height: 12),
+            SizedBox(height: _thumbRadius),
             /// This is not affected by the alpha slider nor the white to color
             _HueSlider(
               activeColor: widget.activeColor,

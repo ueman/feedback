@@ -35,6 +35,7 @@ class _OverlayStackState extends State<_OverlayStack> {
 
   @override
   Widget build(BuildContext context) => Stack(
+        alignment: Alignment.center,
         children: [
           Positioned.fill(
             child: GestureDetector(
@@ -45,8 +46,14 @@ class _OverlayStackState extends State<_OverlayStack> {
             duration: _animationDuration,
             opacity: opacity,
             curve: Curves.decelerate,
-            child: AlertDialog.adaptive(
-              content: _ColorPicker(
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surfaceDim,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: _ColorPicker(
                 activeColor: widget.activeColor,
                 onColorChanged: widget.onColorChanged,
               ),

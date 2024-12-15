@@ -99,7 +99,7 @@ class ControlsColumn extends StatelessWidget {
             icon: const Icon(Icons.delete),
             onPressed: isNavigatingActive ? null : onClearDrawing,
           ),
-          if (customColorPosition.isLeading)
+          if (customColorPosition.isLeading && showCustomColor)
             ColorPickerIcon(
               onColorChanged: isNavigatingActive ? null : onColorChanged,
               activeColor: activeColor,
@@ -111,7 +111,7 @@ class ControlsColumn extends StatelessWidget {
               onPressed: isNavigatingActive ? null : onColorChanged,
               isActive: activeColor == color,
             ),
-          if (customColorPosition.isTrailing)
+          if (customColorPosition.isTrailing && showCustomColor)
             ColorPickerIcon(
               onColorChanged: isNavigatingActive ? null : onColorChanged,
               activeColor: activeColor,

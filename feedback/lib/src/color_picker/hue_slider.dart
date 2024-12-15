@@ -16,8 +16,6 @@ class _HueSlider extends StatefulWidget {
 }
 
 class _HueSliderState extends State<_HueSlider> {
-  static const _thumbRadius = 12.0;
-
   @override
   void initState() {
     super.initState();

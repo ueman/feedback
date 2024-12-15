@@ -16,7 +16,7 @@ class _WhiteToColorBox extends StatefulWidget {
 }
 
 class _WhiteToColorBoxState extends State<_WhiteToColorBox> {
-  static const double _padding = 12;
+  static const double _padding = _thumbRadius * 0.65;
   static const AlignmentGeometry _startAlignment = Alignment.topLeft;
   static const AlignmentGeometry _endAlignment = Alignment.bottomRight;
 
@@ -85,6 +85,7 @@ class _WhiteToColorBoxState extends State<_WhiteToColorBox> {
           Positioned.fill(
             child: GestureDetector(
               onTapDown: (details) => _onPointerUpdate(details.globalPosition),
+              onPanUpdate: (details) => _onPointerUpdate(details.globalPosition),
             ),
           ),
           Positioned(
@@ -169,23 +170,6 @@ class _WhiteToColorBoxState extends State<_WhiteToColorBox> {
     return Offset(x, y);
   }
 
-  // void _onPointerUpdate(Offset tapPosition) {
-  //   final renderBox = _whiteToColorKey.currentContext!.findRenderObject() as RenderBox;
-  //   final xUpperLimit = renderBox.size.width - padding * 2;
-  //   final yUpperLimit = renderBox.size.height - padding * 2;
-  //   final newOffset = tapPosition - Offset(padding, padding);
-  //   final constraintOffset = Offset(
-  //     newOffset.dx.clamp(0, xUpperLimit),
-  //     newOffset.dy.clamp(0, yUpperLimit),
-  //   );
-  //   print(constraintOffset);
-  //   setState(
-  //     () {
-  //       offset = constraintOffset;
-  //     },
-  //   );
-  // }
-
   void _onPointerUpdate(Offset global) {
     final renderBox = _whiteToColorKey.currentContext!.findRenderObject() as RenderBox;
 
@@ -194,9 +178,7 @@ class _WhiteToColorBoxState extends State<_WhiteToColorBox> {
     final xUpperLimit = renderBox.size.width - _padding * 2;
     final yUpperLimit = renderBox.size.height - _padding * 2;
 
-    // final newOffset = details.localPosition - Offset(padding, padding);
     final local = global - boxTopLeftGlobalOffset;
-    // print(newOffset);
     final tapPosition = Offset(
       local.dx.clamp(0, xUpperLimit),
       local.dy.clamp(0, yUpperLimit),

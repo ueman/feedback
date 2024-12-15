@@ -16,7 +16,6 @@ class _AlphaSlider extends StatefulWidget {
 }
 
 class _AlphaSliderState extends State<_AlphaSlider> {
-  static const _thumbRadius = 12.0;
 
   Color get color => Color.lerp(_startColor, widget.color, widget.whiteToColorValue)!;
   late var _sliderValue = _cachedAlphaSlider;

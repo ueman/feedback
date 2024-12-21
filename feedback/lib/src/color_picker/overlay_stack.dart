@@ -7,7 +7,7 @@ class _OverlayStack extends StatefulWidget {
     required this.onColorChanged,
   });
 
-  final VoidCallback closeCallback;
+  final BoolCallback closeCallback;
   final Color activeColor;
   final ValueChanged<Color> onColorChanged;
 
@@ -21,6 +21,7 @@ class _OverlayStackState extends State<_OverlayStack> {
   @override
   void initState() {
     super.initState();
+    BackButtonInterceptor.add(widget.closeCallback, priority: 1);
     Future(() => setState(() => opacity = 1.0));
   }
 
@@ -31,6 +32,12 @@ class _OverlayStackState extends State<_OverlayStack> {
     Future.delayed(_animationDuration).then(
       (_) => widget.closeCallback(),
     );
+  }
+
+  @override
+  void dispose() {
+    BackButtonInterceptor.remove(widget.closeCallback);
+    super.dispose();
   }
 
   @override

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:feedback/src/utilities/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 
 part 'alpha_slider.dart';
@@ -121,5 +122,8 @@ class ColorPickerIcon extends StatelessWidget {
     overlayState.insert(_entry!);
   }
 
-  void _close() => _entry?.remove();
+  bool _close() {
+    _entry?.remove();
+    return true;
+  }
 }

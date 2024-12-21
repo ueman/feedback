@@ -54,7 +54,17 @@ class _OverlayStackState extends State<_OverlayStack> {
             opacity: opacity,
             curve: Curves.decelerate,
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 20),
+              constraints: BoxConstraints(
+                maxWidth: min(
+                  450,
+                  MediaQuery.sizeOf(context).width,
+                ),
+                maxHeight: min(
+                  450,
+                  MediaQuery.sizeOf(context).height * 0.85,
+                ),
+              ),
+              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
               padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surfaceDim,

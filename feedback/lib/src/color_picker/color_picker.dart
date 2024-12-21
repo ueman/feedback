@@ -26,32 +26,29 @@ class _ColorPickerState extends State<_ColorPicker> {
       );
 
   @override
-  Widget build(BuildContext context) => SizedBox(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            AspectRatio(
-              aspectRatio: 5 / 4,
-              child: _WhiteToColorBox(
-                color: _hueSlideColor,
-                innerSetter: onWhiteToColorChanged,
-                outsideSetter: widget.onColorChanged,
-              ),
-            ),
-            SizedBox(height: _thumbRadius),
-            _AlphaSlider(
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Flexible(
+            child: _WhiteToColorBox(
               color: _hueSlideColor,
-              whiteToColorValue: _whiteToColorValue,
+              innerSetter: onWhiteToColorChanged,
               outsideSetter: widget.onColorChanged,
             ),
-            SizedBox(height: _thumbRadius),
-            /// This is not affected by the alpha slider nor the white to color
-            _HueSlider(
-              activeColor: widget.activeColor,
-              insideSetter: onHueColorChanged,
-              outSideSetter: widget.onColorChanged,
-            ),
-          ],
-        ),
+          ),
+          SizedBox(height: _thumbRadius),
+          _AlphaSlider(
+            color: _hueSlideColor,
+            whiteToColorValue: _whiteToColorValue,
+            outsideSetter: widget.onColorChanged,
+          ),
+          SizedBox(height: _thumbRadius),
+          /// This is not affected by the alpha slider nor the white to color
+          _HueSlider(
+            activeColor: widget.activeColor,
+            insideSetter: onHueColorChanged,
+            outSideSetter: widget.onColorChanged,
+          ),
+        ],
       );
 }

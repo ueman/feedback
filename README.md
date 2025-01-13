@@ -56,6 +56,7 @@ These are a couple suggestions:
 |--------------------------------|--------------------------------|
 | GitLab Issue                   | [feedback_gitlab](https://pub.dev/packages/feedback_gitlab) |
 | Sentry User Feedback           | [feedback_sentry](https://pub.dev/packages/feedback_sentry) |
+| GitHub Issue                   | [feedback_github](https://pub.dev/packages/feedback_github) |
 
 
 | Target                         | Notes                          |

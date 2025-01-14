@@ -52,10 +52,11 @@ understand.
 Depending on your use case there are wide variety of solutions.
 These are a couple suggestions:
 
-| Plugin                         | Package                          |
-|--------------------------------|--------------------------------|
-| GitLab Issue                   | [feedback_gitlab](https://pub.dev/packages/feedback_gitlab) |
-| Sentry User Feedback           | [feedback_sentry](https://pub.dev/packages/feedback_sentry) |
+| Plugin                         | Package                                                     | Notes                             |
+|--------------------------------|-------------------------------------------------------------|-----------------------------------|
+| GitLab Issue                   | [feedback_gitlab](https://pub.dev/packages/feedback_gitlab) |                                   |
+| Sentry User Feedback           | [feedback_sentry](https://pub.dev/packages/feedback_sentry) |                                   |
+| GitHub Issue                   | [feedback_github](https://pub.dev/packages/feedback_github) | Uses Firebase Storage for images  |
 
 
 | Target                         | Notes                          |

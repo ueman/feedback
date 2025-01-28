@@ -17,6 +17,7 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  fpdart: ^1.1.1
 
 dev_dependencies:
   flutter_lints: ^5.0.0

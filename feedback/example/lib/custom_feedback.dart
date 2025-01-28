@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:feedback/feedback.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 /// A data type holding user feedback consisting of a feedback type, free from
@@ -53,11 +56,11 @@ class CustomFeedbackForm extends StatefulWidget {
   const CustomFeedbackForm({
     super.key,
     required this.onSubmit,
-    required this.scrollController,
+    required this.formController,
   });
 
   final OnSubmit onSubmit;
-  final ScrollController? scrollController;
+  final FeedbackFormController<UserFeedback> formController;
 
   @override
   State<CustomFeedbackForm> createState() => _CustomFeedbackFormState();
@@ -73,13 +76,11 @@ class _CustomFeedbackFormState extends State<CustomFeedbackForm> {
         Expanded(
           child: Stack(
             children: [
-              if (widget.scrollController != null)
-                const FeedbackSheetDragHandle(),
+              if (widget.formController.scrollController != null) const FeedbackSheetDragHandle(),
               ListView(
-                controller: widget.scrollController,
+                controller: widget.formController.scrollController,
                 // Pad the top by 20 to match the corner radius if drag enabled.
-                padding: EdgeInsets.fromLTRB(
-                    16, widget.scrollController != null ? 20 : 16, 16, 0),
+                padding: EdgeInsets.fromLTRB(16, widget.formController.scrollController != null ? 20 : 16, 16, 0),
                 children: [
                   const Text('What kind of feedback do you want to give?'),
                   Row(
@@ -99,16 +100,11 @@ class _CustomFeedbackFormState extends State<CustomFeedbackForm> {
                                   .map(
                                     (type) => DropdownMenuItem<FeedbackType>(
                                       value: type,
-                                      child: Text(type
-                                          .toString()
-                                          .split('.')
-                                          .last
-                                          .replaceAll('_', ' ')),
+                                      child: Text(type.toString().split('.').last.replaceAll('_', ' ')),
                                     ),
                                   )
                                   .toList(),
-                              onChanged: (feedbackType) => setState(() =>
-                                  _customFeedback.feedbackType = feedbackType),
+                              onChanged: (feedbackType) => setState(() => _customFeedback.feedbackType = feedbackType),
                             ),
                             ElevatedButton(
                               child: const Text('Open Dialog #2'),
@@ -132,8 +128,7 @@ class _CustomFeedbackFormState extends State<CustomFeedbackForm> {
                   const SizedBox(height: 16),
                   const Text('What is your feedback?'),
                   TextField(
-                    onChanged: (newFeedback) =>
-                        _customFeedback.feedbackText = newFeedback,
+                    onChanged: (newFeedback) => _customFeedback.feedbackText = newFeedback,
                   ),
                   const SizedBox(height: 16),
                   const Text('How does this make you feel?'),
@@ -149,10 +144,21 @@ class _CustomFeedbackFormState extends State<CustomFeedbackForm> {
         TextButton(
           // disable this button until the user has specified a feedback type
           onPressed: _customFeedback.feedbackType != null
-              ? () => widget.onSubmit(
-                    _customFeedback.feedbackText ?? '',
-                    extras: _customFeedback.toMap(),
-                  )
+              ? () async {
+                  final Uint8List screenshot = await widget.formController.takeScreenshot(context);
+                  if (!context.mounted) {
+                    // User popped the page while screenshotting, abort.
+                    return;
+                  }
+                  await widget.onSubmit(
+                    context,
+                    UserFeedback(
+                      text: _customFeedback.feedbackText ?? '',
+                      screenshot: screenshot,
+                      extra: _customFeedback.toMap(),
+                    ),
+                  );
+                }
               : null,
           child: const Text('submit'),
         ),

@@ -3,17 +3,17 @@
 import 'package:feedback/src/feedback_controller.dart';
 import 'package:flutter/material.dart';
 
-class FeedbackData extends InheritedWidget {
+class FeedbackData<T, R> extends InheritedWidget {
   const FeedbackData({
     super.key,
     required super.child,
     required this.controller,
   });
 
-  final FeedbackController controller;
+  final FeedbackController<T, R> controller;
 
   @override
-  bool updateShouldNotify(FeedbackData oldWidget) {
+  bool updateShouldNotify(FeedbackData<T, R> oldWidget) {
     return oldWidget.controller != controller;
   }
 }

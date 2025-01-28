@@ -220,6 +220,8 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                                 mode: mode,
                                 activeColor: painterController.drawColor,
                                 colors: widget.drawColors,
+                                showCustomColor: feedbackThemeData.showCustomColor,
+                                customColorPosition: feedbackThemeData.customColorPosition,
                                 onColorChanged: (color) {
                                   setState(() {
                                     painterController.drawColor = color;

@@ -15,17 +15,18 @@ class BackButtonInterceptor with WidgetsBindingObserver {
   static final SplayTreeMap<double, List<BoolCallback>> _prioritizedCallbacks =
       SplayTreeMap();
 
+  /// priority of 0 is considered the highest priority.
   static void add(BoolCallback callback, {int? priority}) {
+    assert(priority == null || priority >= 0, 'Priority ,if not omitted, must be >= 0');
     if (_prioritizedCallbacks.isEmpty) {
       _mount();
     }
-    final List<BoolCallback>? callbacksList = _prioritizedCallbacks[priority];
+    // Convert to double so that we have a valid maximum value to sort null
+    // priorities last.
+    final doublePriority = priority?.toDouble() ?? double.infinity;
+    final List<BoolCallback>? callbacksList = _prioritizedCallbacks[doublePriority];
     if (callbacksList == null) {
-      // Convert to double so that we have a valid maximum value to sort null
-      // priorities last.
-      _prioritizedCallbacks[priority?.toDouble() ?? double.infinity] = [
-        callback
-      ];
+      _prioritizedCallbacks[doublePriority] = [callback];
       return;
     }
     callbacksList.add(callback);

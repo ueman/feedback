@@ -5,6 +5,7 @@ import 'package:feedback/src/debug.dart';
 import 'package:feedback/src/feedback_builder/string_feedback.dart';
 import 'package:feedback/src/feedback_data.dart';
 import 'package:feedback/src/feedback_widget.dart';
+import 'package:feedback/src/screenshot.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
 import 'package:feedback/src/utilities/feedback_app.dart';
 import 'package:feedback/src/utilities/renderer/renderer.dart';
@@ -112,6 +113,7 @@ class BetterFeedback extends StatefulWidget {
     this.localeOverride,
     this.mode = FeedbackMode.draw,
     this.pixelRatio = 3.0,
+    this.screenshotController,
   }) : assert(
           pixelRatio > 0,
           'pixelRatio needs to be larger than 0',
@@ -176,6 +178,10 @@ class BetterFeedback extends StatefulWidget {
   /// for information on the underlying implementation.
   final double pixelRatio;
 
+  /// Manages capturing a screenshot of the app's widget tree.
+  /// If `screenshotController` is null, a new instance will be created by default,
+  final ScreenshotController? screenshotController;
+
   /// Call `BetterFeedback.of(context)` to get an
   /// instance of [FeedbackData] on which you can call `.show()` or `.hide()`
   /// to enable or disable the feedback view.
@@ -236,6 +242,8 @@ class _BetterFeedbackState extends State<BetterFeedback> {
                 pixelRatio: widget.pixelRatio,
                 feedbackBuilder:
                     widget.feedbackBuilder ?? simpleFeedbackBuilder,
+                screenshotController:
+                    widget.screenshotController ?? ScreenshotController(),
                 child: widget.child,
               );
             },

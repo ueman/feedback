@@ -8,8 +8,13 @@ Widget simpleFeedbackBuilder(
   BuildContext context,
   OnSubmit onSubmit,
   ScrollController? scrollController,
+  bool showLoading,
 ) =>
-    StringFeedback(onSubmit: onSubmit, scrollController: scrollController);
+    StringFeedback(
+      onSubmit: onSubmit,
+      scrollController: scrollController,
+      showLoading: showLoading,
+    );
 
 /// A form that prompts the user for feedback with a single text field.
 /// This is the default feedback widget used by [BetterFeedback].
@@ -20,10 +25,14 @@ class StringFeedback extends StatefulWidget {
     super.key,
     required this.onSubmit,
     required this.scrollController,
+    required this.showLoading,
   });
 
   /// Should be called when the user taps the submit button.
   final OnSubmit onSubmit;
+
+  /// show CircularProgressIndicator when Submiting
+  final bool showLoading;
 
   /// A scroll controller that expands the sheet when it's attached to a
   /// scrollable widget and that widget is scrolled.
@@ -88,16 +97,18 @@ class _StringFeedbackState extends State<StringFeedback> {
             ],
           ),
         ),
-        TextButton(
-          key: const Key('submit_feedback_button'),
-          child: Text(
-            FeedbackLocalizations.of(context).submitButtonText,
-            style: TextStyle(
-              color: FeedbackTheme.of(context).activeFeedbackModeColor,
-            ),
-          ),
-          onPressed: () => widget.onSubmit(controller.text),
-        ),
+        widget.showLoading
+            ? CircularProgressIndicator()
+            : TextButton(
+                key: const Key('submit_feedback_button'),
+                child: Text(
+                  FeedbackLocalizations.of(context).submitButtonText,
+                  style: TextStyle(
+                    color: FeedbackTheme.of(context).activeFeedbackModeColor,
+                  ),
+                ),
+                onPressed: () => widget.onSubmit(controller.text),
+              ),
         const SizedBox(height: 8),
       ],
     );

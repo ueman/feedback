@@ -17,6 +17,8 @@ typedef OnSubmit = Future<void> Function(
   Map<String, dynamic>? extras,
 });
 
+typedef ShowLoading = bool;
+
 /// A function that returns a Widget that prompts the user for feedback and
 /// calls [OnSubmit] when the user wants to submit their feedback.
 ///
@@ -31,6 +33,7 @@ typedef FeedbackBuilder = Widget Function(
   BuildContext,
   OnSubmit,
   ScrollController?,
+  ShowLoading,
 );
 
 /// A drag handle to be placed at the top of a draggable feedback sheet.

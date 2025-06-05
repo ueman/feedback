@@ -353,10 +353,11 @@ class FeedbackWidgetState extends State<FeedbackWidget>
   }
 
   static void _hideKeyboard(BuildContext context) {
-    if (kIsWeb) { // No keyboard to hide in web
-      return;
+    final currentFocus = FocusScope.of(context);
+
+    if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+      currentFocus.unfocus();
     }
-    FocusScope.of(context).requestFocus(FocusNode());
   }
 }
 

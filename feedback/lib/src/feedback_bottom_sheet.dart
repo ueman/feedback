@@ -12,11 +12,13 @@ class FeedbackBottomSheet extends StatelessWidget {
     required this.feedbackBuilder,
     required this.onSubmit,
     required this.sheetProgress,
+    required this.showLoading,
   });
 
   final FeedbackBuilder feedbackBuilder;
   final OnSubmit onSubmit;
   final ValueNotifier<double> sheetProgress;
+  final bool showLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +28,7 @@ class FeedbackBottomSheet extends StatelessWidget {
           feedbackBuilder: feedbackBuilder,
           onSubmit: onSubmit,
           sheetProgress: sheetProgress,
+          showLoading: showLoading,
         ),
       );
     }
@@ -45,6 +48,7 @@ class FeedbackBottomSheet extends StatelessWidget {
                   context,
                   onSubmit,
                   null,
+                  showLoading,
                 ),
               );
             },
@@ -60,11 +64,13 @@ class _DraggableFeedbackSheet extends StatefulWidget {
     required this.feedbackBuilder,
     required this.onSubmit,
     required this.sheetProgress,
+    required this.showLoading,
   });
 
   final FeedbackBuilder feedbackBuilder;
   final OnSubmit onSubmit;
   final ValueNotifier<double> sheetProgress;
+  final bool showLoading;
 
   @override
   State<_DraggableFeedbackSheet> createState() =>
@@ -138,6 +144,7 @@ class _DraggableFeedbackSheetState extends State<_DraggableFeedbackSheet> {
                             context,
                             widget.onSubmit,
                             scrollController,
+                            widget.showLoading,
                           ),
                         );
                       },

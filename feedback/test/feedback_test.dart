@@ -224,7 +224,7 @@ void main() {
             submittedFeedback = feedback;
           },
         ),
-        feedbackBuilder: (context, onSubmit, controller) {
+        feedbackBuilder: (context, onSubmit, controller, showLoading) {
           return SingleChildScrollView(
             controller: controller,
             child: TextButton(

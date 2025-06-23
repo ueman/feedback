@@ -1,6 +1,6 @@
 // A Flutter package for getting better feedback.
 // It allows the user to give interactive feedback directly in the app.
-library;
+library feedback;
 
 export 'src/better_feedback.dart';
 export 'src/feedback_controller.dart';

@@ -58,6 +58,11 @@ OnFeedbackCallback sendToSentry({
   final realHub = hub ?? HubAdapter();
 
   return (UserFeedback feedback) async {
+    final attachment = SentryAttachment.fromUint8List(
+      feedback.screenshot,
+      'screenshot.png',
+      contentType: 'image/png',
+    );
     await realHub.captureFeedback(
       SentryFeedback(
         contactEmail: email,
@@ -65,13 +70,9 @@ OnFeedbackCallback sendToSentry({
         message: feedback.text,
         unknown: feedback.extra,
       ),
-      hint: Hint.withScreenshot(
-        SentryAttachment.fromUint8List(
-          feedback.screenshot,
-          'screenshot.png',
-          contentType: 'image/png',
-        ),
-      ),
+      withScope: (scope) {
+        scope.addAttachment(attachment);
+      },
     );
   };
 }

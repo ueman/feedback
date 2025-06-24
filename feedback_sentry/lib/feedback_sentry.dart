@@ -101,11 +101,11 @@ OnFeedbackCallback sendToSentryWithException({
       },
     );
     // ignore: deprecated_member_use
-    await realHub.captureUserFeedback(SentryUserFeedback(
-      eventId: id,
-      email: email,
+    await realHub.captureFeedback(SentryFeedback(
+      associatedEventId: id,
+      contactEmail: email,
       name: name,
-      comments: feedback.text + '\n${feedback.extra.toString()}',
+      message: feedback.text + '\n${feedback.extra.toString()}',
     ));
   };
 }

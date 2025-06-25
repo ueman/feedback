@@ -28,7 +28,7 @@ void main() {
     expect(mockHub.capturedFeedback?.name, 'foo');
     expect(mockHub.capturedFeedback?.contactEmail, 'bar@foo.de');
 
-    expect(mockHub.scope.attachments.length, 1);
+    expect(mockHub.captureHint?.screenshot?.filename, "screenshot.png");
   });
 }
 
@@ -37,6 +37,7 @@ class MockHub implements Hub {
   String? capturedMessage;
   Scope scope = Scope(SentryOptions());
   Completer<bool> completer = Completer<bool>();
+  Hint? captureHint;
 
   @override
   Future<SentryId> captureMessage(
@@ -60,9 +61,7 @@ class MockHub implements Hub {
   }) async {
     capturedFeedback = feedback;
     withScope?.call(scope);
-    hint?.attachments.forEach((attachment) {
-      scope.addAttachment(attachment);
-    });
+    captureHint = hint;
     completer.complete(true);
     return SentryId.newId();
   }

@@ -24,10 +24,9 @@ void main() {
     expect(completed, true);
 
     expect(mockHub.capturedFeedback?.message, 'foo bar');
-    expect(mockHub.capturedFeedback!.unknown?['foo'], 'bar');
     expect(mockHub.capturedFeedback?.name, 'foo');
+    expect(mockHub.scope.contexts["user_feedback"], {'foo': 'bar'});
     expect(mockHub.capturedFeedback?.contactEmail, 'bar@foo.de');
-
     expect(mockHub.captureHint?.screenshot?.filename, "screenshot.png");
   });
 }

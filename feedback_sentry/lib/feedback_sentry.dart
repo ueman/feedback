@@ -92,6 +92,10 @@ OnFeedbackCallback sendToSentryWithException({
       exception,
       stackTrace: stackTrace,
       withScope: (scope) {
+        scope.setContexts(
+          "user_feedback",
+          feedback.extra,
+        );
         scope.addAttachment(SentryAttachment.fromUint8List(
           feedback.screenshot,
           'screenshot.png',

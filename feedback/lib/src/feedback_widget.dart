@@ -18,14 +18,14 @@ typedef FeedbackButtonPress = void Function(BuildContext context);
 const kScaleOrigin = Alignment(-.3, -.65);
 const kScaleFactor = .65;
 
-class FeedbackWidget extends StatefulWidget {
+class FeedbackWidget<T, R> extends StatefulWidget {
   const FeedbackWidget({
     super.key,
+    required this.route,
+    required this.isVisible,
     required this.child,
-    required this.isFeedbackVisible,
     required this.drawColors,
     required this.mode,
-    required this.pixelRatio,
     required this.feedbackBuilder,
   }) : assert(
           // This way, we can have a const constructor
@@ -34,20 +34,22 @@ class FeedbackWidget extends StatefulWidget {
           'There must be at least one color to draw',
         );
 
-  final bool isFeedbackVisible;
+  // Note that we need both `isVisible` and `route` as route may be
+  // null even if the feedback is visible as route is nullable.
+  final T? route;
+  final bool isVisible;
   final FeedbackMode mode;
-  final double pixelRatio;
   final Widget child;
   final List<Color> drawColors;
 
-  final FeedbackBuilder feedbackBuilder;
+  final FeedbackBuilder<T, R> feedbackBuilder;
 
   @override
-  FeedbackWidgetState createState() => FeedbackWidgetState();
+  FeedbackWidgetState<T, R> createState() => FeedbackWidgetState();
 }
 
 @visibleForTesting
-class FeedbackWidgetState extends State<FeedbackWidget>
+class FeedbackWidgetState<T, R> extends State<FeedbackWidget<T, R>>
     with SingleTickerProviderStateMixin {
   // Padding to put around the interactive screenshot preview.
   final double padding = 8;
@@ -65,11 +67,15 @@ class FeedbackWidgetState extends State<FeedbackWidget>
   ScreenshotController screenshotController = ScreenshotController();
   TextEditingController textEditingController = TextEditingController();
 
+  late final FeedbackController<T, R> feedbackController = BetterFeedback.of<T, R>(context);
+
   late FeedbackMode mode = widget.mode;
   late final AnimationController _controller = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 300),
   );
+
+  T? lastSeenRoute;
 
   PainterController create() {
     final controller = PainterController();
@@ -94,11 +100,11 @@ class FeedbackWidgetState extends State<FeedbackWidget>
 
   @visibleForTesting
   bool backButtonIntercept() {
-    if (mode == FeedbackMode.draw && widget.isFeedbackVisible) {
+    if (mode == FeedbackMode.draw && feedbackController.isVisible) {
       if (painterController.getStepCount() > 0) {
         painterController.undo();
       } else {
-        BetterFeedback.of(context).hide();
+        BetterFeedback.of<T, R>(context).hide();
       }
       return true;
     }
@@ -106,21 +112,24 @@ class FeedbackWidgetState extends State<FeedbackWidget>
   }
 
   @override
-  void didUpdateWidget(FeedbackWidget oldWidget) {
+  void didUpdateWidget(FeedbackWidget<T, R> oldWidget) {
     super.didUpdateWidget(oldWidget);
     // update feedback mode with the initial value
     mode = widget.mode;
-    if (oldWidget.isFeedbackVisible != widget.isFeedbackVisible &&
-        oldWidget.isFeedbackVisible == false) {
+    if (oldWidget.isVisible != widget.isVisible &&
+        oldWidget.isVisible == false) {
       // Feedback is now visible,
-      // start animation to show it.
+      // start animation to show it and update the route.
+      lastSeenRoute = widget.route;
       _controller.forward();
     }
 
-    if (oldWidget.isFeedbackVisible != widget.isFeedbackVisible &&
-        oldWidget.isFeedbackVisible == true) {
+    if (oldWidget.isVisible != widget.isVisible &&
+        oldWidget.isVisible == true) {
       // Feedback is no longer visible,
       // reverse animation to hide it.
+      // Note that we do not clear the last seen route as the bottom sheet will
+      // still need to reference it as it animates out.
       _controller.reverse();
       // Reset the sheet progress so the fade is no longer applied.
       sheetProgress.value = 0;
@@ -157,7 +166,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                   child: PaintOnChild(
                     controller: painterController,
                     isPaintingActive:
-                        mode == FeedbackMode.draw && widget.isFeedbackVisible,
+                        mode == FeedbackMode.draw && feedbackController.isVisible,
                     child: widget.child,
                   ),
                 ),
@@ -242,7 +251,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                                 },
                                 onCloseFeedback: () {
                                   _hideKeyboard(context);
-                                  BetterFeedback.of(context).hide();
+                                  BetterFeedback.of<T, R>(context).hide();
                                 },
                               ),
                             ),
@@ -260,23 +269,13 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                                       notification.minExtent);
                               return false;
                             },
-                            child: FeedbackBottomSheet(
+                            child: FeedbackBottomSheet<T, R>(
                               key: const Key('feedback_bottom_sheet'),
+                              // We need to forcibly cast to T to handle that current route is
+                              // nullable and T itself may or may not be nullable
+                              route: BetterFeedback.of<T, R>(context).currentRoute as T,
+                              screenshotController: screenshotController,
                               feedbackBuilder: widget.feedbackBuilder,
-                              onSubmit: (
-                                String feedback, {
-                                Map<String, dynamic>? extras,
-                              }) async {
-                                await _sendFeedback(
-                                  context,
-                                  BetterFeedback.of(context).onFeedback!,
-                                  screenshotController,
-                                  feedback,
-                                  widget.pixelRatio,
-                                  extras: extras,
-                                );
-                                painterController.clear();
-                              },
                               sheetProgress: sheetProgress,
                             ),
                           ),
@@ -290,66 +289,6 @@ class FeedbackWidgetState extends State<FeedbackWidget>
         ),
       ],
     );
-  }
-
-  @visibleForTesting
-  static Future<void> sendFeedback(
-    OnFeedbackCallback onFeedbackSubmitted,
-    ScreenshotController controller,
-    String feedback,
-    double pixelRatio, {
-    Duration delay = const Duration(milliseconds: 2000),
-    Map<String, dynamic>? extras,
-  }) async {
-    // Wait for the keyboard to be closed, and then proceed
-    // to take a screenshot
-    await Future.delayed(
-      delay,
-      () async {
-        // Take high resolution screenshot
-        final screenshot = await controller.capture(
-          pixelRatio: pixelRatio,
-          delay: const Duration(milliseconds: 0),
-        );
-
-        // Give it to the developer
-        // to do something with it.
-        await onFeedbackSubmitted(
-          UserFeedback(
-            text: feedback,
-            screenshot: screenshot,
-            extra: extras,
-          ),
-        );
-      },
-    );
-  }
-
-  static Future<void> _sendFeedback(
-    BuildContext context,
-    OnFeedbackCallback onFeedbackSubmitted,
-    ScreenshotController controller,
-    String feedback,
-    double pixelRatio, {
-    Duration delay = const Duration(milliseconds: 200),
-    bool showKeyboard = false,
-    Map<String, dynamic>? extras,
-  }) async {
-    if (!showKeyboard) {
-      _hideKeyboard(context);
-    }
-    await sendFeedback(
-      onFeedbackSubmitted,
-      controller,
-      feedback,
-      pixelRatio,
-      delay: delay,
-      extras: extras,
-    );
-
-    // Close feedback mode
-    // ignore: use_build_context_synchronously
-    BetterFeedback.of(context).hide();
   }
 
   static void _hideKeyboard(BuildContext context) {

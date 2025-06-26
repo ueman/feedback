@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../utilities/custom_color_position.dart';
+
 const _defaultDrawColors = [
   Colors.red,
   Colors.green,
@@ -38,6 +40,8 @@ class FeedbackThemeData {
       this.feedbackSheetHeight = .25,
       this.activeFeedbackModeColor = _blue,
       this.drawColors = _defaultDrawColors,
+      this.showCustomColor = true,
+      this.customColorPosition = CustomColorPosition.trailing,
       this.bottomSheetDescriptionStyle = _defaultBottomSheetDescriptionStyle,
       this.bottomSheetTextInputStyle = _defaultBottomSheetTextInputStyle,
       this.sheetIsDraggable = true,
@@ -107,6 +111,12 @@ class FeedbackThemeData {
 
   /// Colors which can be used to draw while in feedback mode.
   final List<Color> drawColors;
+
+  /// Determines whether or not to show the custom color picker icon.
+  final bool showCustomColor;
+
+  /// Determines the position of the custom color picker icon.
+  final CustomColorPosition customColorPosition;
 
   /// Text Style of the text above of the feedback text input.
   final TextStyle bottomSheetDescriptionStyle;

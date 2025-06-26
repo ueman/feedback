@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 class ScreenshotController {
-  final GlobalKey _containerKey = GlobalKey();
+  final GlobalKey containerKey = GlobalKey();
 
   Future<Uint8List> capture({
     double pixelRatio = 1,
@@ -15,7 +15,7 @@ class ScreenshotController {
   }) {
     //Delay is required. See Issue https://github.com/flutter/flutter/issues/22308
     return Future.delayed(delay, () async {
-      final renderObject = _containerKey.currentContext?.findRenderObject();
+      final renderObject = containerKey.currentContext?.findRenderObject();
 
       if (renderObject is! RenderRepaintBoundary) {
         FlutterError.reportError(_noRenderObject());
@@ -31,7 +31,7 @@ class ScreenshotController {
   FlutterErrorDetails _noRenderObject() {
     return FlutterErrorDetails(
       exception: Exception(
-        '_containerKey.currentContext is null. '
+        'containerKey.currentContext is null. '
         'Thus we can\'t create a screenshot',
       ),
       library: 'feedback',
@@ -55,7 +55,7 @@ class Screenshot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RepaintBoundary(
-      key: controller._containerKey,
+      key: controller.containerKey,
       child: child,
     );
   }

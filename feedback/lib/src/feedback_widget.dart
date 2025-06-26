@@ -27,6 +27,7 @@ class FeedbackWidget extends StatefulWidget {
     required this.mode,
     required this.pixelRatio,
     required this.feedbackBuilder,
+    required this.screenshotController,
   }) : assert(
           // This way, we can have a const constructor
           // ignore: prefer_is_empty
@@ -39,8 +40,8 @@ class FeedbackWidget extends StatefulWidget {
   final double pixelRatio;
   final Widget child;
   final List<Color> drawColors;
-
   final FeedbackBuilder feedbackBuilder;
+  final ScreenshotController screenshotController;
 
   @override
   FeedbackWidgetState createState() => FeedbackWidgetState();
@@ -62,7 +63,6 @@ class FeedbackWidgetState extends State<FeedbackWidget>
   @visibleForTesting
   late PainterController painterController = create();
 
-  ScreenshotController screenshotController = ScreenshotController();
   TextEditingController textEditingController = TextEditingController();
 
   late FeedbackMode mode = widget.mode;
@@ -153,7 +153,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                 // Place the screenshot here so that the widget tree isn't being
                 // arbitrarily rebuilt.
                 child: Screenshot(
-                  controller: screenshotController,
+                  controller: widget.screenshotController,
                   child: PaintOnChild(
                     controller: painterController,
                     isPaintingActive:
@@ -270,7 +270,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                                 await _sendFeedback(
                                   context,
                                   BetterFeedback.of(context).onFeedback!,
-                                  screenshotController,
+                                  widget.screenshotController,
                                   feedback,
                                   widget.pixelRatio,
                                   extras: extras,

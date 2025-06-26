@@ -354,6 +354,24 @@ class BnFeedbackLocalizations extends FeedbackLocalizations {
   String get navigate => 'নেভিগেট';
 }
 
+/// Default Henrew localization
+class HeFeedbackLocalizations extends FeedbackLocalizations {
+  /// Creates a [HeFeedbackLocalizations].
+  const HeFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'שליחה';
+
+  @override
+  String get feedbackDescriptionText => 'מה הבעיה?';
+
+  @override
+  String get draw => 'ציור';
+
+  @override
+  String get navigate => 'ניווט';
+}
+
 // coverage:ignore-end
 
 /// This is a localization delegate, which includes all of the localizations
@@ -387,6 +405,7 @@ class GlobalFeedbackLocalizationsDelegate
     const Locale('es'): const EsFeedbackLocalizations(),
     const Locale('fa'): const FaFeedbackLocalizations(),
     const Locale('bn'): const BnFeedbackLocalizations(),
+    const Locale('he'): const HeFeedbackLocalizations(),
   };
 
   /// The default locale to use. Note that this locale should ALWAYS be

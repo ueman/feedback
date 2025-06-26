@@ -356,7 +356,7 @@ class BnFeedbackLocalizations extends FeedbackLocalizations {
 
 /// Default Henrew localization
 class HeFeedbackLocalizations extends FeedbackLocalizations {
-  /// Creates a [DeFeedbackLocalizations].
+  /// Creates a [HeFeedbackLocalizations].
   const HeFeedbackLocalizations();
 
   @override

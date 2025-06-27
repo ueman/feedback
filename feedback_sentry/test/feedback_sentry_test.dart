@@ -23,21 +23,20 @@ void main() {
 
     expect(completed, true);
 
-    expect(mockHub.capturedMessage, 'foo bar');
-
-    expect(mockHub.capturedFeedback?.comments, 'foo bar\n{foo: bar}');
+    expect(mockHub.capturedFeedback?.message, 'foo bar');
     expect(mockHub.capturedFeedback?.name, 'foo');
-    expect(mockHub.capturedFeedback?.email, 'bar@foo.de');
-
-    expect(mockHub.scope.attachments.length, 1);
+    expect(mockHub.scope.contexts["user_feedback"], {'foo': 'bar'});
+    expect(mockHub.capturedFeedback?.contactEmail, 'bar@foo.de');
+    expect(mockHub.captureHint?.screenshot?.filename, "screenshot.png");
   });
 }
 
 class MockHub implements Hub {
-  SentryUserFeedback? capturedFeedback;
+  SentryFeedback? capturedFeedback;
   String? capturedMessage;
   Scope scope = Scope(SentryOptions());
   Completer<bool> completer = Completer<bool>();
+  Hint? captureHint;
 
   @override
   Future<SentryId> captureMessage(
@@ -45,7 +44,7 @@ class MockHub implements Hub {
     SentryLevel? level,
     String? template,
     List? params,
-    hint,
+    Hint? hint,
     ScopeCallback? withScope,
   }) async {
     capturedMessage = message;
@@ -54,9 +53,16 @@ class MockHub implements Hub {
   }
 
   @override
-  Future<void> captureUserFeedback(SentryUserFeedback userFeedback) async {
-    capturedFeedback = userFeedback;
+  Future<SentryId> captureFeedback(
+    SentryFeedback feedback, {
+    Hint? hint,
+    ScopeCallback? withScope,
+  }) async {
+    capturedFeedback = feedback;
+    withScope?.call(scope);
+    captureHint = hint;
     completer.complete(true);
+    return SentryId.newId();
   }
 
   // Used so that unneeded methods, do not need to be overridden.

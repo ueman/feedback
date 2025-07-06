@@ -1,3 +1,7 @@
+## 3.2.0
+
+* Require `sentry ^9.0.0`
+
 ## 3.1.0
 
 * Require `sentry ^8.10.0`

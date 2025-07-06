@@ -1,3 +1,10 @@
+## [3.2.0]
+
+- Hebrew translations
+- Bangla translations
+- Fixed an issue with focus on web (https://github.com/ueman/feedback/pull/359)
+- Bump to Flutter 3.24 and Dart 3.5
+
 ## [3.1.0]
 
 - Fix dialog pop issue [#293](https://github.com/ueman/feedback/pull/293). This may break custom feedback builder. Make sure to test those before updating.

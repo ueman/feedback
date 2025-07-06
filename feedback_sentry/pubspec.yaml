@@ -1,6 +1,6 @@
 name: feedback_sentry
 description: A Flutter package for getting better feedback. It allows the user to give interactive feedback directly in the app and upload it to Sentry.io
-version: 3.1.0
+version: 3.2.0
 homepage: https://uekoetter.dev
 repository: https://github.com/ueman/feedback
 issue_tracker: https://github.com/ueman/feedback/issues

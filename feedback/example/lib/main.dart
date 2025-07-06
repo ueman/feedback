@@ -171,9 +171,11 @@ class MyHomePage extends StatelessWidget {
                           await writeImageToStorage(feedback.screenshot);
 
                       // ignore: deprecated_member_use
-                      await Share.shareFiles(
-                        [screenshotFilePath],
-                        text: feedback.text,
+                      await SharePlus.instance.share(
+                        ShareParams(
+                          text: feedback.text,
+                          files: [XFile(screenshotFilePath)],
+                        ),
                       );
                     },
                   );

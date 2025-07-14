@@ -174,6 +174,7 @@ void main() {
       Uint8List? submittedScreenshot;
 
       final widget = BetterFeedback(
+        screenshotController: MockScreenshotController(),
         child: MyTestApp(
           onFeedback: (feedback) {
             submittedText = feedback.text;
@@ -183,9 +184,6 @@ void main() {
       );
       await tester.pumpWidget(widget);
       await tester.pumpAndSettle();
-      final feedbackWidgetState =
-          tester.state<FeedbackWidgetState>(find.byType(FeedbackWidget));
-      feedbackWidgetState.screenshotController = MockScreenshotController();
 
       // feedback is closed
       final userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
@@ -219,6 +217,7 @@ void main() {
       UserFeedback? submittedFeedback;
 
       final widget = BetterFeedback(
+        screenshotController: MockScreenshotController(),
         child: MyTestApp(
           onFeedback: (feedback) {
             submittedFeedback = feedback;
@@ -239,9 +238,6 @@ void main() {
       );
       await tester.pumpWidget(widget);
       await tester.pumpAndSettle();
-      final feedbackWidgetState =
-          tester.state<FeedbackWidgetState>(find.byType(FeedbackWidget));
-      feedbackWidgetState.screenshotController = MockScreenshotController();
 
       // feedback is closed
       final userInputFields = find.byKey(const Key('feedback_bottom_sheet'));

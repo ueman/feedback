@@ -24,13 +24,16 @@ directly in the app, by annotating a screenshot of the current page, as well as 
 
 <p align="center">
 
-[![Package of the week video](https://img.youtube.com/vi/yjsN2Goe_po/0.jpg)](https://www.youtube.com/watch?v=yjsN2Goe_po "feedback (Package of the Week)")
-
 </p>
 
 ## Demo
 
 An interactive web example is available here: <a href="https://ueman.github.io/feedback/"><img src="https://img.shields.io/badge/Try-Flutter%20Web%20demo-blue" alt="Online demo"></a>. It also contains a small tutorial on how to use this library.
+
+Here are some more demo videos:
+
+[![Package of the week video](https://img.youtube.com/vi/yjsN2Goe_po/0.jpg)](https://www.youtube.com/watch?v=yjsN2Goe_po "feedback (Package of the Week)")
+[![How to build agentic apps with Flutter and Firebase AI Logic](https://img.youtube.com/vi/xo271p-Fl_4/0.jpg)](https://www.youtube.com/watch?v=xo271p-Fl_4)
 
 ## Motivation
 

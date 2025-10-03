@@ -58,6 +58,7 @@ class _MyAppState extends State<MyApp> {
         GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
+
       localeOverride: const Locale('en'),
       mode: FeedbackMode.draw,
       pixelRatio: 1,
@@ -204,6 +205,10 @@ class MyHomePage extends StatelessWidget {
                     },
                   );
                 },
+              ),
+              SizedBox(height: 10),
+              FeedbackRedacted(
+                child: const Text('This is some sensitive information.'),
               ),
             ],
           ),

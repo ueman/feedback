@@ -25,6 +25,7 @@ class FeedbackController extends ChangeNotifier {
   /// Typically, this does not need to be called by the user of this library
   void hide() {
     _isVisible = false;
+    redactionController.unredact();
     notifyListeners();
   }
 
@@ -34,4 +35,11 @@ class FeedbackController extends ChangeNotifier {
   /// true and feedback is currently displayed.
   final DraggableScrollableController sheetController =
       DraggableScrollableController();
+
+  /// Controller for managing redaction of sensitive content.
+  ///
+  // Having a seperate controller for redaction ensures that the entire widget
+  // tree isn't rebuilt when the redaction state changes.
+  final FeedbackRedactionController redactionController =
+      FeedbackRedactionController();
 }

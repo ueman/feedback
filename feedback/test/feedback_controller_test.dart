@@ -32,5 +32,20 @@ void main() {
       expect(controller.isVisible, false);
       expect(listenerWasCalled, true);
     });
+
+    test(' change redaction from redacted to unredacted when hidden', () {
+      final controller = FeedbackController();
+      controller.show((_) {});
+      controller.redactionController.redact();
+
+      var listenerWasCalled = false;
+      controller.redactionController.addListener(() {
+        listenerWasCalled = true;
+      });
+
+      controller.hide();
+      expect(controller.redactionController.isRedacted, false);
+      expect(listenerWasCalled, true);
+    });
   });
 }

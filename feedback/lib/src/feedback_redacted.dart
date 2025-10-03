@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:feedback/src/better_feedback.dart';
+import 'package:feedback/src/feedback_redaction_controller.dart';
 import 'package:flutter/material.dart';
 
 /// A widget that applies a blur effect to its child when the [BetterFeedback]
@@ -21,35 +22,30 @@ class FeedbackRedacted extends StatefulWidget {
 }
 
 class _FeedbackRedactedState extends State<FeedbackRedacted> {
-  bool isListenerAdded = false;
+  FeedbackRedactionController? controller;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
     // Ensure that the listener is only added once.
-    if (!isListenerAdded) {
-      BetterFeedback.of(context)
-          .redactionController
-          .addListener(onUpdateOfController);
-      isListenerAdded = true;
-    }
+    controller ??= BetterFeedback.of(context).redactionController
+      ..addListener(onUpdateOfController);
   }
 
   @override
   void dispose() {
     super.dispose();
-    BetterFeedback.of(context)
-        .redactionController
-        .removeListener(onUpdateOfController);
+    controller?.removeListener(onUpdateOfController);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (BetterFeedback.of(context).redactionController.isRedacted) {
-      // Wrapping the child with a ImageFiltered instead of just changing the
-      // sigma values to 0 makes testing easier.
+    if (controller?.isRedacted == true) {
+      // Re-wrapping the child instead of just changing the sigma values makes
+      // testing easier.
       return ImageFiltered(
+        key: const Key('redaction_blur'),
         imageFilter: ImageFilter.blur(
           sigmaX: widget.blurAmount,
           sigmaY: widget.blurAmount,

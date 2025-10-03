@@ -66,9 +66,11 @@ class MyTestPageState extends State<MyTestPage> {
             const Text(
               'You have pushed the button this many times:',
             ),
-            Text(
-              '$counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            FeedbackRedacted(
+              child: Text(
+                '$counter',
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
             ),
             const TextField(),
             TextButton(

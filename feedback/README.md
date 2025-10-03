@@ -232,8 +232,8 @@ Any widget that contains sensitive content can be wrapped with a `FeedbackRedact
 
 ```dart
 FeedbackRedacted(
-  blurAmount: 10 // Optional, defaults to 5.
-  child: Text('sensitive information')
+  blurAmount: 10, // Optional, defaults to 5.
+  child: Text('sensitive information'),
 );
 ```
 

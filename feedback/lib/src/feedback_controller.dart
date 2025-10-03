@@ -38,8 +38,8 @@ class FeedbackController extends ChangeNotifier {
 
   /// Controller for managing redaction of sensitive content.
   ///
-  // Having a seperate controller for redaction ensures that the entire widget
-  // tree isn't rebuilt when the redaction state changes.
+  // Having a seperate controller for redaction ensures that the entire feedback
+  // widget isn't rebuilt when redaction state changes.
   final FeedbackRedactionController redactionController =
       FeedbackRedactionController();
 }

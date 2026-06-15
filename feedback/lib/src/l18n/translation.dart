@@ -372,6 +372,24 @@ class HeFeedbackLocalizations extends FeedbackLocalizations {
   String get navigate => 'ניווט';
 }
 
+/// Default tamil localization
+class TaFeedbackLocalizations extends FeedbackLocalizations {
+  /// Creates a [TaFeedbackLocalizations].
+  const TaFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'சமர்ப்பி';
+
+  @override
+  String get feedbackDescriptionText => 'என்ன பிரச்சனை?';
+
+  @override
+  String get draw => 'வரை';
+
+  @override
+  String get navigate => 'வழிசெலுத்து';
+}
+
 // coverage:ignore-end
 
 /// This is a localization delegate, which includes all of the localizations
@@ -406,6 +424,7 @@ class GlobalFeedbackLocalizationsDelegate
     const Locale('fa'): const FaFeedbackLocalizations(),
     const Locale('bn'): const BnFeedbackLocalizations(),
     const Locale('he'): const HeFeedbackLocalizations(),
+    const Locale('ta'): const TaFeedbackLocalizations(),
   };
 
   /// The default locale to use. Note that this locale should ALWAYS be

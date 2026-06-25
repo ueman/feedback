@@ -110,10 +110,13 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     super.didUpdateWidget(oldWidget);
     // update feedback mode with the initial value
     mode = widget.mode;
+    if (oldWidget.mode != widget.mode) _toggleRedaction();
+
     if (oldWidget.isFeedbackVisible != widget.isFeedbackVisible &&
         oldWidget.isFeedbackVisible == false) {
       // Feedback is now visible,
       // start animation to show it.
+      _toggleRedaction();
       _controller.forward();
     }
 
@@ -239,6 +242,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                                     this.mode = mode;
                                     _hideKeyboard(context);
                                   });
+                                  _toggleRedaction();
                                 },
                                 onCloseFeedback: () {
                                   _hideKeyboard(context);
@@ -325,6 +329,14 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     );
   }
 
+  void _toggleRedaction() {
+    if (mode == FeedbackMode.draw) {
+      BetterFeedback.of(context).redactionController.redact();
+    } else {
+      BetterFeedback.of(context).redactionController.unredact();
+    }
+  }
+
   static Future<void> _sendFeedback(
     BuildContext context,
     OnFeedbackCallback onFeedbackSubmitted,
@@ -335,6 +347,8 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     bool showKeyboard = false,
     Map<String, dynamic>? extras,
   }) async {
+    BetterFeedback.of(context).redactionController.redact();
+
     if (!showKeyboard) {
       _hideKeyboard(context);
     }

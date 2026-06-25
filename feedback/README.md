@@ -226,6 +226,17 @@ void main() {
 }
 ```
 
+## Hiding sensitive content in the screenshot
+
+Any widget that contains sensitive content can be wrapped with a `FeedbackRedacted` widget. This will ensure that the content is blurred in the screenshot.
+
+```dart
+FeedbackRedacted(
+  blurAmount: 10, // Optional, defaults to 5.
+  child: Text('sensitive information'),
+);
+```
+
 ## 💡 Tips, tricks and usage scenarios
 
 - You can combine this with [device_info_plus](https://pub.dev/packages/device_info_plus)

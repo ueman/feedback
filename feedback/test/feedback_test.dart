@@ -25,8 +25,10 @@ void main() {
 
       // feedback is closed
       var userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
+      final redactionBlur = find.byKey(const Key('redaction_blur'));
 
       expect(userInputFields, findsNothing);
+      expect(redactionBlur, findsNothing);
 
       // open feedback
       final openFeedbackButton = find.text('open feedback');
@@ -55,8 +57,10 @@ void main() {
 
       // feedback is closed
       var userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
+      final redactionBlur = find.byKey(const Key('redaction_blur'));
 
       expect(userInputFields, findsNothing);
+      expect(redactionBlur, findsNothing);
 
       // open feedback
       final openFeedbackButton = find.text('open feedback');
@@ -67,6 +71,7 @@ void main() {
       final activeDrawingColor = getActiveColorButton();
 
       expect(userInputFields, findsOneWidget);
+      expect(redactionBlur, findsOneWidget);
       expect(activeDrawingColor.evaluate().length, 4);
     });
 
@@ -85,8 +90,10 @@ void main() {
 
       // feedback is closed
       var userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
+      final redactionBlur = find.byKey(const Key('redaction_blur'));
 
       expect(userInputFields, findsNothing);
+      expect(redactionBlur, findsNothing);
 
       // open feedback
       final openFeedbackButton = find.text('open feedback');
@@ -97,6 +104,7 @@ void main() {
       final activeDrawingColor = getActiveColorButton();
 
       expect(userInputFields, findsOneWidget);
+      expect(redactionBlur, findsNothing);
       expect(activeDrawingColor, findsNothing);
     });
 
@@ -110,8 +118,10 @@ void main() {
 
       // feedback is closed
       final userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
+      final redactionBlur = find.byKey(const Key('redaction_blur'));
 
       expect(userInputFields, findsNothing);
+      expect(redactionBlur, findsNothing);
 
       // open feedback
       final openFeedbackButton = find.byKey(const Key('open_feedback'));
@@ -127,10 +137,11 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(userInputFields, findsNothing);
+      expect(redactionBlur, findsNothing);
     });
 
     testWidgets(
-        'back button in drawing mode reverses drawings and '
+        'back button in drawing mode reverses drawings and redaction and '
         'then leaves the feedback interface', (tester) async {
       const widget = BetterFeedback(
         mode: FeedbackMode.draw,
@@ -142,6 +153,7 @@ void main() {
 
       // feedback is closed
       final userInputFields = find.byKey(const Key('feedback_bottom_sheet'));
+      final redactionBlur = find.byKey(const Key('redaction_blur'));
 
       // open feedback
       final openFeedbackButton = find.byKey(const Key('open_feedback'));
@@ -149,6 +161,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(userInputFields, findsOneWidget);
+      expect(redactionBlur, findsOneWidget);
 
       // add fake step to test reversing
       final feedbackWidgetState =
@@ -167,6 +180,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(userInputFields, findsNothing);
+      expect(redactionBlur, findsNothing);
     });
 
     testWidgets('feedback callback gets called', (tester) async {

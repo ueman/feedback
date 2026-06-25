@@ -8,6 +8,7 @@ void main() {
   Widget create({
     Color? activeColor,
     FeedbackMode? mode,
+    bool? showNavigateButton,
     ValueChanged<Color>? onColorChanged,
     VoidCallback? onUndo,
     ValueChanged<FeedbackMode>? onControlModeChanged,
@@ -19,6 +20,7 @@ void main() {
       child: ControlsColumn(
         activeColor: activeColor ?? Colors.red,
         mode: mode ?? FeedbackMode.draw,
+        showModeButtons: showNavigateButton ?? true,
         colors:
             colors ?? [Colors.red, Colors.green, Colors.blue, Colors.yellow],
         onClearDrawing: onClearDrawing ?? () {},

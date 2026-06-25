@@ -17,6 +17,7 @@ class ControlsColumn extends StatelessWidget {
     required this.onUndo,
     required this.onControlModeChanged,
     required this.onCloseFeedback,
+    required this.showModeButtons,
     required this.onClearDrawing,
     required this.colors,
   })  : assert(
@@ -32,6 +33,7 @@ class ControlsColumn extends StatelessWidget {
   final VoidCallback onClearDrawing;
   final List<Color> colors;
   final Color activeColor;
+  final bool showModeButtons;
   final FeedbackMode mode;
 
   @override
@@ -55,32 +57,34 @@ class ControlsColumn extends StatelessWidget {
             onPressed: onCloseFeedback,
           ),
           _ColumnDivider(),
-          RotatedBox(
-            quarterTurns: 1,
-            child: MaterialButton(
-              key: const ValueKey<String>('navigate_button'),
-              onPressed: isNavigatingActive
-                  ? null
-                  : () => onControlModeChanged(FeedbackMode.navigate),
-              disabledTextColor:
-                  FeedbackTheme.of(context).activeFeedbackModeColor,
-              child: Text(FeedbackLocalizations.of(context).navigate),
+          if (showModeButtons) ...[
+            RotatedBox(
+              quarterTurns: 1,
+              child: MaterialButton(
+                key: const ValueKey<String>('navigate_button'),
+                onPressed: isNavigatingActive
+                    ? null
+                    : () => onControlModeChanged(FeedbackMode.navigate),
+                disabledTextColor:
+                    FeedbackTheme.of(context).activeFeedbackModeColor,
+                child: Text(FeedbackLocalizations.of(context).navigate),
+              ),
             ),
-          ),
-          _ColumnDivider(),
-          RotatedBox(
-            quarterTurns: 1,
-            child: MaterialButton(
-              key: const ValueKey<String>('draw_button'),
-              minWidth: 20,
-              onPressed: isNavigatingActive
-                  ? () => onControlModeChanged(FeedbackMode.draw)
-                  : null,
-              disabledTextColor:
-                  FeedbackTheme.of(context).activeFeedbackModeColor,
-              child: Text(FeedbackLocalizations.of(context).draw),
+            _ColumnDivider(),
+            RotatedBox(
+              quarterTurns: 1,
+              child: MaterialButton(
+                key: const ValueKey<String>('draw_button'),
+                minWidth: 20,
+                onPressed: isNavigatingActive
+                    ? () => onControlModeChanged(FeedbackMode.draw)
+                    : null,
+                disabledTextColor:
+                    FeedbackTheme.of(context).activeFeedbackModeColor,
+                child: Text(FeedbackLocalizations.of(context).draw),
+              ),
             ),
-          ),
+          ],
           IconButton(
             key: const ValueKey<String>('undo_button'),
             icon: const Icon(Icons.undo),

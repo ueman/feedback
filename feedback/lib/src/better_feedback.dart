@@ -112,6 +112,7 @@ class BetterFeedback extends StatefulWidget {
     this.localeOverride,
     this.mode = FeedbackMode.draw,
     this.pixelRatio = 3.0,
+    this.showModeButtons = true,
   }) : assert(
           pixelRatio > 0,
           'pixelRatio needs to be larger than 0',
@@ -176,6 +177,11 @@ class BetterFeedback extends StatefulWidget {
   /// for information on the underlying implementation.
   final double pixelRatio;
 
+  /// Displays the mode switch buttons in the feedback UI.
+  ///
+  /// If set to `false`, the mode can only be changed through the `mode` property.
+  final bool showModeButtons;
+
   /// Call `BetterFeedback.of(context)` to get an
   /// instance of [FeedbackData] on which you can call `.show()` or `.hide()`
   /// to enable or disable the feedback view.
@@ -233,6 +239,7 @@ class _BetterFeedbackState extends State<BetterFeedback> {
                 isFeedbackVisible: controller.isVisible,
                 drawColors: FeedbackTheme.of(context).drawColors,
                 mode: widget.mode,
+                showModeButtons: widget.showModeButtons,
                 pixelRatio: widget.pixelRatio,
                 feedbackBuilder:
                     widget.feedbackBuilder ?? simpleFeedbackBuilder,

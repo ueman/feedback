@@ -41,6 +41,7 @@ class _MyAppState extends State<MyApp> {
                 scrollController: scrollController,
               )
           : null,
+      showModeButtons: true,
       theme: FeedbackThemeData(
         background: Colors.grey,
         feedbackSheetColor: Colors.grey[50]!,

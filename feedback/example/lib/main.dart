@@ -36,9 +36,11 @@ class _MyAppState extends State<MyApp> {
       // If custom feedback is not enabled, supply null and the default text
       // feedback form will be used.
       feedbackBuilder: _useCustomFeedback
-          ? (context, onSubmit, scrollController) => CustomFeedbackForm(
+          ? (context, onSubmit, scrollController, screenshotController) =>
+              CustomFeedbackForm(
                 onSubmit: onSubmit,
                 scrollController: scrollController,
+                screenshotController: screenshotController,
               )
           : null,
       theme: FeedbackThemeData(

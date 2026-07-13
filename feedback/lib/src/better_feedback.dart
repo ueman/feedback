@@ -31,6 +31,7 @@ typedef FeedbackBuilder = Widget Function(
   BuildContext,
   OnSubmit,
   ScrollController?,
+  ScreenshotController?,
 );
 
 /// A drag handle to be placed at the top of a draggable feedback sheet.

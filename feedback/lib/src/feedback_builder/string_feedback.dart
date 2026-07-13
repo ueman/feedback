@@ -1,5 +1,4 @@
-import 'package:feedback/src/better_feedback.dart';
-import 'package:feedback/src/l18n/translation.dart';
+import 'package:feedback/feedback.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
 import 'package:flutter/material.dart';
 
@@ -8,8 +7,13 @@ Widget simpleFeedbackBuilder(
   BuildContext context,
   OnSubmit onSubmit,
   ScrollController? scrollController,
+  ScreenshotController? screenshotController,
 ) =>
-    StringFeedback(onSubmit: onSubmit, scrollController: scrollController);
+    StringFeedback(
+      onSubmit: onSubmit,
+      scrollController: scrollController,
+      screenshotController: screenshotController,
+    );
 
 /// A form that prompts the user for feedback with a single text field.
 /// This is the default feedback widget used by [BetterFeedback].
@@ -20,6 +24,7 @@ class StringFeedback extends StatefulWidget {
     super.key,
     required this.onSubmit,
     required this.scrollController,
+    this.screenshotController,
   });
 
   /// Should be called when the user taps the submit button.
@@ -31,6 +36,7 @@ class StringFeedback extends StatefulWidget {
   /// Non null if the sheet is draggable.
   /// See: [FeedbackThemeData.sheetIsDraggable].
   final ScrollController? scrollController;
+  final ScreenshotController? screenshotController;
 
   @override
   State<StringFeedback> createState() => _StringFeedbackState();

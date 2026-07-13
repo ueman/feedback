@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs
 
+import 'package:feedback/feedback.dart';
 import 'package:feedback/src/better_feedback.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
 import 'package:feedback/src/utilities/back_button_interceptor.dart';
@@ -12,11 +13,13 @@ class FeedbackBottomSheet extends StatelessWidget {
     required this.feedbackBuilder,
     required this.onSubmit,
     required this.sheetProgress,
+    required this.screenshotController,
   });
 
   final FeedbackBuilder feedbackBuilder;
   final OnSubmit onSubmit;
   final ValueNotifier<double> sheetProgress;
+  final ScreenshotController? screenshotController;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +29,7 @@ class FeedbackBottomSheet extends StatelessWidget {
           feedbackBuilder: feedbackBuilder,
           onSubmit: onSubmit,
           sheetProgress: sheetProgress,
+          screenshotController: screenshotController,
         ),
       );
     }
@@ -45,6 +49,7 @@ class FeedbackBottomSheet extends StatelessWidget {
                   context,
                   onSubmit,
                   null,
+                  screenshotController,
                 ),
               );
             },
@@ -60,11 +65,13 @@ class _DraggableFeedbackSheet extends StatefulWidget {
     required this.feedbackBuilder,
     required this.onSubmit,
     required this.sheetProgress,
+    required this.screenshotController,
   });
 
   final FeedbackBuilder feedbackBuilder;
   final OnSubmit onSubmit;
   final ValueNotifier<double> sheetProgress;
+  final ScreenshotController? screenshotController;
 
   @override
   State<_DraggableFeedbackSheet> createState() =>
@@ -138,6 +145,7 @@ class _DraggableFeedbackSheetState extends State<_DraggableFeedbackSheet> {
                             context,
                             widget.onSubmit,
                             scrollController,
+                            widget.screenshotController,
                           ),
                         );
                       },

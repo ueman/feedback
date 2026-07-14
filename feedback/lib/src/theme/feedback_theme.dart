@@ -35,6 +35,8 @@ class FeedbackThemeData {
   FeedbackThemeData(
       {this.background = Colors.grey,
       this.feedbackSheetColor = _lightGrey,
+      this.feedbackMenuBackgroundColor = _lightGrey,
+      this.feedbackMenuForegroundColor = Colors.black,
       this.feedbackSheetHeight = .25,
       this.activeFeedbackModeColor = _blue,
       this.drawColors = _defaultDrawColors,
@@ -69,6 +71,8 @@ class FeedbackThemeData {
         background: Colors.grey.shade700,
         dragHandleColor: Colors.white38,
         feedbackSheetColor: _darkGrey,
+        feedbackMenuBackgroundColor: _darkGrey,
+        feedbackMenuForegroundColor: Colors.white,
         bottomSheetDescriptionStyle: const TextStyle(
           color: Colors.white,
         ),
@@ -82,6 +86,8 @@ class FeedbackThemeData {
         background: Colors.grey,
         dragHandleColor: Colors.black26,
         feedbackSheetColor: _lightGrey,
+        feedbackMenuBackgroundColor: _lightGrey,
+        feedbackMenuForegroundColor: Colors.black,
         bottomSheetDescriptionStyle: _defaultBottomSheetDescriptionStyle,
         sheetIsDraggable: sheetIsDraggable,
         brightness: Brightness.light,
@@ -96,6 +102,14 @@ class FeedbackThemeData {
   /// The background color of the bottom sheet in which the user can input
   /// his feedback and thoughts.
   final Color feedbackSheetColor;
+
+  /// The background color of the column containing the action buttons
+  /// in the feedback menu.
+  final Color feedbackMenuBackgroundColor;
+
+  /// The foreground color of the column containing the action buttons (Trash, Undo, ModeButtons)
+  /// in the feedback menu.
+  final Color feedbackMenuForegroundColor;
 
   /// The height of the bottom sheet as a fraction of the screen height.
   ///

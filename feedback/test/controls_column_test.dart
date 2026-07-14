@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 void main() {
   Widget create({
     Color? activeColor,
+    Color? backgroundColor,
     FeedbackMode? mode,
     ValueChanged<Color>? onColorChanged,
     VoidCallback? onUndo,
@@ -18,6 +19,7 @@ void main() {
     return FeedbackLocalization(
       child: ControlsColumn(
         activeColor: activeColor ?? Colors.red,
+        backgroundColor: backgroundColor ?? Colors.grey,
         mode: mode ?? FeedbackMode.draw,
         colors:
             colors ?? [Colors.red, Colors.green, Colors.blue, Colors.yellow],

@@ -217,6 +217,8 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                               progress: sheetProgress,
                               minScale: .7,
                               child: ControlsColumn(
+                                backgroundColor: FeedbackTheme.of(context)
+                                    .feedbackMenuBackgroundColor,
                                 mode: mode,
                                 activeColor: painterController.drawColor,
                                 colors: widget.drawColors,

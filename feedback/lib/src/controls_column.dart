@@ -13,6 +13,7 @@ class ControlsColumn extends StatelessWidget {
     super.key,
     required this.mode,
     required this.activeColor,
+    required this.backgroundColor,
     required this.onColorChanged,
     required this.onUndo,
     required this.onControlModeChanged,
@@ -32,12 +33,14 @@ class ControlsColumn extends StatelessWidget {
   final VoidCallback onClearDrawing;
   final List<Color> colors;
   final Color activeColor;
+  final Color backgroundColor;
   final FeedbackMode mode;
 
   @override
   Widget build(BuildContext context) {
     final isNavigatingActive = FeedbackMode.navigate == mode;
     return Card(
+      color: backgroundColor,
       margin: EdgeInsets.zero,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
@@ -51,7 +54,8 @@ class ControlsColumn extends StatelessWidget {
         children: <Widget>[
           IconButton(
             key: const ValueKey<String>('close_controls_column'),
-            icon: const Icon(Icons.close),
+            icon: Icon(Icons.close,
+                color: FeedbackTheme.of(context).feedbackMenuForegroundColor),
             onPressed: onCloseFeedback,
           ),
           _ColumnDivider(),
@@ -83,12 +87,14 @@ class ControlsColumn extends StatelessWidget {
           ),
           IconButton(
             key: const ValueKey<String>('undo_button'),
-            icon: const Icon(Icons.undo),
+            icon: Icon(Icons.undo,
+                color: FeedbackTheme.of(context).feedbackMenuForegroundColor),
             onPressed: isNavigatingActive ? null : onUndo,
           ),
           IconButton(
             key: const ValueKey<String>('clear_button'),
-            icon: const Icon(Icons.delete),
+            icon: Icon(Icons.delete,
+                color: FeedbackTheme.of(context).feedbackMenuForegroundColor),
             onPressed: isNavigatingActive ? null : onClearDrawing,
           ),
           for (final color in colors)

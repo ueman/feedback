@@ -51,6 +51,7 @@ class FeedbackWidgetState extends State<FeedbackWidget>
     with SingleTickerProviderStateMixin {
   // Padding to put around the interactive screenshot preview.
   final double padding = 8;
+  bool showLoading = false;
 
   // We use a ValueNotifier instead of just a double and `SetState` because
   // rebuilding the feedback sheet mid-drag cancels the drag.
@@ -263,10 +264,14 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                             child: FeedbackBottomSheet(
                               key: const Key('feedback_bottom_sheet'),
                               feedbackBuilder: widget.feedbackBuilder,
+                              showLoading: showLoading,
                               onSubmit: (
                                 String feedback, {
                                 Map<String, dynamic>? extras,
                               }) async {
+                                setState(() {
+                                  showLoading = true;
+                                });
                                 await _sendFeedback(
                                   context,
                                   BetterFeedback.of(context).onFeedback!,
@@ -275,6 +280,9 @@ class FeedbackWidgetState extends State<FeedbackWidget>
                                   widget.pixelRatio,
                                   extras: extras,
                                 );
+                                setState(() {
+                                  showLoading = false;
+                                });
                                 painterController.clear();
                               },
                               sheetProgress: sheetProgress,

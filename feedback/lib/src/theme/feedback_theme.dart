@@ -72,6 +72,9 @@ class FeedbackThemeData {
         bottomSheetDescriptionStyle: const TextStyle(
           color: Colors.white,
         ),
+        bottomSheetTextInputStyle: const TextStyle(
+          color: Colors.white,
+        ),
         sheetIsDraggable: sheetIsDraggable,
         brightness: Brightness.dark,
       );

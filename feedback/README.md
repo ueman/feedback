@@ -76,7 +76,7 @@ The callback gets called when the user submits his feedback.
 
 ```dart
 import 'package:feedback/feedback.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 void main() {
   runApp(
@@ -157,8 +157,7 @@ If you have sample code on how to upload it to a platform, I would appreciate a 
 
 ```dart
 import 'package:feedback/feedback.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:material_ui/material_ui.dart';
 
 void main() {
   runApp(

@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:feedback/feedback.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Prints the given feedback to the console.
 /// This is useful for debugging purposes.

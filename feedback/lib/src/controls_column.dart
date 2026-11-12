@@ -3,7 +3,7 @@
 import 'package:feedback/src/feedback_mode.dart';
 import 'package:feedback/src/l18n/translation.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// This is the Widget on the right side of the app when the feedback view
 /// is active.

@@ -10,7 +10,7 @@ import 'package:feedback/src/scale_and_fade.dart';
 import 'package:feedback/src/screenshot.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
 import 'package:feedback/src/utilities/back_button_interceptor.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 typedef FeedbackButtonPress = void Function(BuildContext context);
 

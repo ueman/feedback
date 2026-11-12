@@ -1,5 +1,5 @@
 import 'package:feedback/feedback.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class MyTestApp extends StatelessWidget {
   const MyTestApp({super.key, this.onFeedback});

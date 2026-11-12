@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:feedback/feedback.dart';
 import 'package:feedback/src/feedback_widget.dart';
 import 'package:feedback/src/screenshot.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'test_app.dart';

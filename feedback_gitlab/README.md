@@ -20,11 +20,11 @@ Then, run `flutter pub get` in your terminal.
 
 Just wrap your app in a `BetterFeedback` widget.
 To show the feedback view just call `BetterFeedback.of(context).show(...);`.
-The callback gets called when the user submits his feedback. 
+The callback gets called when the user submits his feedback.
 
 ```dart
 import 'package:feedback/feedback.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 void main() {
   runApp(
@@ -35,14 +35,14 @@ void main() {
 }
 ```
 
-Provide a way to show the feedback panel by calling 
+Provide a way to show the feedback panel by calling
 ```dart
 BetterFeedback.of(context).showAndUploadToGitLab(
     projectId: 'project-Id',
     apiToken: 'api-token',
 );
 ```
-Provide a way to hide the feedback panel by calling  `BetterFeedback.of(context).hide();` 
+Provide a way to hide the feedback panel by calling  `BetterFeedback.of(context).hide();`
 
 
 ## 📣  Author

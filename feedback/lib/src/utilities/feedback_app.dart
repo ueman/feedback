@@ -3,7 +3,7 @@
 import 'package:feedback/src/l18n/localization.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
 import 'package:feedback/src/utilities/media_query_from_window.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class FeedbackApp extends StatelessWidget {
   const FeedbackApp({

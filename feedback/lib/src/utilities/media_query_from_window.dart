@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// copied from https://github.com/flutter/flutter/blob/1ad9baa8b9/packages/flutter/lib/src/widgets/app.dart#L1417
 /// Builds [MediaQuery] from `window` by listening to [WidgetsBinding].

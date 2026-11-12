@@ -1,7 +1,7 @@
 import 'package:feedback/src/better_feedback.dart';
 import 'package:feedback/src/l18n/translation.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Prompt the user for feedback using `StringFeedback`.
 Widget simpleFeedbackBuilder(

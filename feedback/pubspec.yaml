@@ -13,9 +13,9 @@ environment:
   flutter: '>=3.24.0'
 
 dependencies:
+  cupertino_ui: any
+  material_ui: any
   flutter:
-    sdk: flutter
-  flutter_localizations:
     sdk: flutter
 
 dev_dependencies:

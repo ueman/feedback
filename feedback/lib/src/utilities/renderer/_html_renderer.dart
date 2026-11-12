@@ -4,7 +4,7 @@
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:js' as js;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 void printErrorMessage() {
   final dynamic flutterCanvasKit = js.context['flutterCanvasKit'];

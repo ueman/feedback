@@ -3,7 +3,7 @@
 import 'package:feedback/src/better_feedback.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
 import 'package:feedback/src/utilities/back_button_interceptor.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Shows the text input in which the user can describe his feedback.
 class FeedbackBottomSheet extends StatelessWidget {

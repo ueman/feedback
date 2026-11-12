@@ -1,5 +1,5 @@
 import 'package:feedback/feedback.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Controls the state of the feeback ui.
 class FeedbackController extends ChangeNotifier {

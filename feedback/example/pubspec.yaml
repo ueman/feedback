@@ -16,8 +16,6 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_email_sender: ^7.0.0
-  flutter_localizations:
-    sdk: flutter
   flutter_markdown: ^0.7.7+1
   http: ^1.0.0
   material_ui: any
